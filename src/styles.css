@@ -1,0 +1,59 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  overflow: hidden;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+img {
+  user-select: none;
+  pointer-events: none;
+}
+
+body *::-webkit-scrollbar {
+  width: 0.3rem;
+  /* width of the entire scrollbar */
+}
+
+body *::-webkit-scrollbar-track {
+  background: transparent;
+  /* color of the tracking area */
+}
+
+body *::-webkit-scrollbar-thumb {
+  background-color: #73737360;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+}
+
+body *::-webkit-scrollbar-thumb:hover {
+  background-color: #52525260;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+}
