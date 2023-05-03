@@ -9,7 +9,7 @@ Generate LoFi music on the go. You create your own atmosphere LoFi Engine sets t
 * LoFi Engine main focus is *customization*, *accessibility* and *artistic freedom*.
 ### customization
 1. **Playback**: If you want to listen to music or just listen to birds singing freely, you choose.
-2. **Look**: With carefully crafted artworks from talented artists makes the long study session a peice of joy.
+2. **Look**: With carefully crafted artworks from talented artists makes the long study session a piece of joy.
 3. **Ambience**: A windy evening, or the sound of waves crushing into the sand of a sunny beach brings peace.
 ### Accessibility
 Any actions or clicks you can do with the mouse there is a shortcut for it with the keyboard. For playback, effects, ambient tracks, look, etc.
