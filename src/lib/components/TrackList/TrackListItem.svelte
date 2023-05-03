@@ -81,7 +81,7 @@
     position: absolute;
     width: 100%;
     will-change: transform, opacity;
-    transition-duration: 200ms;
+    transition-duration: 500ms;
   }
   .carousel__item-body {
     position: relative;
@@ -128,9 +128,10 @@
     visibility: visible;
   }
   .item-hidden {
-    opacity: 0;
+    opacity: 0.2;
     visibility: hidden;
     animation-duration: 0ms;
+    transform: scale(0.1);
   }
   .item-before-visible {
     opacity: 0.5;
