@@ -1,6 +1,8 @@
 <script lang="ts">
   import { afterUpdate } from "svelte";
 
+  export let setMeVisible;
+
   export let activeAudios = [];
   export let track = {
     id: -1,
@@ -29,6 +31,7 @@
       trackItemAnimationClass = "item-hidden";
     }
   }
+
   updateAnimation();
   afterUpdate(updateAnimation);
 </script>
@@ -54,6 +57,7 @@
         audio,
       });
       track.isPlaying = true;
+      setMeVisible(track.id);
     }
   }}
   class={"carousel__item " + trackItemAnimationClass}

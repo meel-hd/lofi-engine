@@ -108,22 +108,32 @@
 
   // Visible tracks animation
   let visibleTrackId = 1;
-
   window.addEventListener("keydown", (e) => {
     if (e.key == "ArrowUp") {
-      visibleTrackId > 1 ? visibleTrackId-- : (visibleTrackId = 9);
+      prevTrack();
     }
     if (e.key == "ArrowDown") {
-      visibleTrackId < 9 ? visibleTrackId++ : (visibleTrackId = 1);
+      nextTrack();
     }
   });
+  function nextTrack() {
+    visibleTrackId < 9 ? visibleTrackId++ : (visibleTrackId = 1);
+  }
+  function prevTrack() {
+    visibleTrackId > 1 ? visibleTrackId-- : (visibleTrackId = 9);
+  }
 </script>
 
 <div class="track-list">
   <div class="wrapper">
     <div class="carousel">
       {#each tracks as track}
-        <TrackListItem {activeAudios} {track} {visibleTrackId} />
+        <TrackListItem
+          {activeAudios}
+          {track}
+          {visibleTrackId}
+          setMeVisible={(id) => (visibleTrackId = id)}
+        />
       {/each}
     </div>
   </div>
