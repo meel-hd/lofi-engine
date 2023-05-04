@@ -17,16 +17,27 @@
   });
 
   // when mounted toggle settings
-  // to excute old settings
+  // to excute settings of children (old saved)
   onMount(() => {
     toggle();
     setTimeout(() => {
       toggle();
     }, 10);
   });
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      isActive &&
+      event.target instanceof HTMLElement &&
+      !event.target.closest("#settings-box")
+    ) {
+      isActive = false;
+    }
+  };
+  document.addEventListener("click", handleClickOutside);
 </script>
 
-<div>
+<div id="settings-box">
   <button
     style={`
           background-color: ${isActive ? "white" : "transparent"};
