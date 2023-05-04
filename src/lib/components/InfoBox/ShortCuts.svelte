@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { IconArrowLeft, IconArrowRight } from "@tabler/icons-svelte";
+  import {
+    IconArrowDown,
+    IconArrowLeft,
+    IconArrowRight,
+    IconArrowUp,
+  } from "@tabler/icons-svelte";
   let ambientTracks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 </script>
 
@@ -53,6 +58,14 @@
   </div>
   <!-- Ambient Tracks Shortcuts -->
   <h5 style="margin-left: 10px;">Ambient Tracks</h5>
+  <div class="shortcut">
+    <div class="shortcut-key"><IconArrowUp size={15} /></div>
+    <div class="shortcut-desc">Navigate To Next Track</div>
+  </div>
+  <div class="shortcut">
+    <div class="shortcut-key"><IconArrowDown size={15} /></div>
+    <div class="shortcut-desc">Navigate To Previous Track</div>
+  </div>
   <div class="shortcut">
     <div class="shortcut-key">K</div>
     <div class="shortcut-desc">Stop All Ambient Sounds</div>
