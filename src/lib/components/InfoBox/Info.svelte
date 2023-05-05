@@ -48,7 +48,7 @@
           <img id="app-logo" src="/app-icon.png" alt="" />
           <div>
             <h1>Lofi Engine</h1>
-            <p id="version">Version 0.0.1</p>
+            <p id="version">Version 0.0.2</p>
             <p id="tagline">
               Create your own atmosphere, Lofi Engine sets the mood.
             </p>
