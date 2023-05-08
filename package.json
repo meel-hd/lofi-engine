@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tauri:d": "tauri dev",
+    "tauri:b": "tauri build"
   },
   "dependencies": {
     "@tabler/icons-svelte": "^2.17.0",
