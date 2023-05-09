@@ -32,6 +32,12 @@
     setInterval(() => {
       appWindow.isMaximized().then((maximized) => {
         isMaximized = maximized;
+        // Remove the rounded corners when maximized
+        if (isMaximized) {
+          document.body.style.borderRadius = "0px";
+        } else {
+          document.body.style.borderRadius = "10px";
+        }
       });
     }, 300);
   });
