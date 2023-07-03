@@ -116,6 +116,18 @@
       nextTrack();
     }
   });
+  document.addEventListener("wheel", (event) => {
+    // Cross-browser wheel delta
+    //@ts-ignore
+    const delta = Math.max(-1, Math.min(1, event.wheelDelta || -event.detail));
+
+    if (delta > 0) {
+      nextTrack();
+    } else if (delta < 0) {
+      prevTrack();
+    }
+  });
+
   function nextTrack() {
     visibleTrackId < 9 ? visibleTrackId++ : (visibleTrackId = 1);
   }
