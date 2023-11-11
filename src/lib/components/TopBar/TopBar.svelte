@@ -22,7 +22,7 @@
     <MacControls />
   {/if}
   <div class="drag" data-tauri-drag-region>
-    <img src="/assets/dots.svg" alt="logo" width="15" />
+    <img src="/assets/dots.svg" alt="logo" width="18" />
   </div>
   {#if currentOs !== "mac"}
     <WindowsLinuxControls />
@@ -33,7 +33,7 @@
   .titlebar {
     position: absolute;
     width: 100%;
-    height: 20px;
+    height: 26px;
     z-index: 100;
     padding: 0 10px;
     background-color: #00000030;

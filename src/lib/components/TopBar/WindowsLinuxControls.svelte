@@ -45,17 +45,17 @@
 
 <div class="controls">
   <div class="minimize" id="minimize-wl">
-    <IconMinus size={10} />
+    <IconMinus size={14} />
   </div>
   <div class="maximize" id="maximaze-wl">
     {#if isMaximized}
-      <IconCopy size={10} />
+      <IconCopy size={14} />
     {:else}
-      <IconSquare size={10} />
+      <IconSquare size={12} />
     {/if}
   </div>
   <div class="close" id="close-maximaze-wl">
-    <IconX size={10} />
+    <IconX size={14} />
   </div>
 </div>
 
@@ -68,8 +68,8 @@
     color: white;
   }
   .controls div {
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     background-color: transparent;
     cursor: pointer;
     border-radius: 50%;
