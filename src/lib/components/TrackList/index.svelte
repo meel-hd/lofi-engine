@@ -1,5 +1,6 @@
 <script lang="ts">
   import TrackListItem from "./TrackListItem.svelte";
+  import { IconChevronDown } from "@tabler/icons-svelte";
 
   let tracks = [
     {
@@ -138,6 +139,11 @@
       {/each}
     </div>
   </div>
+  <div id='btn-view'>
+    <button id="navigate-btn" on:click={prevTrack}>
+      <IconChevronDown/>
+    </button>
+  </div>
 </div>
 
 <style>
@@ -164,5 +170,21 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+  }
+  #btn-view {
+    width: 120%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #navigate-btn {
+    width: 30px;
+    height: 30px;
+    background: white;
+    color: black;
+    border-radius: 99px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

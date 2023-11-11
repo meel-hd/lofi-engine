@@ -38,6 +38,11 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
+  on:contextmenu={() => {
+    if (!track.isPlaying) {
+      setMeVisible(track.id);
+    }
+  }}
   on:click={() => {
     if (track.isPlaying) {
       // Pause playing track
@@ -96,7 +101,7 @@
     display: flex;
     gap: 20px;
     min-width: max-content;
-    background-color: rgba(0, 0, 0, 30%);
+    background-color: rgba(0, 0, 0, 40%);
     backdrop-filter: blur(10px);
   }
 
