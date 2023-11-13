@@ -139,9 +139,9 @@
       {/each}
     </div>
   </div>
-  <div id='btn-view'>
+  <div id="btn-view">
     <button id="navigate-btn" on:click={prevTrack}>
-      <IconChevronDown/>
+      <IconChevronDown />
     </button>
   </div>
 </div>
@@ -180,8 +180,9 @@
   #navigate-btn {
     width: 30px;
     height: 30px;
-    background: white;
-    color: black;
+    background-color: rgba(0, 0, 0, 30%);
+    backdrop-filter: blur(10px);
+    color: white;
     border-radius: 99px;
     display: flex;
     justify-content: center;
