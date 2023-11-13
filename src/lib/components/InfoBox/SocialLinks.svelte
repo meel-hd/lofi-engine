@@ -8,16 +8,13 @@
 </script>
 
 <div class="social-links">
-  <a href="https://instagram.com" target="_blank">
-    <IconBrandInstagram size={25} />
-  </a>
   <a href="https://twitter.com" target="_blank">
     <IconBrandTwitter size={25} />
   </a>
   <a href="https://patreon.com" target="_blank">
     <IconBrandPatreon size={25} />
   </a>
-  <a href="https://limitss.com" target="_blank">
+  <a href="https://LofiEngine.com" target="_blank">
     <IconLink size={25} />
   </a>
 </div>

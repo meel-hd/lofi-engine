@@ -45,7 +45,7 @@
           <IconEye color="white" size={17} />
         </button>
         <div id="app-info">
-          <img id="app-logo" src="/app-icon.png" alt="" />
+          <img id="app-logo" src="LofiEngine.png" alt="" />
           <div>
             <h1>Lofi Engine</h1>
             <p id="version">Version 0.0.2</p>
@@ -139,5 +139,6 @@
     height: 130px;
     min-width: 130px;
     min-height: 130px;
+    border-radius: 20px;
   }
 </style>
