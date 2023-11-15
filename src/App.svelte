@@ -34,6 +34,7 @@
   .content {
     padding: 24px;
     padding-top: 30px;
+    height: 100vh;
     z-index: 20;
     display: flex;
     flex-direction: row;

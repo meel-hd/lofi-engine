@@ -68,8 +68,8 @@
     color: white;
   }
   .controls div {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background-color: transparent;
     cursor: pointer;
     border-radius: 50%;
