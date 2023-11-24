@@ -1,5 +1,8 @@
 <script lang="ts">
   import { IconCampfire } from "@tabler/icons-svelte";
+  import { onMount } from "svelte";
+
+  export let volume: number;
 
   let fire = new Audio("/assets/engine/effects/fire.mp3");
   let isFire = false;
@@ -10,6 +13,7 @@
     } else {
       fire.play();
       fire.loop = true;
+      fire.volume = volume;
     }
 
     isFire = !isFire;
@@ -20,6 +24,13 @@
     if (e.key === "f") {
       toggleStorm();
     }
+  });
+
+  // Update volume
+  onMount(() => {
+    setInterval(() => {
+      fire.volume = volume;
+    },100);
   });
 </script>
 

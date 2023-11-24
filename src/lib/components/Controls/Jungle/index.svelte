@@ -1,5 +1,8 @@
 <script lang="ts">
   import { IconTrees } from "@tabler/icons-svelte";
+  import { onMount } from "svelte";
+
+  export let volume: number;
 
   let jungle = new Audio("/assets/engine/effects/jungle.mp3");
   let isActive = false;
@@ -10,6 +13,7 @@
     } else {
       jungle.play();
       jungle.loop = true;
+      jungle.volume = volume;
     }
 
     isActive = !isActive;
@@ -20,6 +24,12 @@
     if (e.key === "d") {
       toggleSound();
     }
+  });
+  // Update volume
+  onMount(() => {
+    setInterval(() => {
+      jungle.volume = volume;
+    },100);
   });
 </script>
 

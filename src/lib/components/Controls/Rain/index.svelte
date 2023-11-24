@@ -1,6 +1,9 @@
-<script>
+<script lang="ts">
   import { IconCloudRain } from "@tabler/icons-svelte";
+  import { onMount } from "svelte";
   import RainAnimation from "./RainAnimation.svelte";
+
+  export let volume: number;
 
   let rain = new Audio("/assets/engine/effects/rain.mp3");
   let isRaining = false;
@@ -11,6 +14,7 @@
     } else {
       rain.play();
       rain.loop = true;
+      rain.volume = volume;
     }
 
     isRaining = !isRaining;
@@ -21,6 +25,13 @@
     if (e.key === "a") {
       toggleRain();
     }
+  });
+
+  // Update volume
+  onMount(() => {
+    setInterval(() => {
+      rain.volume = volume;
+    },100);
   });
 </script>
 

@@ -2,6 +2,7 @@
   import { IconSettings } from "@tabler/icons-svelte";
   import ChangeBg from "./ChangeBg.svelte";
   import { onMount } from "svelte";
+  import EffectsVolume from "./EffectsVolume.svelte";
 
   let isActive = false;
 
@@ -50,6 +51,7 @@
     <div class="settings-box">
       <div>
         <ChangeBg />
+        <EffectsVolume />
         <small>For more information press ESC key</small>
       </div>
     </div>

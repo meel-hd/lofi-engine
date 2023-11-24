@@ -1,5 +1,8 @@
 <script lang="ts">
   import { IconCloudStorm } from "@tabler/icons-svelte";
+  import { onMount } from "svelte";
+
+  export let volume: number;
 
   let storm = new Audio("/assets/engine/effects/thunder.mp3");
   let isStorming = false;
@@ -10,6 +13,7 @@
     } else {
       storm.play();
       storm.loop = true;
+      storm.volume = volume;
     }
 
     isStorming = !isStorming;
@@ -20,6 +24,13 @@
     if (e.key === "s") {
       toggleStorm();
     }
+  });
+
+  // Update volume
+  onMount(() => {
+    setInterval(() => {
+      storm.volume = volume;
+    }, 100);
   });
 </script>
 

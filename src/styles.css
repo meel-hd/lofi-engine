@@ -34,6 +34,38 @@ img {
   pointer-events: none;
 }
 
+input[type="range"]{
+  appearance: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  cursor: grab;
+}
+input[type="range"]:active{
+  cursor: grabbing;
+}
+::-webkit-slider-runnable-track{
+  appearance: none;
+  background-color: #00000070;
+  border-radius: 10px;
+  height: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+::-webkit-slider-thumb{
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: white;
+  margin-top: -5px;
+  box-shadow: 1px 2px 4px 2px #00000060;
+}
+
 body *::-webkit-scrollbar {
   width: 0.3rem;
   /* width of the entire scrollbar */
