@@ -1,6 +1,6 @@
 <script lang="ts">
-  import TrackListItem from "./TrackListItem.svelte";
   import { IconChevronDown } from "@tabler/icons-svelte";
+  import TrackListItem from "./TrackListItem.svelte";
 
   let tracks = [
     {
@@ -180,12 +180,14 @@
   #navigate-btn {
     width: 30px;
     height: 30px;
-    background-color: rgba(0, 0, 0, 30%);
-    backdrop-filter: blur(10px);
     color: white;
     border-radius: 99px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  #navigate-btn:hover {
+    background-color: rgba(0, 0, 0, 30%);
+    backdrop-filter: blur(10px);
   }
 </style>

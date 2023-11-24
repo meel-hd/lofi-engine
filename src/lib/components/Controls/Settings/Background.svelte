@@ -70,9 +70,10 @@
     height: 40px;
     border-radius: 50%;
     color: white;
+    overflow: hidden;
   }
   button:hover {
-    background-color: #ffffff;
-    color: black;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 10%);
   }
 </style>

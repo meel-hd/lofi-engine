@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconSettings } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
-  import ChangeBg from "./ChangeBg.svelte";
+  import Background from "./Background.svelte";
   import Volume from "./Volume.svelte";
 
   let isActive = false;
@@ -50,7 +50,7 @@
   {#if isActive}
     <div class="settings-box">
       <div>
-        <ChangeBg />
+        <Background />
         <Volume />
         <small>For more information press ESC key</small>
       </div>
