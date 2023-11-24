@@ -3,9 +3,22 @@
     IconPlayerPlayFilled,
     IconPlayerPauseFilled,
   } from "@tabler/icons-svelte";
+  import { onMount } from "svelte";
 
   const audio = new Audio("/assets/engine/main.mp3");
   let isPlaying = false;
+
+  const STORAGE_KEY = "Volumes";
+  const DEFFAULT_VOLUMES = {
+    rain: 1,
+    thunder: 1,
+    campfire: 1,
+    jungle: 1,
+    main_track: 1,
+  };
+  // Load previous vols or defualt
+  let volumes =
+    JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
 
   function playTrack() {
     if (isPlaying) {
@@ -13,6 +26,7 @@
       isPlaying = false;
     } else {
       audio.loop = true;
+      audio.volume = volumes.main_track;
       audio.play();
       isPlaying = true;
     }
@@ -25,6 +39,15 @@
       e.preventDefault();
       playTrack();
     }
+  });
+
+  // Update volume
+  onMount(() => {
+    setInterval(() => {
+      let updatedVol =
+        JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+      audio.volume = updatedVol.main_track;
+    },100);
   });
 </script>
 

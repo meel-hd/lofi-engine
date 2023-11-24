@@ -5,12 +5,13 @@
   import Settings from "./Settings/index.svelte";
   import Thunder from "./Thunder/index.svelte";
 
-  const STORAGE_KEY = "Effects-volume";
+  const STORAGE_KEY = "Volumes";
   const DEFFAULT_VOLUMES = {
     rain: 1,
     thunder: 1,
     campfire: 1,
     jungle: 1,
+    main_track: 1,
   };
   // Load previous vols or defualt
   let volumes =
