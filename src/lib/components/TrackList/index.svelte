@@ -110,11 +110,14 @@
   // Visible tracks animation
   let visibleTrackId = 1;
   window.addEventListener("keydown", (e) => {
-    if (e.key == "ArrowUp") {
-      prevTrack();
-    }
-    if (e.key == "ArrowDown") {
-      nextTrack();
+    // Ignore change when event is targeting inputs
+    if (e.target instanceof HTMLElement && !e.target.closest("input")) {
+      if (e.key == "ArrowUp") {
+        prevTrack();
+      }
+      if (e.key == "ArrowDown") {
+        nextTrack();
+      }
     }
   });
 

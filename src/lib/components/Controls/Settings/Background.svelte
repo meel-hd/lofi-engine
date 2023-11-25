@@ -29,11 +29,14 @@
   }
 
   // Shortcuts to change background using arrow keys
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") {
-      nextBg();
-    } else if (e.key === "ArrowLeft") {
-      prevBg();
+  window.addEventListener("keydown", (e: KeyboardEvent) => {
+    // Prevent bg change when targeting inputs
+    if (e.target instanceof HTMLElement && !e.target.closest("input")) {
+      if (e.key === "ArrowRight") {
+        nextBg();
+      } else if (e.key === "ArrowLeft") {
+        prevBg();
+      }
     }
   });
 </script>
