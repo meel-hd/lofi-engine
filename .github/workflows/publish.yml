@@ -1,6 +1,8 @@
 name: "publish"
 on:
-  repository_dispatch
+  push:
+    branches:
+      - 'master'
 
 jobs:
   publish-tauri:
