@@ -25,7 +25,7 @@ All information about the app and **shortcuts** is available in the *info box* a
 At the moment there is only one main LoFi track playing in a loop. For a better and customizable experience the main LoFi track should be generated on the go. The current suitable solution could be done using **Magenta.js**, [learn more!](https://magenta.tensorflow.org/).
 
 ## License
-On hold right now 🐌
+MIT
 
 
 
