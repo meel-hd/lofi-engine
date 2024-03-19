@@ -1,7 +1,10 @@
 # LoFi Engine
+<p align="center">
+    <img alt="Icon" align="center" width="100" heigth="100" src="app-icon.png" />
+</p>
 Generate LoFi music on the go. You create your own atmosphere LoFi Engine sets the mood.
 
-![screenshot](screenshots/screenshot.png)
+![screenshot](screenshots/screenshot.jpeg)
 ## Features 🚀
 * Create your own LoFi studio with your unique music with minimal touches from this and that, be the Artist.
 * Works with major desktop platforms *Linux,* *Mac,* and *Windows*.
