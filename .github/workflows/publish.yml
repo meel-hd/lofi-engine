@@ -12,7 +12,7 @@ jobs:
       matrix:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
 
-    runs-on: ${"${{ matrix.platform }}"}
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
       - name: setup node
@@ -30,9 +30,9 @@ jobs:
         run: yarn && yarn tauri icon && yarn tauri build
       - uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${"${{ secrets.GITHUB_TOKEN }}"}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          tagName: app-v__VERSION__ # the action automatically replaces __VERSION__ with the app version
           releaseName: 'App v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
