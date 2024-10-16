@@ -27,6 +27,14 @@ All information about the app and **shortcuts** is available in the *info box* a
 ## Future Plan
 At the moment, there is only one main LoFi track playing in a loop. For a better and more customizable experience, the main LoFi track should be generated on the go. The current suitable solution could be done using **Magenta.js**. [Learn more!](https://magenta.tensorflow.org/).
 
+## Tech Stack
+
+[![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
+[![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)](https://tauri.app/)
+[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
+
 ## Run Locally
 
 To run LofiEngine locally, follow these steps:
