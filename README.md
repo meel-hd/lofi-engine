@@ -27,6 +27,57 @@ All information about the app and **shortcuts** is available in the *info box* a
 ## Future Plan
 At the moment, there is only one main LoFi track playing in a loop. For a better and more customizable experience, the main LoFi track should be generated on the go. The current suitable solution could be done using **Magenta.js**. [Learn more!](https://magenta.tensorflow.org/).
 
+## Run Locally
+
+To run LofiEngine locally, follow these steps:
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v14 or later)
+- [pnpm](https://pnpm.io/) (v6 or later)
+- [Rust](https://www.rust-lang.org/) (latest stable version)
+- [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) (based on your operating system)
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/LofiEngine.git
+   cd LofiEngine
+   ```
+
+2. Install dependencies:
+   ```
+   pnpm install
+   ```
+
+### Development
+
+To run the app in development mode:
+
+```
+pnpm tauri:d
+```
+
+This command will start both the Vite dev server for the frontend and the Tauri development process for the native shell.
+
+### Building
+
+To build the app for production:
+
+```
+pnpm tauri:b
+```
+
+This will create a production-ready build of your application in the `src-tauri/target/release` directory.
+
+### Additional Commands
+
+- `pnpm dev`: Run the Vite development server without Tauri
+- `pnpm build`: Build the frontend assets without Tauri
+- `pnpm preview`: Preview the built frontend
+- `pnpm check`: Run Svelte type checking
+
 ## Contributing
 We welcome contributions from the community! If you're interested in contributing to LoFi Engine, please follow these steps:
 1. Fork the repository.
