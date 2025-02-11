@@ -4,7 +4,7 @@
 </p>
 Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets the mood.
 
-![screenshot](screenshots/screenshot.jpeg)
+![screenshot](screenshots/screenshot.gif)
 
 ## Features 🚀
 * Create your own LoFi studio with your unique music with minimal touches from this and that. Be the Artist.
