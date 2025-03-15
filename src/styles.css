@@ -27,6 +27,7 @@ button {
   background: transparent;
   border: 0;
   cursor: pointer;
+  outline: none;
 }
 
 img {
@@ -88,4 +89,10 @@ body *::-webkit-scrollbar-thumb:hover {
   /* color of the scroll thumb */
   border-radius: 20px;
   /* roundness of the scroll thumb */
+}
+
+#blurred {
+  color: white;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 40%);
 }

@@ -13,9 +13,9 @@
   <section class="content">
     <TrackList />
     <Controls />
-    <PlayButton />
     <Info />
   </section>
+  <PlayButton />
 </main>
 
 <style>
