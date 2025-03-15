@@ -43,7 +43,14 @@ input[type="range"]{
   align-items: center;
   background-color: transparent;
   cursor: grab;
+  opacity: 0.8;
+  transition: opacity 0.2s;
 }
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
 input[type="range"]:active{
   cursor: grabbing;
 }

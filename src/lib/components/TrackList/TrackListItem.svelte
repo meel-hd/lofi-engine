@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { afterUpdate } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
 
   export let setMeVisible;
-
   export let activeAudios = [];
   export let track = {
     id: -1,
@@ -13,6 +12,7 @@
 
   export let visibleTrackId = -1;
   let trackItemAnimationClass = "item-hidden";
+  let volume = 0.5;
 
   function updateAnimation() {
     if (track.id == visibleTrackId) {
@@ -32,6 +32,45 @@
     }
   }
 
+  function handleVolumeChange(event) {
+    volume = event.target.value;
+    localStorage.setItem("audioVolume", volume.toString());
+    activeAudios.forEach((item) => {
+      if (item.id === track.id) {
+        item.audio.volume = volume;
+      }
+    });
+  }
+
+  function playTrack() {
+    const audio = new Audio(`/assets/engine/tracks/${track.track}`);
+    audio.volume = volume;
+    audio.play();
+    audio.loop = true;
+    activeAudios.push({
+      id: track.id,
+      audio,
+    });
+    track.isPlaying = true;
+    setMeVisible(track.id);
+  }
+
+  function pauseTrack() {
+    activeAudios.forEach((item) => {
+      if (item.id === track.id) {
+        item.audio.pause();
+      }
+    });
+    track.isPlaying = false;
+  }
+
+  onMount(() => {
+    const savedVolume = localStorage.getItem("audioVolume");
+    if (savedVolume !== null) {
+      volume = parseFloat(savedVolume);
+    }
+  });
+
   updateAnimation();
   afterUpdate(updateAnimation);
 </script>
@@ -44,30 +83,11 @@
     }
   }}
   on:click={() => {
-    if (track.isPlaying) {
-      // Pause playing track
-      activeAudios.forEach((item) => {
-        if (item.id === track.id) {
-          item.audio.pause();
-        }
-      });
-      track.isPlaying = false;
-    } else {
-      // Play track
-      const audio = new Audio(`/assets/engine/tracks/${track.track}`);
-      audio.play();
-      audio.loop = true;
-      activeAudios.push({
-        id: track.id,
-        audio,
-      });
-      track.isPlaying = true;
-      setMeVisible(track.id);
-    }
+    track.isPlaying ? pauseTrack() : playTrack();
   }}
   class={"carousel__item " + trackItemAnimationClass}
 >
-  <div class="carousel__item-body">
+  <div class={"carousel__item-body " + (track.isPlaying ? "playing" : "")}>
     <img
       class="carousel__item-body__img"
       src="/assets/images/{track.id}.jpg"
@@ -76,9 +96,19 @@
     <div>
       <p id="title">Track {track.id}</p>
       <p id="info">{track?.qoute}</p>
-      {#if track.isPlaying}
-        <div class="play-indicator" />
-      {/if}
+    {#if track.isPlaying}
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        bind:value={volume}
+        on:input={handleVolumeChange}
+        on:click={e => e.stopPropagation()}
+        id="volume-slider"
+        class="volume-slider"
+      />
+    {/if}
     </div>
   </div>
 </div>
@@ -122,15 +152,10 @@
     flex-wrap: wrap;
     font-size: 11px;
   }
-  .play-indicator {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: white;
-    color: black;
+  
+  .playing {
+    background-color: rgba(0, 0, 0, 60%);
+    backdrop-filter: blur(10px);
   }
   .item-visible {
     opacity: 1;
@@ -151,5 +176,12 @@
     opacity: 0.5;
     visibility: visible;
     transform: scale(0.8) translate(0, 150px);
+  }
+  .volume-slider {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 80px;
+    height: 5px;
   }
 </style>
