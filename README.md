@@ -2,9 +2,23 @@
 <p align="center">
     <img alt="Icon" align="center" width="100" height="100" src="app-icon.png" />
 </p>
+
 Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets the mood.
 
-![screenshot](screenshots/screenshot.gif)
+
+## Tech Stack
+
+[![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
+[![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)](https://tauri.app/)
+[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![Tone.js](https://img.shields.io/badge/Tone.js-009688?style=for-the-badge&logo=javascript&logoColor=white)](https://tonejs.github.io/)
+
+<p align="center">
+   <img  alt="Screenshot" src="screenshots/screenshot.jpeg" />
+</p>
+
 
 ## Features 🚀
 * Create your own LoFi studio with your unique music with minimal touches from this and that. Be the Artist.
@@ -24,16 +38,11 @@ All information about the app and **shortcuts** is available in the *info box* a
 
 ![info-box](screenshots/info-box.png)
 
-## Future Plan
-At the moment, there is only one main LoFi track playing in a loop. For a better and more customizable experience, the main LoFi track should be generated on the go. The current suitable solution could be done using **Magenta.js**. [Learn more!](https://magenta.tensorflow.org/).
+### Procedural LoFi Track Generation 🎵
 
-## Tech Stack
+The LoFi track is now generated procedurally using **Tone.js**, providing a dynamic and unique listening experience every time. We are actively seeking feedback from users to refine and improve the track generation process. Your input will help us enhance the quality, variety, and customization of the generated music.
 
-[![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
-[![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)](https://tauri.app/)
-[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
+If you have suggestions or encounter any issues, please let us know by opening an issue or contributing directly to the project. Together, we can make LoFi Engine even better!
 
 ## Run Locally
 
@@ -93,14 +102,6 @@ We welcome contributions from the community! If you're interested in contributin
 3. Make your changes and commit them with clear and descriptive messages.
 4. Push your changes to your fork.
 5. Open a Pull Request to the `main` branch of this repository.
-
-### We Need Your Help with Music Generation!
-We are looking for contributors to help with implementing real-time music generation. If you have experience with:
-- **Magenta.js** or other music generation libraries
-- Real-time audio processing
-- Music theory and composition
-
-Please consider contributing to this exciting feature!
 
 ## License
 MIT
