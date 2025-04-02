@@ -5,6 +5,15 @@
 
 Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets the mood.
 
+<p align="center">
+  <a href="https://github.com/meel-hd/lofi-engine/releases/tag/app-v1.0.0">
+    <img src="https://img.shields.io/badge/Download-LoFi_Engine-blue?style=for-the-badge&logo=github" alt="Download">
+  </a>
+</p>
+
+<p align="center">
+   <img  alt="Screenshot" src="screenshots/screenshot.jpeg" />
+</p>
 
 ## Tech Stack
 
@@ -14,11 +23,6 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 [![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)](https://tauri.app/)
 [![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![Tone.js](https://img.shields.io/badge/Tone.js-009688?style=for-the-badge&logo=javascript&logoColor=white)](https://tonejs.github.io/)
-
-<p align="center">
-   <img  alt="Screenshot" src="screenshots/screenshot.jpeg" />
-</p>
-
 
 ## Features 🚀
 * Create your own LoFi studio with your unique music with minimal touches from this and that. Be the Artist.
