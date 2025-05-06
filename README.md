@@ -63,8 +63,8 @@ To run LofiEngine locally, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/LofiEngine.git
-   cd LofiEngine
+   git clone https://github.com/meel-hd/lofi-engine
+   cd lofi-engine
    ```
 
 2. Install dependencies:
