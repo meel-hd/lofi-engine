@@ -1,6 +1,6 @@
 import * as Tone from 'tone';
 
-const samplePath = `/assets/engine/DrumSamples/snare.mp3`;
+const samplePath = `assets/engine/DrumSamples/snare.mp3`;
 const samples = {C4: samplePath};
 
 const lpf = new Tone.Filter(6000, "lowpass");

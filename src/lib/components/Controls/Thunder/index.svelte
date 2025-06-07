@@ -4,7 +4,7 @@
 
   export let volume: number;
 
-  let storm = new Audio("/assets/engine/effects/thunder.mp3");
+  let storm = new Audio("assets/engine/effects/thunder.mp3");
   let isStorming = false;
 
   function toggleStorm() {

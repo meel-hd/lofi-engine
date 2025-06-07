@@ -4,7 +4,7 @@
 
   export let volume: number;
 
-  let fire = new Audio("/assets/engine/effects/fire.mp3");
+  let fire = new Audio("assets/engine/effects/fire.mp3");
   let isFire = false;
 
   function toggleStorm() {

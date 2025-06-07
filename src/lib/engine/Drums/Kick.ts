@@ -1,6 +1,6 @@
 import * as Tone from 'tone';
 
-const samplePath = `/assets/engine/DrumSamples/kick.mp3`;
+const samplePath = `assets/engine/DrumSamples/kick.mp3`;
 const samples = {C4: samplePath};
 
 const vol = new Tone.Volume(-3);
