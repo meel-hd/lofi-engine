@@ -41,7 +41,6 @@ input[type="range"] {
   background-color: transparent;
   cursor: grab;
   opacity: 0.8;
-  transition: opacity 0.2s;
 }
 
 input[type="range"]:hover {
