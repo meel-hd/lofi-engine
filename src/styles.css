@@ -35,12 +35,9 @@ img {
   pointer-events: none;
 }
 
-input[type="range"]{
+input[type="range"] {
+  -webkit-appearance: none;
   appearance: none;
-  /* outline: none; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: transparent;
   cursor: grab;
   opacity: 0.8;
@@ -54,15 +51,12 @@ input[type="range"]:hover {
 input[type="range"]:active{
   cursor: grabbing;
 }
-::-webkit-slider-runnable-track{
+::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
   appearance: none;
   background-color: #00000070;
   border-radius: 10px;
   height: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 ::-webkit-slider-thumb{
   appearance: none;
