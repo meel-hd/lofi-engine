@@ -2,6 +2,7 @@
   import { IconEye, IconX } from "@tabler/icons-svelte";
   import ShortCuts from "./ShortCuts.svelte";
   import SocialLinks from "./SocialLinks.svelte";
+  import { fly } from "svelte/transition";
 
   let visible = false;
 
@@ -31,7 +32,7 @@
 </script>
 
 {#if visible}
-  <div class="info-overlay">
+  <div class="info-overlay" transition:fly={{ y: 20, duration: 250 }}>
     <div id="info-box">
       <div id="top-section">
         <button id="close-btn" on:click={toggleInfoBox}>
@@ -70,7 +71,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 99; /* on top of everything and under topbar(100 z-index) */
+    z-index: 1005; /* Increased z-index */
     background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     display: flex;
