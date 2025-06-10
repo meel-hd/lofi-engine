@@ -141,4 +141,33 @@
     min-height: 130px;
     border-radius: 20px;
   }
+
+  @media (max-width: 768px) {
+    #info-box {
+      width: 90vw;
+      height: auto;
+      max-height: 85vh;
+      padding: 10px;
+    }
+
+    #app-info {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center; /* Optional: for better text presentation */
+    }
+
+    #app-info img#app-logo { /* More specific selector for the logo */
+      width: 80px;
+      height: 80px;
+      min-width: unset;
+      min-height: unset;
+    }
+
+    #bottom-section {
+      height: auto; /* Adjust based on content */
+      max-height: 40vh; /* Or another suitable value */
+      /* Ensure scrolling is still possible if content exceeds this */
+    }
+  }
 </style>

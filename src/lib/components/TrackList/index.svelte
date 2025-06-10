@@ -193,4 +193,19 @@
     background-color: rgba(0, 0, 0, 30%);
     backdrop-filter: blur(10px);
   }
+
+  @media (max-width: 768px) {
+    .track-list {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 45vh;
+      overflow-y: auto;
+      padding: 10px 5px;
+    }
+
+    #btn-view {
+      width: 100%; /* Or auto, depending on desired behavior */
+    }
+  }
 </style>

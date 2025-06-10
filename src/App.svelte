@@ -40,4 +40,27 @@
     flex-direction: row;
     justify-content: space-between;
   }
+
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      padding-top: 20px;
+      height: auto;
+      min-height: calc(100vh - 50px);
+      overflow-y: auto;
+    }
+
+    section.content > :global(div),
+    section.content > :global(section) {
+      width: 90%;
+      margin-bottom: 15px;
+    }
+
+    /* Ensure Controls specifically has width: 90% */
+    section.content > :global(div[class*="controls-wrapper"]) {
+      width: 90%;
+    }
+  }
 </style>
