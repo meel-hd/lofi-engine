@@ -22,7 +22,7 @@
     <MacControls />
   {/if}
   <div class="drag" data-tauri-drag-region>
-    <img src="/assets/dots.svg" alt="logo" width="18" />
+    <img src="assets/dots.svg" alt="logo" width="18" />
   </div>
   {#if currentOs !== "mac"}
     <WindowsLinuxControls />

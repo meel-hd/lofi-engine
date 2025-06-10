@@ -83,7 +83,7 @@
         tracks[i - 1].isPlaying = !tracks[i - 1].isPlaying;
         if (tracks[i - 1].isPlaying) {
           const audio = new Audio(
-            `/assets/engine/tracks/${tracks[i - 1].track}`
+            `assets/engine/tracks/${tracks[i - 1].track}`
           );
           audio.play();
           audio.loop = true;

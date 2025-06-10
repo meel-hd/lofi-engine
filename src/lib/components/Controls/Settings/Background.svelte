@@ -4,7 +4,7 @@
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
   const bg = document.getElementById("bg");
-  bg.style.backgroundImage = `url('/assets/background/bg${id}.jpg')`;
+  bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
 
   function nextBg() {
     if (id < 10) {
@@ -13,7 +13,7 @@
     } else {
       id = 1;
     }
-    bg.style.backgroundImage = `url('/assets/background/bg${id}.jpg')`;
+    bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
     localStorage.setItem("bg-id", id.toString());
   }
 
@@ -24,7 +24,7 @@
     } else {
       id = 10;
     }
-    bg.style.backgroundImage = `url('/assets/background/bg${id}.jpg')`;
+    bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
     localStorage.setItem("bg-id", id.toString());
   }
 
@@ -47,7 +47,7 @@
     <button on:click={prevBg}>
       <IconArrowLeft size={20} />
     </button>
-    <img id="bg-preview" src="/assets/background/bg{id}.jpg" alt="" />
+    <img id="bg-preview" src="assets/background/bg{id}.jpg" alt="" />
     <button on:click={nextBg}>
       <IconArrowRight size={20} />
     </button>

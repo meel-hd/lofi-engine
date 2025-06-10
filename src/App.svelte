@@ -26,7 +26,7 @@
     position: relative;
     overflow: hidden;
     background-color: black;
-    background-image: url("/assets/background/bg1.jpg");
+    background-image: url("assets/background/bg1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

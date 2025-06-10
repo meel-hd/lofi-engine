@@ -4,7 +4,7 @@
 
   export let volume: number;
 
-  let jungle = new Audio("/assets/engine/effects/jungle.mp3");
+  let jungle = new Audio("assets/engine/effects/jungle.mp3");
   let isActive = false;
 
   function toggleSound() {

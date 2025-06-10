@@ -64,9 +64,12 @@
     border-radius: 50%;
     aspect-ratio: 4/4;
   }
+  #settings-box {
+    position: relative;
+  }
   .settings-box {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 70px;
     height: 58vh;
     padding: 5px 20px;

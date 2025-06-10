@@ -43,7 +43,7 @@
   }
 
   function playTrack() {
-    const audio = new Audio(`/assets/engine/tracks/${track.track}`);
+    const audio = new Audio(`assets/engine/tracks/${track.track}`);
     audio.volume = volume;
     audio.play();
     audio.loop = true;
@@ -90,7 +90,7 @@
   <div class={"carousel__item-body " + (track.isPlaying ? "playing" : "")}>
     <img
       class="carousel__item-body__img"
-      src="/assets/images/{track.id}.jpg"
+      src="assets/images/{track.id}.jpg"
       alt=""
     />
     <div>
