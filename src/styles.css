@@ -11,17 +11,6 @@
   overflow: hidden;
 }
 
-@media (max-width: 768px) {
-  :root {
-    overflow-x: hidden; /* Allow vertical scroll, prevent horizontal */
-    /* overflow-y might not be needed here if body handles it */
-  }
-  body {
-    overflow-y: auto;   /* Allow body to scroll vertically */
-    overflow-x: hidden; /* Prevent horizontal scroll on body */
-    /* Consider: min-height: 100vh; height: auto; */
-  }
-}
 
 body {
   margin: 0;
@@ -30,15 +19,8 @@ body {
   background-color: transparent;
   width: 100vw;
   height: 100vh;
-  /* overflow: hidden; <- Moved to media query for non-mobile */
+  overflow: hidden;
   user-select: none;
-}
-
-/* Apply overflow:hidden to body only on larger screens */
-@media (min-width: 769px) {
-  body {
-    overflow: hidden;
-  }
 }
 
 button {

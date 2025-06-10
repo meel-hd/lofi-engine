@@ -127,10 +127,12 @@
     width: 100%;
     color: white;
     border-radius: 8px;
-    padding-right: 15px;
+    /* padding-right: 15px; */ /* Replaced by uniform padding */
+    padding: 10px; /* Added uniform padding */
     display: flex;
-    gap: 20px;
+    gap: 20px; /* This will create space between img and text block */
     min-width: max-content;
+    min-height: 90px; /* Added min-height */
     background-color: rgba(0, 0, 0, 40%);
     backdrop-filter: blur(10px);
   }
@@ -139,7 +141,8 @@
     width: 80px;
     min-width: 80px;
     height: 80px;
-    margin: 10px;
+    /* margin: 10px; */ /* Removed margin, parent padding will handle spacing */
+    margin: 0; /* Explicitly set to 0 */
     border-radius: 5px;
     overflow: hidden;
   }
@@ -150,7 +153,7 @@
   #info {
     display: flex;
     flex-wrap: wrap;
-    font-size: 11px;
+    font-size: 14px; /* Increased font size */
   }
   
   .playing {
@@ -182,6 +185,15 @@
     bottom: 10px;
     right: 10px;
     width: 80px;
-    height: 5px;
+    height: 8px; /* Increased height */
+  }
+
+  @media (max-width: 768px) {
+    .item-before-visible {
+      transform: scale(0.8) translate(0, -100px); /* Adjusted for mobile */
+    }
+    .item-after-visible {
+      transform: scale(0.8) translate(0, 100px); /* Adjusted for mobile */
+    }
   }
 </style>

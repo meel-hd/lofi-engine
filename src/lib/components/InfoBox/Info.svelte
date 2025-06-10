@@ -2,7 +2,6 @@
   import { IconEye, IconX } from "@tabler/icons-svelte";
   import ShortCuts from "./ShortCuts.svelte";
   import SocialLinks from "./SocialLinks.svelte";
-  import { fly } from "svelte/transition";
 
   let visible = false;
 
@@ -32,7 +31,7 @@
 </script>
 
 {#if visible}
-  <div class="info-overlay" transition:fly={{ y: 20, duration: 250 }}>
+  <div class="info-overlay">
     <div id="info-box">
       <div id="top-section">
         <button id="close-btn" on:click={toggleInfoBox}>
@@ -71,7 +70,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1005; /* Increased z-index */
+    z-index: 99; /* on top of everything and under topbar(100 z-index) */
     background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(10px);
     display: flex;
@@ -141,34 +140,5 @@
     min-width: 130px;
     min-height: 130px;
     border-radius: 20px;
-  }
-
-  @media (max-width: 768px) {
-    #info-box {
-      width: 90vw;
-      height: auto;
-      max-height: 85vh;
-      padding: 10px;
-    }
-
-    #app-info {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      text-align: center; /* Optional: for better text presentation */
-    }
-
-    #app-info img#app-logo { /* More specific selector for the logo */
-      width: 80px;
-      height: 80px;
-      min-width: unset;
-      min-height: unset;
-    }
-
-    #bottom-section {
-      height: auto; /* Adjust based on content */
-      max-height: 40vh; /* Or another suitable value */
-      /* Ensure scrolling is still possible if content exceeds this */
-    }
   }
 </style>

@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { IconChevronDown, IconArrowsMaximize, IconArrowsMinimize } from "@tabler/icons-svelte";
+  import { IconChevronDown, IconChevronUp } from "@tabler/icons-svelte";
   import TrackListItem from "./TrackListItem.svelte";
-
-  export let isMobile = false;
-  let showAllTracksOnMobile = false;
 
   let tracks = [
     {
@@ -130,79 +127,29 @@
   function prevTrack() {
     visibleTrackId > 1 ? visibleTrackId-- : (visibleTrackId = 9);
   }
-
-  $: currentTrackForMobile = tracks.find(t => t.id === visibleTrackId);
-
-  function toggleMobileTrackView() {
-    showAllTracksOnMobile = !showAllTracksOnMobile;
-  }
 </script>
 
 <div class="track-list">
-  {#if isMobile}
-    {#if !showAllTracksOnMobile && currentTrackForMobile}
-      <!-- Compact Mobile View: Show only current track -->
-      <div class="compact-view-wrapper">
+  <div class="wrapper">
+    <div class="carousel">
+      {#each tracks as track}
         <TrackListItem
           {activeAudios}
-          track={currentTrackForMobile}
+          {track}
           {visibleTrackId}
           setMeVisible={(id) => (visibleTrackId = id)}
         />
-        <button class="mobile-track-toggle-btn" on:click={toggleMobileTrackView}>
-          <IconArrowsMaximize size={20} /> Show All Tracks
-        </button>
-      </div>
-    {:else}
-      <!-- Expanded Mobile View: Show all tracks (carousel) -->
-      <div class="wrapper">
-        <div class="carousel">
-          {#each tracks as track}
-            <TrackListItem
-              {activeAudios}
-              {track}
-              {visibleTrackId}
-              setMeVisible={(id) => (visibleTrackId = id)}
-            />
-          {/each}
-        </div>
-      </div>
-      <div id="btn-view">
-        <button id="navigate-btn" on:click={prevTrack} aria-label="Previous Track">
-          <IconChevronDown style="transform: rotate(90deg);" />
-        </button>
-        <button class="mobile-track-toggle-btn" on:click={toggleMobileTrackView}>
-          <IconArrowsMinimize size={20} /> Show Current Track
-        </button>
-        <button id="navigate-btn" on:click={nextTrack} aria-label="Next Track">
-          <IconChevronDown style="transform: rotate(-90deg);" />
-        </button>
-      </div>
-    {/if}
-  {:else}
-    <!-- Desktop View -->
-    <div class="wrapper">
-      <div class="carousel">
-        {#each tracks as track}
-          <TrackListItem
-            {activeAudios}
-            {track}
-            {visibleTrackId}
-            setMeVisible={(id) => (visibleTrackId = id)}
-          />
-        {/each}
-      </div>
+      {/each}
     </div>
-    <div id="btn-view">
-       <!-- Desktop navigation can remain as is or be styled like mobile's next/prev -->
-       <button id="navigate-btn" on:click={prevTrack} aria-label="Previous Track">
-        <IconChevronDown style="transform: rotate(90deg);" />
-      </button>
-      <button id="navigate-btn" on:click={nextTrack} aria-label="Next Track">
-        <IconChevronDown style="transform: rotate(-90deg);" />
-      </button>
-    </div>
-  {/if}
+  </div>
+  <div id="btn-view">
+    <button class="nav-track-button" on:click={prevTrack} aria-label="Previous Track">
+      <IconChevronUp size={24} />
+    </button>
+    <button class="nav-track-button" on:click={nextTrack} aria-label="Next Track">
+      <IconChevronDown size={24} />
+    </button>
+  </div>
 </div>
 
 <style>
@@ -213,9 +160,6 @@
     border-radius: 20px;
     backdrop-filter: blur(0px);
     z-index: 20;
-    display: flex; /* Added for centering compact view */
-    flex-direction: column; /* Added for centering compact view */
-    justify-content: center; /* Added for centering compact view */
   }
 
   .wrapper {
@@ -234,74 +178,44 @@
     flex-direction: column;
   }
   #btn-view {
-    width: 100%; /* Adjusted from 120% for better fit */
+    width: 100%;
     display: flex;
-    justify-content: space-around; /* Space out buttons */
+    justify-content: space-around; /* Changed from center */
     align-items: center;
-    margin-top: 10px; /* Add some space above nav buttons */
+    margin-top: 10px; /* Added some top margin for separation */
   }
-  #navigate-btn { /* Applies to multiple buttons now */
-    width: 40px; /* Slightly larger tap target */
-    height: 40px; /* Slightly larger tap target */
+  /* Removed #navigate-btn styles, replaced by .nav-track-button */
+  .nav-track-button {
+    width: 44px;
+    height: 44px;
     color: white;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.15); /* Default background */
+    border: 1px solid rgba(255,255,255,0.1); /* Subtle border */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-  #navigate-btn:hover {
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-
-  .compact-view-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  .mobile-track-toggle-btn {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 8px 15px;
-    border-radius: 20px;
-    margin-top: 15px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9em;
+    transition: background-color 0.2s ease;
   }
-  .mobile-track-toggle-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+  .nav-track-button:hover {
+    background-color: rgba(0, 0, 0, 0.3); /* Darker on hover */
+    backdrop-filter: blur(5px); /* Optional: blur on hover if desired */
+  }
+  .nav-track-button:active {
+    background-color: rgba(0, 0, 0, 0.4); /* Even darker on active/click */
   }
 
 
   @media (max-width: 768px) {
     .track-list {
       width: 100%;
-      height: auto; /* Keep this for expanded view */
-      /* min-height is good for expanded, compact will be smaller */
-      /* max-height is good for expanded */
-      /* overflow-y should be auto for expanded */
-      padding: 10px 5px;
-      /* For compact view, ensure it doesn't take full max-height unless needed */
-    }
-
-    /* Styles for when only one track is shown */
-    .track-list:has(.compact-view-wrapper) {
-        min-height: unset; /* Allow compact view to shrink */
-        max-height: 30vh; /* Example, or enough for one item + button */
-         overflow-y: hidden; /* No scroll for single item view */
-    }
-
-
-    #btn-view {
-      width: 100%;
-      /* justify-content: space-around; is good for mobile full view */
+      height: auto;
+      max-height: 60vh;
+      min-height: 40vh;
+      padding: 15px 10px;
+      border-radius: 10px;
+      overflow-y: hidden;
     }
   }
 </style>

@@ -45,20 +45,4 @@
     backdrop-filter: blur(2px);
     background-color: rgba(0, 0, 0, 28%);
   }
-
-  @media (max-width: 768px) {
-    .controls {
-      width: 100%; /* Parent in App.svelte is 90% */
-      height: auto;
-      min-height: 50px;
-      flex-wrap: wrap;
-      justify-content: space-around; /* Or center */
-      padding: 10px;
-      gap: 10px; /* For spacing between wrapped items */
-    }
-
-    .controls > :global(div) {
-      margin: 5px; /* Spacing for child components when wrapped */
-    }
-  }
 </style>
