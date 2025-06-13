@@ -15,6 +15,16 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
    <img  alt="Screenshot" src="screenshots/screenshot.jpeg" />
 </p>
 
+## Table of Contents
+
+- [Introduction](#lofi-engine)
+- [Tech Stack](#tech-stack)
+- [Roadmap](#roadmap)
+- [Features](#features)
+- [Run Locally](#run-locally)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Tech Stack
 
 [![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
@@ -24,7 +34,23 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 [![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![Tone.js](https://img.shields.io/badge/Tone.js-009688?style=for-the-badge&logo=javascript&logoColor=white)](https://tonejs.github.io/)
 
-## Features 🚀
+## Roadmap
+- [x] Procedural LoFi track generation using Tone.js
+- [x] Customizable ambient tracks
+- [x] Customizable effects
+- [x] Customizable look and feel
+- [x] Keyboard shortcuts for all actions
+- [x] Offline support
+- [x] Cross-platform support (Linux, Mac, Windows)
+- [ ] Browser deployment with a domain
+- [ ] Mobile support (iOS, Android)
+- [ ] More customization options and effects
+- [ ] Improved procedural generation algorithms
+- [ ] User feedback integration
+
+
+
+## Features
 * Create your own LoFi studio with your unique music with minimal touches from this and that. Be the Artist.
 * Works with major desktop platforms: **Linux**, **Mac**, and **Windows**.
 * Doesn't require an internet connection; your experience is fully private.
@@ -42,7 +68,7 @@ All information about the app and **shortcuts** is available in the *info box* a
 
 ![info-box](screenshots/info-box.png)
 
-### Procedural LoFi Track Generation 🎵
+### Procedural LoFi Track Generation
 
 The LoFi track is now generated procedurally using **Tone.js**, providing a dynamic and unique listening experience every time. We are actively seeking feedback from users to refine and improve the track generation process. Your input will help us enhance the quality, variety, and customization of the generated music.
 
@@ -108,4 +134,5 @@ We welcome contributions from the community! If you're interested in contributin
 5. Open a Pull Request to the `main` branch of this repository.
 
 ## License
-MIT
+This project is licensed under the [MIT License](LICENSE).
+Feel free to use, modify, and distribute this code as per the terms of the license.
