@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
 
   let isMaximized = false;
+  export let noSideEffect = false;
 
   onMount(() => {
     const close = document.getElementById("close-mac");
@@ -29,7 +30,7 @@
 
     // watch if window is maximized
     // from other sources apart from top bar
-    setInterval(() => {
+    !noSideEffect && setInterval(() => {
       appWindow.isMaximized().then((maximized) => {
         isMaximized = maximized;
         // Remove the rounded corners when maximized

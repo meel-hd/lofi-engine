@@ -47,9 +47,10 @@ input[type="range"]:hover {
   opacity: 1;
 }
 
-input[type="range"]:active{
+input[type="range"]:active {
   cursor: grabbing;
 }
+
 ::-webkit-slider-runnable-track {
   -webkit-appearance: none;
   appearance: none;
@@ -57,7 +58,8 @@ input[type="range"]:active{
   border-radius: 10px;
   height: 3px;
 }
-::-webkit-slider-thumb{
+
+::-webkit-slider-thumb {
   appearance: none;
   width: 13px;
   height: 13px;
@@ -95,4 +97,23 @@ body *::-webkit-scrollbar-thumb:hover {
   color: white;
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 40%);
+}
+
+@media screen and (max-width: 600px) {
+
+  /* Disable blue tap highlight */
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    outline: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+
 }

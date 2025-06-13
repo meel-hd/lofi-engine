@@ -79,4 +79,15 @@
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 10%);
   }
+
+  @media only screen and (max-width: 600px) {
+    #bg-preview {
+      width: 90px;
+      height: 150px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+    }
+  }
 </style>

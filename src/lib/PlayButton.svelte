@@ -452,4 +452,19 @@
     overflow: hidden;
     margin-top: 10px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .play-button {
+      margin-bottom: 40px;
+    }
+    .progressionList {
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      transform: scale(0.8);
+    }
+    .visualizer-container {
+      display: none;
+    }
+  }
 </style>

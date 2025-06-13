@@ -45,4 +45,13 @@
     backdrop-filter: blur(2px);
     background-color: rgba(0, 0, 0, 28%);
   }
+
+  @media only screen and (max-width: 600px) {
+    .controls {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85vw;
+    }
+  }
 </style>

@@ -48,11 +48,11 @@
     <IconSettings size={25} color={isActive ? "black" : "white"} />
   </button>
   {#if isActive}
-    <div class="settings-box">
+    <div class="settings-container">
       <div>
         <Background />
         <Volume />
-        <small>For more information press ESC key</small>
+        <small class="info-label">For more information press ESC key</small>
       </div>
     </div>
   {/if}
@@ -67,7 +67,7 @@
   #settings-box {
     position: relative;
   }
-  .settings-box {
+  .settings-container {
     position: absolute;
     right: 0;
     top: 70px;
@@ -91,10 +91,21 @@
       opacity: 1;
     }
   }
-  small {
+  .info-label {
     display: block;
     font-size: x-small;
     margin-top: 30px;
     color: azure;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .settings-container {
+      width: 80vw;
+      right: -3vw;
+      background-color: rgba(0, 0, 0, 50%);
+    }
+    .info-label {
+      opacity: 0;
+    }
   }
 </style>

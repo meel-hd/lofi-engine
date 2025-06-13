@@ -1,33 +1,45 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import MacControls from "./MacControls.svelte";
-  import WindowsLinuxControls from "./WindowsLinuxControls.svelte";
+  import GenericControls from "./GenericControls.svelte";
 
-  let currentOs = "null";
+  let barType = "generic" as  "mac" | "generic" | "hidden";
 
   onMount(() => {
-    const os = window.navigator.platform;
-    if (os.includes("Mac")) {
-      currentOs = "mac";
-    } else if (os.includes("Win")) {
-      currentOs = "win";
-    } else if (os.includes("Linux")) {
-      currentOs = "linux";
+    const userAgent = navigator.userAgent || "";
+    const platform = navigator.platform || "";
+
+    const isTauri = "__TAURI_IPC__" in window;
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
+    const noSideEffect = isMobile && !isTauri;
+
+
+    if (!isTauri || isMobile) {
+      barType = "hidden";
+      return;
     }
+
+    if (platform.includes("Mac")) {
+      barType = "mac";
+    } else {
+      barType = "generic";
+    } 
   });
 </script>
 
-<div class="titlebar" data-tauri-drag-region>
-  {#if currentOs === "mac"}
-    <MacControls />
-  {/if}
-  <div class="drag" data-tauri-drag-region>
-    <img src="assets/dots.svg" alt="logo" width="18" />
+{#if barType !== "hidden"}
+  <div class="titlebar" data-tauri-drag-region>
+    {#if barType === "mac"}
+      <MacControls noSideEffect />
+    {/if}
+    <div class="drag" data-tauri-drag-region>
+      <img src="assets/dots.svg" alt="logo" width="18" />
+    </div>
+    {#if barType === "generic"}
+      <GenericControls noSideEffect/>
+    {/if}
   </div>
-  {#if currentOs !== "mac"}
-    <WindowsLinuxControls />
-  {/if}
-</div>
+{/if}
 
 <style>
   .titlebar {

@@ -193,4 +193,13 @@
     background-color: rgba(0, 0, 0, 30%);
     backdrop-filter: blur(10px);
   }
+
+  @media only screen and (max-width: 600px) {
+    .track-list {
+      display: none;
+    }
+    #btn-view {
+      display: none;
+    }
+  }
 </style>

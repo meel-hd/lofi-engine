@@ -141,4 +141,10 @@
     min-height: 130px;
     border-radius: 20px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .info-overlay {
+      display: none;
+    }
+  }
 </style>
