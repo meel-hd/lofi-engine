@@ -25,6 +25,8 @@
       barType = "generic";
     } 
   });
+  console.log(barType)
+  console.lgo("app",app)
 </script>
 
 {#if barType !== "hidden"}
