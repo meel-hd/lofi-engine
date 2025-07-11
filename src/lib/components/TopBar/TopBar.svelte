@@ -20,7 +20,7 @@
 
     const isTauri = "__TAURI_INTERNALS__" in window;
     const isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
-    noSideEffect = isMobile && !isTauri;
+    noSideEffect = isMobile || !isTauri;
 
     if (!isTauri) {
       barType = "hidden";
