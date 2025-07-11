@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { appWindow } from "@tauri-apps/api/window";
   import { onMount } from "svelte";
 
   let isMaximized = false;
+  export let appWindow;
   export let noSideEffect = false;
 
   onMount(() => {

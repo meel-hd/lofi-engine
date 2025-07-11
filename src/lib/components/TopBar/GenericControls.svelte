@@ -1,9 +1,10 @@
 <script lang="ts">
   import { IconCopy, IconMinus, IconSquare, IconX } from "@tabler/icons-svelte";
-  import { appWindow } from "@tauri-apps/api/window";
   import { onMount } from "svelte";
-
+  
   let isMaximized = false;
+
+  export let appWindow;
   export let noSideEffect = false;
 
   onMount(() => {
