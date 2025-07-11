@@ -1,11 +1,10 @@
 <script lang="ts">
   import { IconCopy, IconMinus, IconSquare, IconX } from "@tabler/icons-svelte";
-  import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
   import { onMount } from "svelte";
   
-  const appWindow = getCurrentWebviewWindow()
-
   let isMaximized = false;
+
+  export let appWindow;
   export let noSideEffect = false;
 
   onMount(() => {

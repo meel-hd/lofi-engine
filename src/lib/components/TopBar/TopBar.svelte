@@ -3,42 +3,58 @@
   import MacControls from "./MacControls.svelte";
   import GenericControls from "./GenericControls.svelte";
 
-  let barType = "generic" as  "mac" | "generic" | "hidden";
+  let appWindow = {
+    close: () => {},
+    minimize: () => {},
+    maximize: () => {},
+    unmaximize: () => {},
+    isMaximized: async () => false,
+  };
+
+  let barType = "generic" as "mac" | "generic" | "hidden";
+  let noSideEffect = false; // Disable app controls changes side effects
 
   onMount(() => {
     const userAgent = navigator.userAgent || "";
     const platform = navigator.platform || "";
 
-    const isTauri = "__TAURI_IPC__" in window;
+    const isTauri = "__TAURI_INTERNALS__" in window;
     const isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
-    const noSideEffect = isMobile && !isTauri;
+    noSideEffect = isMobile && !isTauri;
 
-
-    if (!isTauri || isMobile) {
+    if (!isTauri) {
       barType = "hidden";
       return;
+    }
+
+    if (isTauri) {
+      try {
+        import("@tauri-apps/api/webviewWindow").then(
+          ({ getCurrentWebviewWindow }) => {
+            appWindow = getCurrentWebviewWindow();
+          }
+        );
+      } catch (_e) {}
     }
 
     if (platform.includes("Mac")) {
       barType = "mac";
     } else {
       barType = "generic";
-    } 
+    }
   });
-  console.log(barType)
-  console.lgo("app",app)
 </script>
 
 {#if barType !== "hidden"}
   <div class="titlebar" data-tauri-drag-region>
-    {#if barType === "mac"}
-      <MacControls noSideEffect />
+    {#if barType == "mac"}
+      <MacControls {noSideEffect} {appWindow} />
     {/if}
     <div class="drag" data-tauri-drag-region>
       <img src="assets/dots.svg" alt="logo" width="18" />
     </div>
-    {#if barType === "generic"}
-      <GenericControls noSideEffect/>
+    {#if barType == "generic"}
+      <GenericControls {noSideEffect} {appWindow} />
     {/if}
   </div>
 {/if}

@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
   import { onMount } from "svelte";
-  
-  const appWindow = getCurrentWebviewWindow()
 
   let isMaximized = false;
+  export let appWindow;
   export let noSideEffect = false;
 
   onMount(() => {
