@@ -1,6 +1,6 @@
 [package]
 name = "LofiEngine"
-version = "1.0.0"
+version = "1.0.1"
 description = "Lofi Engine"
 authors = ["you"]
 license = ""
