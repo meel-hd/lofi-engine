@@ -34,9 +34,11 @@ jobs:
 
       - name: setup node
         uses: actions/setup-node@v4
+      
+      - name: install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: lts/*
-          cache: 'yarn' # Set this to npm, yarn or pnpm.
+          version: 10
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
@@ -51,7 +53,7 @@ jobs:
 
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        run: yarn install # change this to npm or pnpm depending on which one you use.
+        run: pnpm install # change this to npm or pnpm depending on which one you use.
 
       - uses: tauri-apps/tauri-action@v0
         env:
