@@ -42,7 +42,8 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 - [x] Keyboard shortcuts for all actions
 - [x] Offline support
 - [x] Cross-platform support (Linux, Mac, Windows)
-- [ ] Browser deployment with a domain
+- [x] [Browser deployment](https://lofi-engine.vercel.app/)
+- [ ] Purchasing a domain
 - [ ] Mobile support (iOS, Android)
 - [ ] More customization options and effects
 - [ ] Improved procedural generation algorithms
