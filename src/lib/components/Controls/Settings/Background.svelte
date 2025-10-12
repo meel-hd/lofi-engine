@@ -1,19 +1,30 @@
 <script lang="ts">
   import { IconArrowLeft, IconArrowRight } from "@tabler/icons-svelte";
 
+  const TOTAL_BACKGROUNDS = 12;
+
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
   const bg = document.getElementById("bg");
-  bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
+
+  function getBgUrl(bgId: number) {
+    return `url('assets/background/bg${bgId}.jpg')`;
+  }
+
+  function getBgSrc(bgId: number) {
+    return `assets/background/bg${bgId}.jpg`;
+  }
+
+  bg.style.backgroundImage = getBgUrl(id);
 
   function nextBg() {
-    if (id < 10) {
+    if (id < TOTAL_BACKGROUNDS) {
       // @ts-ignore
       id = new Number(id) + 1;
     } else {
       id = 1;
     }
-    bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
+    bg.style.backgroundImage = getBgUrl(id);
     localStorage.setItem("bg-id", id.toString());
   }
 
@@ -22,9 +33,9 @@
     if (id > 1) {
       id = id - 1;
     } else {
-      id = 10;
+      id = TOTAL_BACKGROUNDS;
     }
-    bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
+    bg.style.backgroundImage = getBgUrl(id);
     localStorage.setItem("bg-id", id.toString());
   }
 
@@ -47,7 +58,7 @@
     <button on:click={prevBg}>
       <IconArrowLeft size={20} />
     </button>
-    <img id="bg-preview" src="assets/background/bg{id}.jpg" alt="" />
+    <img id="bg-preview" src="{getBgSrc(id)}" alt="" />
     <button on:click={nextBg}>
       <IconArrowRight size={20} />
     </button>
