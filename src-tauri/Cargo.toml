@@ -1,11 +1,11 @@
 [package]
 name = "LofiEngine"
-version = "1.0.1"
+version = "1.0.2"
 description = "Lofi Engine"
-authors = ["you"]
+authors = ["Mehdi El Oualy"]
 license = ""
 repository = ""
-edition = "2021"
+edition = "2025"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
