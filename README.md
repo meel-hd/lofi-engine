@@ -6,7 +6,7 @@
 Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets the mood.
 
 <p align="center">
-  <a href="https://github.com/meel-hd/lofi-engine/releases/tag/app-v1.0.1">
+  <a href="https://github.com/meel-hd/lofi-engine/releases/tag/app-v1.0.2">
     <img src="https://img.shields.io/badge/Download-LoFi_Engine-blue?style=for-the-badge&logo=github" alt="Download">
   </a>
 </p>
