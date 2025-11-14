@@ -18,7 +18,7 @@
   },
   "productName": "Lofi Engine",
   "mainBinaryName": "Lofi Engine",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "identifier": "com.lofi-engine.dev",
   "plugins": {},
   "app": {
