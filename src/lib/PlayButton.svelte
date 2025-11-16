@@ -169,6 +169,10 @@
     }
   });
 
+  let barCount = 0;
+  let sectionBarLength = 32; // change section every 32 bars
+  let isTransitioning = false;
+
   function nextChord() {
     const nextProgress = progress === progression.length - 1 ? 0 : progress + 1;
     const nextKickOff = Math.random() < 0.15;
@@ -192,6 +196,38 @@
     } else {
       progress = nextProgress;
     }
+    barCount++;
+    if(barCount >= sectionBarLength) {
+      barCount = 0;
+      autoDJTransition();
+      // New next transition length
+      const barLengthOptions = [16, 20, 24, 28, 32, 48];
+      const sectionBarLength = barLengthOptions[Math.floor(Math.random() * barLengthOptions.length)];
+    }
+  }
+
+  function autoDJTransition() {
+    if(isTransitioning) return; // Prevent overlaps
+    isTransitioning = true;
+
+    // Change keys/chords
+    generateProgression()
+    
+    // Change, Turn On/Off instruments
+    melodyDensity = 0.2 + Math.random() * 0.5;
+    kickOff = Math.random() < 0.13;
+    snareOff = Math.random() < 0.17;
+    hatOff = Math.random() < 0.22;
+    melodyOff = Math.random() < 0.25;
+
+    // Crossfade FX
+    lpf.frequency.linearRampTo(300, 2) // 2s Muffle
+    setTimeout(() => {
+      lpf.frequency.linearRampTo(1200, 2) // Open back up
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 2000);
+    }, 2000);
   }
 
   function playChord() {
