@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconArrowLeft, IconArrowRight, IconPlus, IconTrash } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import localDB from "../../../localDB"
   
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
@@ -11,14 +12,14 @@
   let allBackgrounds = [];
   let isUploading = false;
   
-  onMount(() => {
-    loadCustomBackgrounds();
+  onMount(async () => {
+    await loadCustomBackgrounds();
     buildAllBackgrounds();
     applyCurrentBackground();
   });
 
-  function loadCustomBackgrounds() {
-    const saved = localStorage.getItem("customBackgrounds");
+  async function loadCustomBackgrounds() {
+    const saved =  await localDB.getItem("custom-backgrounds");
     if (saved) {
       customBackgrounds = JSON.parse(saved);
     }
@@ -47,7 +48,7 @@
   }
 
   function saveCustomBackgrounds() {
-    localStorage.setItem("customBackgrounds", JSON.stringify(customBackgrounds));
+    localDB.setItem("custom-backgrounds", JSON.stringify(customBackgrounds));
   }
 
   function selectCustomBackground(bg: any) {
