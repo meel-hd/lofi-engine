@@ -233,9 +233,8 @@
 <div>
   <div class="header">
     <h4>Background</h4>
-    <label for="bg-upload" class="upload-btn" class:uploading={isUploading}>
+    <label title="Add Custom Images" for="bg-upload" class="upload-btn" class:uploading={isUploading}>
       <IconPlus size={16} />
-      Add Images
     </label>
     <input 
       id="bg-upload" 
@@ -260,7 +259,6 @@
         <div class="preview-container">
           <img id="bg-preview" src={currentBg.url} alt={currentBg.name} />
           {#if bgType === "custom" && customBgId}
-            <div class="custom-indicator">Custom</div>
             <button 
               class="delete-current-btn" 
               on:click={() => deleteCustomBackground(customBackgrounds.find(bg => bg.id === customBgId))}
@@ -307,14 +305,12 @@
   .upload-btn {
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9em;
     transition: background-color 0.2s ease;
   }
 
@@ -374,18 +370,6 @@
     background-color: rgba(255, 0, 0, 1);
   }
 
-  .custom-indicator {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.7em;
-    font-weight: 500;
-    backdrop-filter: blur(5px);
-  }
   button {
     width: 40px;
     height: 40px;
@@ -397,8 +381,6 @@
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 10%);
   }
-
-
 
   .uploading-indicator {
     display: flex;
