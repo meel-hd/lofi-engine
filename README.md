@@ -127,12 +127,8 @@ This will create a production-ready build of your application in the `src-tauri/
 - `pnpm check`: Run Svelte type checking
 
 ## Contributing
-We welcome contributions from the community! If you're interested in contributing to LoFi Engine, please follow these steps:
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Make your changes and commit them with clear and descriptive messages.
-4. Push your changes to your fork.
-5. Open a Pull Request to the `main` branch of this repository.
+
+Contributions are welcome. See the [Contributing Guide](./CONTRIBUTING.md) for details, and check the [issue tracker](https://github.com/meel-hd/lofi-engine/issues) if you want to help, report a bug, or discuss new ideas.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
