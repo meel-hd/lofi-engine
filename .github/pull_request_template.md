@@ -20,5 +20,5 @@ Describe how you tested your changes and how reviewers can reproduce the behavio
 ## Checklist
 - [ ] My changes are scoped and focused
 - [ ] Code follows existing style and conventions
-- [ ] Tests updated or added when needed
+- [ ] Tested my solution that it works as expected
 - [ ] Documentation updated if relevant
