@@ -5,6 +5,7 @@
   import TopBar from "./lib/components/TopBar/TopBar.svelte";
   import Info from "./lib/components/InfoBox/Info.svelte";
   import Config from "./lib/Config.svelte";
+  import ContextMenu from "./lib/components/ContextMenu/ContextMenu.svelte";
 </script>
 
 <main id="bg" class="container">
@@ -16,6 +17,7 @@
     <Info />
   </section>
   <PlayButton />
+  <ContextMenu />
 </main>
 
 <style>

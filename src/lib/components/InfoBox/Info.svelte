@@ -2,6 +2,7 @@
   import { IconEye, IconX } from "@tabler/icons-svelte";
   import ShortCuts from "./ShortCuts.svelte";
   import SocialLinks from "./SocialLinks.svelte";
+  import { onMount } from "svelte";
 
   let visible = false;
 
@@ -28,6 +29,13 @@
     },
     false
   );
+
+  onMount(() => {
+    window.addEventListener("lofi-toggle-info", toggleInfoBox);
+    return () => {
+      window.removeEventListener("lofi-toggle-info", toggleInfoBox);
+    };
+  });
 </script>
 
 {#if visible}

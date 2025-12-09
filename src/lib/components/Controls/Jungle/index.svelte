@@ -7,7 +7,7 @@
   let jungle = new Audio("assets/engine/effects/jungle.mp3");
   let isActive = false;
 
-  function toggleSound() {
+  function toggleJungle() {
     if (isActive) {
       jungle.pause();
     } else {
@@ -22,14 +22,19 @@
   // Shortuct to toggle jungle with "D" key
   window.addEventListener("keydown", (e) => {
     if (e.key === "d") {
-      toggleSound();
+      toggleJungle();
     }
   });
   // Update volume
   onMount(() => {
+    window.addEventListener("lofi-toggle-jungle", toggleJungle);
     setInterval(() => {
       jungle.volume = volume;
     },100);
+
+    return () => {
+      window.removeEventListener("lofi-toggle-jungle", toggleJungle);
+    };
   });
 </script>
 
@@ -37,7 +42,7 @@
   style={`
         background-color: ${isActive ? "white" : "transparent"};
         `}
-  on:click={toggleSound}
+  on:click={toggleJungle}
 >
   <IconTrees size={25} color={isActive ? "black" : "white"} />
 </button>

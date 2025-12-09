@@ -155,10 +155,16 @@
       }
     };
 
+    const handleCustomToggle = () => {
+      handleButtonAction();
+    };
+
     window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("lofi-toggle-play", handleCustomToggle);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener("lofi-toggle-play", handleCustomToggle);
     };
   });
 
@@ -325,6 +331,7 @@
       hatLoop.start(0);
       isPlaying = true;
     }
+    window.dispatchEvent(new CustomEvent("lofi-play-state-changed", { detail: { isPlaying } }));
   }
 
   function startAudioContext() {

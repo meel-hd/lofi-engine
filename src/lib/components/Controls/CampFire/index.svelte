@@ -7,7 +7,7 @@
   let fire = new Audio("assets/engine/effects/fire.mp3");
   let isFire = false;
 
-  function toggleStorm() {
+  function toggleFire() {
     if (isFire) {
       fire.pause();
     } else {
@@ -22,15 +22,20 @@
   // Shortuct to toggle fire with "F" key
   window.addEventListener("keydown", (e) => {
     if (e.key === "f") {
-      toggleStorm();
+      toggleFire();
     }
   });
 
   // Update volume
   onMount(() => {
+    window.addEventListener("lofi-toggle-campfire", toggleFire);
     setInterval(() => {
       fire.volume = volume;
     },100);
+
+    return () => {
+      window.removeEventListener("lofi-toggle-campfire", toggleFire);
+    };
   });
 </script>
 
@@ -38,7 +43,7 @@
   style={`
         background-color: ${isFire ? "white" : "transparent"};
         `}
-  on:click={toggleStorm}
+  on:click={toggleFire}
 >
   <IconCampfire size={25} color={isFire ? "black" : "white"} />
 </button>

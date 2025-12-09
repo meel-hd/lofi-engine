@@ -7,7 +7,7 @@
   let storm = new Audio("assets/engine/effects/thunder.mp3");
   let isStorming = false;
 
-  function toggleStorm() {
+  function toggleThunder() {
     if (isStorming) {
       storm.pause();
     } else {
@@ -22,15 +22,20 @@
   // Shortuct to toggle storm with "S" key
   window.addEventListener("keydown", (e) => {
     if (e.key === "s") {
-      toggleStorm();
+      toggleThunder();
     }
   });
 
   // Update volume
   onMount(() => {
+    window.addEventListener("lofi-toggle-thunder", toggleThunder);
     setInterval(() => {
       storm.volume = volume;
     }, 100);
+
+    return () => {
+      window.removeEventListener("lofi-toggle-thunder", toggleThunder);
+    };
   });
 </script>
 
@@ -38,7 +43,7 @@
   style={`
     background-color: ${isStorming ? "white" : "transparent"};
     `}
-  on:click={toggleStorm}
+  on:click={toggleThunder}
 >
   <IconCloudStorm size={25} color={isStorming ? "black" : "white"} />
 </button>
