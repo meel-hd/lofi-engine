@@ -127,9 +127,25 @@
   function prevTrack() {
     visibleTrackId > 1 ? visibleTrackId-- : (visibleTrackId = 9);
   }
+
+  let lastScrollTime = 0;
+  const SCROLL_THROTTLE = 100; // ms
+
+  function handleScroll(event: WheelEvent) {
+    const currentTime = Date.now();
+    if (currentTime - lastScrollTime < SCROLL_THROTTLE) return;
+
+    if (event.deltaY > 0) {
+      nextTrack();
+      lastScrollTime = currentTime;
+    } else if (event.deltaY < 0) {
+      prevTrack();
+      lastScrollTime = currentTime;
+    }
+  }
 </script>
 
-<div class="track-list">
+<div class="track-list" on:wheel={handleScroll}>
   <div class="wrapper">
     <div class="carousel">
       {#each tracks as track}
