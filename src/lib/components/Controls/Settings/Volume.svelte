@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { t } from "../../../locales/store";
     const STORAGE_KEY = "Volumes";
     const DEFFAULT_VOLUMES = {
         rain: 1,
@@ -40,9 +41,9 @@
 </script>
 
 <div>
-    <h4>Volume</h4>
+    <h4>{$t.settings.volume.title}</h4>
     <section id="rain-volume">
-        <h5>Rain</h5>
+        <h5>{$t.settings.volume.rain}</h5>
         <p>{Math.round(volumes.rain * 100)}</p>
         <input
             id="volume-slider"
@@ -55,7 +56,7 @@
         />
     </section>
     <section id="thunder-volume">
-        <h5>Thunder</h5>
+        <h5>{$t.settings.volume.thunder}</h5>
         <p>{Math.round(volumes.thunder * 100)}</p>
         <input
             id="volume-slider"
@@ -68,7 +69,7 @@
         />
     </section>
     <section id="jungle-volume">
-        <h5>Jungle</h5>
+        <h5>{$t.settings.volume.jungle}</h5>
         <p>{Math.round(volumes.jungle * 100)}</p>
         <input
             id="volume-slider"
@@ -81,7 +82,7 @@
         />
     </section>
     <section id="fire-volume">
-        <h5>Campfire</h5>
+        <h5>{$t.settings.volume.campfire}</h5>
         <p>{Math.round(volumes.campfire * 100)}</p>
         <input
             id="volume-slider"
@@ -94,7 +95,7 @@
         />
     </section>
     <section id="main-track-volume">
-        <h5>Main Track</h5>
+        <h5>{$t.settings.volume.main_track}</h5>
         <p>{Math.round(volumes.main_track * 100)}</p>
         <input
             id="volume-slider"

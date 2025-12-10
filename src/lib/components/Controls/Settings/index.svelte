@@ -5,6 +5,8 @@
   import Volume from "./Volume.svelte";
   import AutoDJ from "./AutoDJ.svelte";
 
+  import { t, locale, setLocale } from "../../../locales/store";
+
   let isActive = false;
 
   function toggle() {
@@ -37,6 +39,15 @@
     }
   };
   document.addEventListener("click", handleClickOutside);
+
+  const languages = [
+    { code: "en", label: "English" },
+    { code: "zh", label: "中文" },
+    { code: "hi", label: "हिन्दी" },
+    { code: "fr", label: "Français" },
+    { code: "nl", label: "Nederlands" },
+    { code: "ja", label: "日本語" },
+  ];
 </script>
 
 <div id="settings-box">
@@ -50,10 +61,26 @@
   </button>
   {#if isActive}
     <div class="settings-container glass">
-      <div>
+      <div class="settings-header">
+        <h3>{$t.settings.title}</h3>
+      </div>
+      <div class="settings-content">
         <Background />
         <Volume />
         <AutoDJ />
+        <div class="section language-section">
+          <h4>{$t.settings.language.title}</h4>
+          <div class="lang-switcher">
+            {#each languages as lang}
+              <button
+                class:active={$locale === lang.code}
+                on:click={() => setLocale(lang.code)}
+              >
+                {lang.label}
+              </button>
+            {/each}
+          </div>
+        </div>
       </div>
     </div>
   {/if}
@@ -74,13 +101,40 @@
     top: 70px;
     z-index: 100;
     height: 58vh;
-    padding: 5px 20px;
+    padding: 20px;
     width: 340px; /* Like controls width */
     color: white;
     border-radius: 20px;
     overflow-y: auto;
     animation: show 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
   }
+
+  .settings-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .settings-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+
+  .settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section h4 {
+    margin: 0 0 10px 0;
+    font-size: 1em;
+    opacity: 0.9;
+  }
+
   @keyframes show {
     from {
       transform: translateY(-10%);
@@ -98,5 +152,38 @@
       right: -3vw;
       background-color: rgba(0, 0, 0, 50%);
     }
+  }
+
+  .lang-switcher {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .lang-switcher button {
+    width: auto;
+    height: auto;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    aspect-ratio: auto;
+  }
+
+  .lang-switcher button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .lang-switcher button.active {
+    background: white;
+    color: black;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 </style>

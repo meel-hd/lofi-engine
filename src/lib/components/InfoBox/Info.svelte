@@ -3,6 +3,7 @@
   import ShortCuts from "./ShortCuts.svelte";
   import SocialLinks from "./SocialLinks.svelte";
   import { onMount } from "svelte";
+  import { t } from "../../locales/store";
 
   let visible = false;
 
@@ -37,7 +38,7 @@
         </button>
         <button
           id="show-btn"
-          data-tooltip="Show on start next time"
+          data-tooltip={$t.info.buttons.show_next_time}
           on:click={showNextTime}
         >
           <IconEye color="white" size={17} />
@@ -45,10 +46,10 @@
         <div id="app-info">
           <img id="app-logo" src="LofiEngine.png" alt="" />
           <div>
-            <h1>Lofi Engine</h1>
+            <h1>{$t.info.title}</h1>
             <p id="version">Version 1.0.3</p>
             <p id="tagline">
-              Create your own atmosphere, Lofi Engine sets the mood.
+              {$t.info.tagline}
             </p>
             <SocialLinks />
           </div>

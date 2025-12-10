@@ -1,13 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { t } from "../../../locales/store";
 
   let mode = "MUSIC";
 
-  const MODES = [
-    { id: "MUSIC", label: "Music", desc: "Just the beat and chords. No atmosphere or world effects." },
-    { id: "ATMOSPHERE", label: "Atmosphere", desc: "Adds the core weather and nature effects" },
-    { id: "WORLD", label: "World", desc: "Adds the specific textures like city, wind, etc." },
-    { id: "MANUAL", label: "Manual", desc: "No automatic changes. Full user control." },
+  $: MODES = [
+    { id: "MUSIC", label: $t.settings.autodj.modes.music.label, desc: $t.settings.autodj.modes.music.desc },
+    { id: "ATMOSPHERE", label: $t.settings.autodj.modes.atmosphere.label, desc: $t.settings.autodj.modes.atmosphere.desc },
+    { id: "WORLD", label: $t.settings.autodj.modes.world.label, desc: $t.settings.autodj.modes.world.desc },
+    { id: "MANUAL", label: $t.settings.autodj.modes.manual.label, desc: $t.settings.autodj.modes.manual.desc },
   ];
 
   onMount(() => {
@@ -24,7 +25,7 @@
 </script>
 
 <div class="auto-dj-container">
-  <h4>Immersion</h4>
+  <h4>{$t.settings.autodj.title}</h4>
   <div class="modes">
     {#each MODES as m}
       <button

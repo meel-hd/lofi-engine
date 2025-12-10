@@ -10,6 +10,7 @@
     IconCampfire,
     IconInfoCircle,
   } from "@tabler/icons-svelte";
+  import { t } from "../../locales/store";
 
   let visible = false;
   let x = 0;
@@ -54,7 +55,7 @@
 
   function toggleEffect(effect: string) {
     window.dispatchEvent(new CustomEvent(`lofi-toggle-${effect}`));
-    visible = false; 
+    visible = false;
   }
 
   function openAbout() {
@@ -70,14 +71,20 @@
     window.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("click", handleClickOutside);
     window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("lofi-play-state-changed", handlePlayStateChange as EventListener);
+    window.addEventListener(
+      "lofi-play-state-changed",
+      handlePlayStateChange as EventListener,
+    );
   });
 
   onDestroy(() => {
     window.removeEventListener("contextmenu", handleContextMenu);
     window.removeEventListener("click", handleClickOutside);
     window.removeEventListener("keydown", handleKeydown);
-    window.removeEventListener("lofi-play-state-changed", handlePlayStateChange as EventListener);
+    window.removeEventListener(
+      "lofi-play-state-changed",
+      handlePlayStateChange as EventListener,
+    );
   });
 </script>
 
@@ -96,40 +103,40 @@
           <IconPlayerPlay size={16} />
         {/if}
       </span>
-      <span>{isPlaying ? "Pause" : "Play"}</span>
+      <span>{isPlaying ? $t.context_menu.pause : $t.context_menu.play}</span>
     </button>
-    
+
     <div class="divider"></div>
 
-    <button class="menu-item" on:click={() => toggleEffect('rain')}>
+    <button class="menu-item" on:click={() => toggleEffect("rain")}>
       <span class="icon"><IconCloudRain size={16} /></span>
-      <span>Toggle Rain</span>
+      <span>{$t.context_menu.toggle_rain}</span>
     </button>
-    <button class="menu-item" on:click={() => toggleEffect('thunder')}>
+    <button class="menu-item" on:click={() => toggleEffect("thunder")}>
       <span class="icon"><IconCloudStorm size={16} /></span>
-      <span>Toggle Thunder</span>
+      <span>{$t.context_menu.toggle_thunder}</span>
     </button>
-    <button class="menu-item" on:click={() => toggleEffect('jungle')}>
+    <button class="menu-item" on:click={() => toggleEffect("jungle")}>
       <span class="icon"><IconTrees size={16} /></span>
-      <span>Toggle Jungle</span>
+      <span>{$t.context_menu.toggle_jungle}</span>
     </button>
-    <button class="menu-item" on:click={() => toggleEffect('campfire')}>
+    <button class="menu-item" on:click={() => toggleEffect("campfire")}>
       <span class="icon"><IconCampfire size={16} /></span>
-      <span>Toggle Campfire</span>
+      <span>{$t.context_menu.toggle_campfire}</span>
     </button>
 
     <div class="divider"></div>
 
     <button class="menu-item" on:click={reload}>
       <span class="icon"><IconRefresh size={16} /></span>
-      <span>Reload</span>
+      <span>{$t.context_menu.reload}</span>
     </button>
-    
+
     <div class="divider"></div>
 
     <button class="menu-item" on:click={openAbout}>
       <span class="icon"><IconInfoCircle size={16} /></span>
-      <span>About</span>
+      <span>{$t.context_menu.about}</span>
     </button>
   </div>
 {/if}

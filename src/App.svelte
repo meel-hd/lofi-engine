@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import { dir, locale } from "./lib/locales/store";
   import PlayButton from "./lib/PlayButton.svelte";
   import TrackList from "./lib/components/TrackList/index.svelte";
   import Controls from "./lib/components/Controls/index.svelte";
@@ -7,6 +9,19 @@
   import Config from "./lib/Config.svelte";
   import ContextMenu from "./lib/components/ContextMenu/ContextMenu.svelte";
   import Tooltip from "./lib/components/Tooltip.svelte";
+
+  onMount(() => {
+    // Initialize direction
+    document.documentElement.dir = $dir;
+    document.documentElement.lang = $locale;
+  });
+
+  $: {
+    if (typeof document !== "undefined") {
+      document.documentElement.dir = $dir;
+      document.documentElement.lang = $locale;
+    }
+  }
 </script>
 
 <main id="bg" class="container">

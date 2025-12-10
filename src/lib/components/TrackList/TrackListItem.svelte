@@ -1,12 +1,12 @@
 <script lang="ts">
   import { afterUpdate, onMount } from "svelte";
+  import { t } from "../../locales/store";
 
   export let setMeVisible;
   export let activeAudios = [];
   export let track = {
     id: -1,
     track: "none",
-    qoute: "none",
     isPlaying: false,
   };
 
@@ -87,7 +87,9 @@
   }}
   class={"carousel__item " + trackItemAnimationClass}
 >
-  <div class={"carousel__item-body glass " + (track.isPlaying ? "playing" : "")}>
+  <div
+    class={"carousel__item-body glass " + (track.isPlaying ? "playing" : "")}
+  >
     <img
       class="carousel__item-body__img"
       src="assets/images/{track.id}.jpg"
@@ -95,20 +97,20 @@
     />
     <div>
       <p id="title">Track {track.id}</p>
-      <p id="info">{track?.qoute}</p>
-    {#if track.isPlaying}
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        bind:value={volume}
-        on:input={handleVolumeChange}
-        on:click={e => e.stopPropagation()}
-        id="volume-slider"
-        class="volume-slider"
-      />
-    {/if}
+      <p id="info">{$t.tracks[track.id].quote}</p>
+      {#if track.isPlaying}
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          bind:value={volume}
+          on:input={handleVolumeChange}
+          on:click={(e) => e.stopPropagation()}
+          id="volume-slider"
+          class="volume-slider"
+        />
+      {/if}
     </div>
   </div>
 </div>
@@ -150,7 +152,7 @@
     flex-wrap: wrap;
     font-size: 11px;
   }
-  
+
   .playing {
     background-color: rgba(0, 0, 0, 60%);
   }

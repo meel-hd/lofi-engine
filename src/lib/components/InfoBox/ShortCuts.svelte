@@ -5,76 +5,77 @@
     IconArrowRight,
     IconArrowUp,
   } from "@tabler/icons-svelte";
+  import { t } from "../../locales/store";
   let ambientTracks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 </script>
 
 <div class="shortcuts">
-  <h4>Shortcuts</h4>
+  <h4>{$t.info.shortcuts.title}</h4>
   <!-- General Shortcuts -->
-  <h5 style="margin-left: 10px;">General</h5>
+  <h5 style="margin-left: 10px;">{$t.info.shortcuts.general.title}</h5>
   <div class="shortcut">
     <div class="shortcut-key">Esc</div>
-    <div class="shortcut-desc">Show/hide This Box</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.general.esc}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">J</div>
-    <div class="shortcut-desc">Open/close Settings</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.general.j}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key"><IconArrowRight size={15} /></div>
-    <div class="shortcut-desc">Next Background Image</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.general.next_bg}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key"><IconArrowLeft size={15} /></div>
-    <div class="shortcut-desc">Previous Background Image</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.general.prev_bg}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">CTRL + R</div>
-    <div class="shortcut-desc">Restart</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.general.restart}</div>
   </div>
 
-  <h5 style="margin-left: 10px;">Main Track</h5>
+  <h5 style="margin-left: 10px;">{$t.info.shortcuts.main_track.title}</h5>
   <div class="shortcut">
     <div class="shortcut-key">SPACEBAR</div>
-    <div class="shortcut-desc">Play/Pause Main Track</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.main_track.play_pause}</div>
   </div>
   <!-- Effects Shortcuts -->
-  <h5 style="margin-left: 10px;">Effects</h5>
+  <h5 style="margin-left: 10px;">{$t.info.shortcuts.effects.title}</h5>
   <div class="shortcut">
     <div class="shortcut-key">A</div>
-    <div class="shortcut-desc">Control The Rain</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.effects.rain}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">S</div>
-    <div class="shortcut-desc">Control The Thunder Storm</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.effects.thunder}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">D</div>
-    <div class="shortcut-desc">Control The Nature Sounds</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.effects.nature}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">F</div>
-    <div class="shortcut-desc">Control The Campfire</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.effects.campfire}</div>
   </div>
   <!-- Ambient Tracks Shortcuts -->
-  <h5 style="margin-left: 10px;">Ambient Tracks</h5>
+  <h5 style="margin-left: 10px;">{$t.info.shortcuts.ambient.title}</h5>
   <div class="shortcut">
     <div class="shortcut-key"><IconArrowUp size={15} /></div>
-    <div class="shortcut-desc">Navigate To Next Track</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.ambient.next}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key"><IconArrowDown size={15} /></div>
-    <div class="shortcut-desc">Navigate To Previous Track</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.ambient.prev}</div>
   </div>
   <div class="shortcut">
     <div class="shortcut-key">K</div>
-    <div class="shortcut-desc">Stop All Ambient Sounds</div>
+    <div class="shortcut-desc">{$t.info.shortcuts.ambient.stop_all}</div>
   </div>
   {#each ambientTracks as track}
     <div class="shortcut">
       <div class="shortcut-key">{track}</div>
       <div class="shortcut-desc">
-        Play/Pause Ambient Track {track}
+        {$t.info.shortcuts.ambient.play_pause_specific} {track}
       </div>
     </div>
   {/each}

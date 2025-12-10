@@ -7,55 +7,46 @@
     {
       id: 1,
       track: "Wind-Mark_DiAngelo-1940285615.mp3",
-      qoute: "We cannot direct the wind, but we can adjust the sails.",
       isPlaying: false,
     },
     {
       id: 2,
       track: "small-waves-onto-the-sand-143040.mp3",
-      qoute: "Sea is emotion incarnate. It loves, hates, and weeps.",
       isPlaying: false,
     },
     {
       id: 3,
       track: "night-ambience-17064.mp3",
-      qoute: "The night reveals the stars as the darkness reveals the self.",
       isPlaying: false,
     },
     {
       id: 4,
       track: "urban-seagulls-30068.mp3",
-      qoute: "The sunset sky speaks of a thousand of colors.",
       isPlaying: false,
     },
     {
       id: 5,
       track: "office-ambience-6322.mp3",
-      qoute: "Work hard in silence, let your success be your noise.",
       isPlaying: false,
     },
     {
       id: 6,
       track: "city-ambience-9272.mp3",
-      qoute: "The city is not a concrete jungle, it is a human zoo.",
       isPlaying: false,
     },
     {
       id: 7,
       track: "old-server-turning-on-and-off-24540.mp3",
-      qoute: "The past is a place of reference, not a place of residence.",
       isPlaying: false,
     },
     {
       id: 8,
       track: "train-to-munich-germany.mp3",
-      qoute: "Trips don't last forever, but memories do.",
       isPlaying: false,
     },
     {
       id: 9,
       track: "underwater-white-noise-46423.mp3",
-      qoute: "Please help me, I'm underwater.",
       isPlaying: false,
     },
   ];
@@ -84,7 +75,7 @@
         tracks[i - 1].isPlaying = !tracks[i - 1].isPlaying;
         if (tracks[i - 1].isPlaying) {
           const audio = new Audio(
-            `assets/engine/tracks/${tracks[i - 1].track}`
+            `assets/engine/tracks/${tracks[i - 1].track}`,
           );
           audio.play();
           audio.loop = true;
@@ -99,7 +90,7 @@
               item.audio.pause();
               // Remove from activeAudios
               activeAudios = activeAudios.filter(
-                (item) => item.id !== tracks[i - 1].id
+                (item) => item.id !== tracks[i - 1].id,
               );
             }
           });
@@ -148,9 +139,7 @@
   function toggleTrack(id: number) {
     tracks[id - 1].isPlaying = !tracks[id - 1].isPlaying;
     if (tracks[id - 1].isPlaying) {
-      const audio = new Audio(
-        `assets/engine/tracks/${tracks[id - 1].track}`
-      );
+      const audio = new Audio(`assets/engine/tracks/${tracks[id - 1].track}`);
       audio.play();
       audio.loop = true;
       activeAudios.push({
@@ -164,7 +153,7 @@
           item.audio.pause();
           // Remove from activeAudios
           activeAudios = activeAudios.filter(
-            (item) => item.id !== tracks[id - 1].id
+            (item) => item.id !== tracks[id - 1].id,
           );
         }
       });

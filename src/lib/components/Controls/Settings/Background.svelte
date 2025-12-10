@@ -1,17 +1,23 @@
 <script lang="ts">
-  import { IconArrowLeft, IconArrowRight, IconPlus, IconTrash } from "@tabler/icons-svelte";
+  import {
+    IconArrowLeft,
+    IconArrowRight,
+    IconPlus,
+    IconTrash,
+  } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
-  import localDB from "../../../localDB"
-  
+  import localDB from "../../../localDB";
+  import { t } from "../../../locales/store";
+
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
   let bgType = localStorage.getItem("bg-type") || "default";
   let customBgId = localStorage.getItem("custom-bg-id");
-  
+
   let customBackgrounds = [];
   let allBackgrounds = [];
   let isUploading = false;
-  
+
   onMount(async () => {
     await loadCustomBackgrounds();
     buildAllBackgrounds();
@@ -19,7 +25,7 @@
   });
 
   async function loadCustomBackgrounds() {
-    const saved =  await localDB.getItem("custom-backgrounds");
+    const saved = await localDB.getItem("custom-backgrounds");
     if (saved) {
       customBackgrounds = JSON.parse(saved);
     }
@@ -27,22 +33,22 @@
 
   function buildAllBackgrounds() {
     allBackgrounds = [];
-    
+
     for (let i = 1; i <= 10; i++) {
       allBackgrounds.push({
         id: `default_${i}`,
-        type: 'default',
+        type: "default",
         name: `Background ${i}`,
-        url: `assets/background/bg${i}.jpg`
+        url: `assets/background/bg${i}.jpg`,
       });
     }
-    
-    customBackgrounds.forEach(bg => {
+
+    customBackgrounds.forEach((bg) => {
       allBackgrounds.push({
         id: bg.id,
-        type: 'custom',
+        type: "custom",
         name: bg.name,
-        url: bg.dataUrl
+        url: bg.dataUrl,
       });
     });
   }
@@ -54,27 +60,27 @@
   function selectCustomBackground(bg: any) {
     applyBackground({
       id: bg.id,
-      type: 'custom',
+      type: "custom",
       name: bg.name,
-      url: bg.dataUrl
+      url: bg.dataUrl,
     });
   }
 
   function deleteCustomBackground(bg: any) {
-    customBackgrounds = customBackgrounds.filter(b => b.id !== bg.id);
+    customBackgrounds = customBackgrounds.filter((b) => b.id !== bg.id);
     saveCustomBackgrounds();
     buildAllBackgrounds();
-    
-    window.dispatchEvent(new CustomEvent('backgroundsUpdated'));
-    
+
+    window.dispatchEvent(new CustomEvent("backgroundsUpdated"));
+
     if (bgType === "custom" && customBgId === bg.id) {
-      const currentIndex = allBackgrounds.findIndex(b => b.id === bg.id);
+      const currentIndex = allBackgrounds.findIndex((b) => b.id === bg.id);
       let nextIndex = (currentIndex + 1) % allBackgrounds.length;
-      
+
       if (nextIndex === 0 && allBackgrounds.length > 1) {
         nextIndex = allBackgrounds.length - 1;
       }
-      
+
       if (allBackgrounds.length > 1) {
         applyBackground(allBackgrounds[nextIndex]);
       } else {
@@ -92,12 +98,12 @@
   function handleFileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files;
-    
+
     if (files && files.length > 0) {
       isUploading = true;
-      
+
       Array.from(files).forEach((file) => {
-        if (file.type.startsWith('image/')) {
+        if (file.type.startsWith("image/")) {
           const reader = new FileReader();
           reader.onload = (e) => {
             const dataUrl = e.target?.result as string;
@@ -106,33 +112,32 @@
               name: file.name,
               dataUrl: dataUrl,
               size: file.size,
-              type: file.type
+              type: file.type,
             };
-            
+
             customBackgrounds.push(customBg);
             saveCustomBackgrounds();
             buildAllBackgrounds();
-            
-            window.dispatchEvent(new CustomEvent('backgroundsUpdated'));
-            
+
+            window.dispatchEvent(new CustomEvent("backgroundsUpdated"));
+
             selectCustomBackground(customBg);
           };
           reader.readAsDataURL(file);
         }
       });
-      
+
       isUploading = false;
-      target.value = '';
+      target.value = "";
     }
   }
-
 
   function applyCurrentBackground() {
     const bg = document.getElementById("bg");
     if (!bg) return;
 
     if (bgType === "custom" && customBgId) {
-      const customBg = customBackgrounds.find(bg => bg.id === customBgId);
+      const customBg = customBackgrounds.find((bg) => bg.id === customBgId);
       if (customBg) {
         bg.style.backgroundImage = `url('${customBg.dataUrl}')`;
         return;
@@ -147,33 +152,38 @@
 
   function nextBg() {
     buildAllBackgrounds();
-    
+
     let currentIndex = 0;
-    
+
     if (bgType === "custom" && customBgId) {
-      currentIndex = allBackgrounds.findIndex(bg => bg.id === customBgId);
+      currentIndex = allBackgrounds.findIndex((bg) => bg.id === customBgId);
     } else {
-      currentIndex = allBackgrounds.findIndex(bg => bg.id === `default_${id}`);
+      currentIndex = allBackgrounds.findIndex(
+        (bg) => bg.id === `default_${id}`,
+      );
     }
     const nextIndex = (currentIndex + 1) % allBackgrounds.length;
     const nextBg = allBackgrounds[nextIndex];
-    
+
     applyBackground(nextBg);
   }
 
   function prevBg() {
     buildAllBackgrounds();
-    
+
     let currentIndex = 0;
-    
+
     if (bgType === "custom" && customBgId) {
-      currentIndex = allBackgrounds.findIndex(bg => bg.id === customBgId);
+      currentIndex = allBackgrounds.findIndex((bg) => bg.id === customBgId);
     } else {
-      currentIndex = allBackgrounds.findIndex(bg => bg.id === `default_${id}`);
+      currentIndex = allBackgrounds.findIndex(
+        (bg) => bg.id === `default_${id}`,
+      );
     }
-    const prevIndex = currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
+    const prevIndex =
+      currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
     const prevBg = allBackgrounds[prevIndex];
-    
+
     applyBackground(prevBg);
   }
 
@@ -181,9 +191,9 @@
     const bg = document.getElementById("bg");
     if (bg) {
       bg.style.backgroundImage = `url('${background.url}')`;
-      
-      if (background.type === 'default') {
-        const defaultId = background.id.replace('default_', '');
+
+      if (background.type === "default") {
+        const defaultId = background.id.replace("default_", "");
         id = parseInt(defaultId);
         bgType = "default";
         localStorage.setItem("bg-id", id.toString());
@@ -208,14 +218,14 @@
     }
   }
 
-  window.addEventListener('customBackgroundSelected', (event: CustomEvent) => {
+  window.addEventListener("customBackgroundSelected", (event: CustomEvent) => {
     bgType = "custom";
     customBgId = event.detail.id;
     localStorage.setItem("bg-type", "custom");
     localStorage.setItem("custom-bg-id", customBgId);
   });
 
-  window.addEventListener('backgroundsUpdated', () => {
+  window.addEventListener("backgroundsUpdated", () => {
     loadCustomBackgrounds();
     buildAllBackgrounds();
   });
@@ -233,37 +243,46 @@
 
 <div>
   <div class="header">
-    <h4>Background</h4>
-    <label data-tooltip="Add Custom Images" for="bg-upload" class="upload-btn" class:uploading={isUploading}>
+    <h4>{$t.settings.background.title}</h4>
+    <label
+      data-tooltip={$t.settings.background.add_custom}
+      for="bg-upload"
+      class="upload-btn"
+      class:uploading={isUploading}
+    >
       <IconPlus size={16} />
     </label>
-    <input 
-      id="bg-upload" 
-      type="file" 
-      accept="image/*" 
-      multiple 
+    <input
+      id="bg-upload"
+      type="file"
+      accept="image/*"
+      multiple
       on:change={handleFileUpload}
       style="display: none;"
     />
   </div>
-  
+
   <div class="container">
     <button on:click={prevBg}>
       <IconArrowLeft size={20} />
     </button>
     {#if allBackgrounds.length > 0}
-      {@const currentBg = allBackgrounds.find(bg => 
-        (bgType === "custom" && bg.id === customBgId) || 
-        (bgType === "default" && bg.id === `default_${id}`)
+      {@const currentBg = allBackgrounds.find(
+        (bg) =>
+          (bgType === "custom" && bg.id === customBgId) ||
+          (bgType === "default" && bg.id === `default_${id}`),
       )}
       {#if currentBg}
         <div class="preview-container">
           <img id="bg-preview" src={currentBg.url} alt={currentBg.name} />
           {#if bgType === "custom" && customBgId}
-            <button 
-              class="delete-current-btn" 
-              on:click={() => deleteCustomBackground(customBackgrounds.find(bg => bg.id === customBgId))}
-              data-tooltip="Delete this background"
+            <button
+              class="delete-current-btn"
+              on:click={() =>
+                deleteCustomBackground(
+                  customBackgrounds.find((bg) => bg.id === customBgId),
+                )}
+              data-tooltip={$t.settings.background.delete_tooltip}
             >
               <IconTrash size={16} />
             </button>
@@ -280,11 +299,10 @@
     </button>
   </div>
 
-
   {#if isUploading}
     <div class="uploading-indicator">
       <div class="spinner"></div>
-      <span>Processing images...</span>
+      <span>{$t.settings.background.processing}</span>
     </div>
   {/if}
 </div>
@@ -358,7 +376,9 @@
     align-items: center;
     justify-content: center;
     opacity: 0.8;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease;
     backdrop-filter: blur(5px);
     z-index: 10;
   }
@@ -402,8 +422,12 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   @media only screen and (max-width: 600px) {
