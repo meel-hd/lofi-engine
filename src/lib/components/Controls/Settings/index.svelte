@@ -11,6 +11,7 @@
 
   function toggle() {
     isActive = !isActive;
+    window.dispatchEvent(new CustomEvent("settings-open-changed", { detail: { isActive } }));
   }
 
   // Shortuct to toggle settings with "J" key
@@ -145,14 +146,6 @@
     }
   }
 
-  @media only screen and (max-width: 600px) {
-    .settings-container {
-      width: 80vw;
-      right: -3vw;
-      background-color: rgba(0, 0, 0, 50%);
-    }
-  }
-
   .lang-switcher {
     display: flex;
     gap: 8px;
@@ -171,6 +164,7 @@
     cursor: pointer;
     transition: all 0.2s;
     aspect-ratio: auto;
+    border-radius: 20px;
   }
 
   .lang-switcher button:hover {
@@ -184,5 +178,14 @@
     color: black;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  @media only screen and (max-width: 600px) {
+    .settings-container {
+      width: 80vw;
+      right: -3vw;
+      background-color: rgba(0, 0, 0, 50%);
+      height: 55vh;
+    }
   }
 </style>

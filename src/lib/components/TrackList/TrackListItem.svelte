@@ -183,4 +183,23 @@
     width: 80px;
     height: 5px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .carousel__item-body {
+      gap: 10px;
+    }
+    .carousel__item-body__img {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+    }
+    #title,
+    #info {
+      margin: 0;
+    }
+    #info {
+      font-size: 12px;
+      max-width: 60vw;
+    }
+  }
 </style>

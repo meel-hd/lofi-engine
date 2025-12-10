@@ -52,6 +52,7 @@
   ];
 
   let activeAudios = [];
+  let isMobileHidden = false; // Used to hide track list on mobile due to tight space
 
   // Shortcut for stoping all effects with "k" key
   window.addEventListener("keydown", (e) => {
@@ -167,14 +168,23 @@
         toggleTrack(e.detail.id);
       }
     };
+    const handleSettingsOpen = (e: CustomEvent) => {
+      if (e.detail && e.detail.isActive !== undefined) {
+        isMobileHidden = e.detail.isActive;
+      }
+    };
     window.addEventListener("lofi-toggle-track", handleToggleTrack);
+    window.addEventListener("settings-open-changed", handleSettingsOpen);
     return () => {
       window.removeEventListener("lofi-toggle-track", handleToggleTrack);
     };
   });
 </script>
 
-<div class="track-list" on:wheel={handleScroll}>
+<div
+  class={"track-list" + (isMobileHidden ? " mobile-hidden" : "")}
+  on:wheel={handleScroll}
+>
   <div class="wrapper">
     <div class="carousel">
       {#each tracks as track}
@@ -240,9 +250,14 @@
 
   @media only screen and (max-width: 600px) {
     .track-list {
-      display: none;
+      width: 100vw;
+      margin-top: 40px;
+      height: 45vh;
     }
     #btn-view {
+      width: 100%;
+    }
+    .mobile-hidden {
       display: none;
     }
   }
