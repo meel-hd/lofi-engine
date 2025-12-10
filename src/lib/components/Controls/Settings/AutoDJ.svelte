@@ -30,13 +30,12 @@
       <button
         class:active={mode === m.id}
         on:click={() => updateMode(m.id)}
-        title={m.desc}
+        data-tooltip={m.desc}
       >
         {m.label}
       </button>
     {/each}
   </div>
-  <small class="desc">{MODES.find(m => m.id === mode)?.desc}</small>
 </div>
 
 <style>
@@ -77,14 +76,5 @@
     color: black;
     border-color: white;
     font-weight: bold;
-  }
-
-  .desc {
-    display: block;
-    margin-top: 10px;
-    margin-left: 10px;
-    font-size: 0.8em;
-    color: rgba(255, 255, 255, 0.7);
-    font-style: italic;
   }
 </style>

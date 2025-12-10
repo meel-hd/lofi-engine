@@ -234,7 +234,7 @@
 <div>
   <div class="header">
     <h4>Background</h4>
-    <label title="Add Custom Images" for="bg-upload" class="upload-btn" class:uploading={isUploading}>
+    <label data-tooltip="Add Custom Images" for="bg-upload" class="upload-btn" class:uploading={isUploading}>
       <IconPlus size={16} />
     </label>
     <input 
@@ -263,7 +263,7 @@
             <button 
               class="delete-current-btn" 
               on:click={() => deleteCustomBackground(customBackgrounds.find(bg => bg.id === customBgId))}
-              title="Delete this background"
+              data-tooltip="Delete this background"
             >
               <IconTrash size={16} />
             </button>

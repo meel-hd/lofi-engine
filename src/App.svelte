@@ -6,6 +6,7 @@
   import Info from "./lib/components/InfoBox/Info.svelte";
   import Config from "./lib/Config.svelte";
   import ContextMenu from "./lib/components/ContextMenu/ContextMenu.svelte";
+  import Tooltip from "./lib/components/Tooltip.svelte";
 </script>
 
 <main id="bg" class="container">
@@ -18,6 +19,7 @@
   </section>
   <PlayButton />
   <ContextMenu />
+  <Tooltip />
 </main>
 
 <style>

@@ -47,7 +47,7 @@
         </button>
         <button
           id="show-btn"
-          title="Show on start next time"
+          data-tooltip="Show on start next time"
           on:click={showNextTime}
         >
           <IconEye color="white" size={17} />
