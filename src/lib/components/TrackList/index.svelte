@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconChevronDown } from "@tabler/icons-svelte";
   import TrackListItem from "./TrackListItem.svelte";
+  import { onMount } from "svelte";
 
   let tracks = [
     {
@@ -143,6 +144,45 @@
       lastScrollTime = currentTime;
     }
   }
+
+  function toggleTrack(id: number) {
+    tracks[id - 1].isPlaying = !tracks[id - 1].isPlaying;
+    if (tracks[id - 1].isPlaying) {
+      const audio = new Audio(
+        `assets/engine/tracks/${tracks[id - 1].track}`
+      );
+      audio.play();
+      audio.loop = true;
+      activeAudios.push({
+        id: tracks[id - 1].id,
+        audio,
+      });
+      visibleTrackId = id;
+    } else {
+      activeAudios.forEach((item) => {
+        if (item.id === tracks[id - 1].id) {
+          item.audio.pause();
+          // Remove from activeAudios
+          activeAudios = activeAudios.filter(
+            (item) => item.id !== tracks[id - 1].id
+          );
+        }
+      });
+    }
+    tracks = tracks; // Trigger reactivity
+  }
+
+  onMount(() => {
+    const handleToggleTrack = (e: CustomEvent) => {
+      if (e.detail && e.detail.id) {
+        toggleTrack(e.detail.id);
+      }
+    };
+    window.addEventListener("lofi-toggle-track", handleToggleTrack);
+    return () => {
+      window.removeEventListener("lofi-toggle-track", handleToggleTrack);
+    };
+  });
 </script>
 
 <div class="track-list" on:wheel={handleScroll}>

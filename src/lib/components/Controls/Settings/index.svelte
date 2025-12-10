@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import Background from "./Background.svelte";
   import Volume from "./Volume.svelte";
+  import AutoDJ from "./AutoDJ.svelte";
 
   let isActive = false;
 
@@ -52,6 +53,7 @@
       <div>
         <Background />
         <Volume />
+        <AutoDJ />
         <small class="info-label">For more information press ESC key</small>
       </div>
     </div>

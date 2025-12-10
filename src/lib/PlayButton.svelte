@@ -69,6 +69,7 @@
   let melodyOff = false;
 
   let isPlaying = false;
+  let autoDJMode = "MUSIC";
 
   // Initialize instruments
   const pn = new Piano(() => (pianoLoaded = true)).sampler;
@@ -159,12 +160,21 @@
       handleButtonAction();
     };
 
+    const handleAutoDJModeChange = (e) => {
+      autoDJMode = e.detail.mode;
+    };
+
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-play", handleCustomToggle);
+    window.addEventListener("auto-dj-mode-changed", handleAutoDJModeChange);
+
+    // Initialize mode
+    autoDJMode = localStorage.getItem("AutoDJMode") || "MUSIC";
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-play", handleCustomToggle);
+      window.removeEventListener("auto-dj-mode-changed", handleAutoDJModeChange);
     };
   });
 
@@ -176,7 +186,7 @@
   });
 
   let barCount = 0;
-  let sectionBarLength = 32; // change section every 32 bars
+  let sectionBarLength = 8 // 32; // change section every 32 bars
   let isTransitioning = false;
 
   function nextChord() {
@@ -208,25 +218,49 @@
       autoDJTransition();
       // New next transition length
       const barLengthOptions = [16, 20, 24, 28, 32, 48];
-      const sectionBarLength = barLengthOptions[Math.floor(Math.random() * barLengthOptions.length)];
+      const sectionBarLength = 8 // barLengthOptions[Math.floor(Math.random() * barLengthOptions.length)];
     }
   }
 
   function autoDJTransition() {
     if(isTransitioning) return; // Prevent overlaps
+    if(autoDJMode === "MANUAL") return;
+
     isTransitioning = true;
 
     // Change keys/chords
     generateProgression()
     
-    // Change, Turn On/Off instruments
+    // Original Instrument Logic (Applied in ALL active modes: MUSIC, ATMOSPHERE, WORLD)
+    // This was the "current main lofi track generation"
     melodyDensity = 0.2 + Math.random() * 0.5;
     kickOff = Math.random() < 0.13;
     snareOff = Math.random() < 0.17;
     hatOff = Math.random() < 0.22;
     melodyOff = Math.random() < 0.25;
 
-    // Crossfade FX
+    // Smart Effects: Toggle environmental effects randomly
+    // Applied in ATMOSPHERE and WORLD
+    if (autoDJMode === "ATMOSPHERE" || autoDJMode === "WORLD") {
+      const effects = ["rain", "thunder", "jungle", "campfire"];
+      // 30% chance to toggle an effect
+      if (Math.random() < 0.3) {
+        const effect = effects[Math.floor(Math.random() * effects.length)];
+        window.dispatchEvent(new CustomEvent(`lofi-toggle-${effect}`));
+      }
+    }
+
+    // Smart Tracks: Toggle tracks randomly
+    // Applied ONLY in WORLD
+    if (autoDJMode === "WORLD") {
+      // 20% chance to toggle a track
+      if (Math.random() < 0.2) {
+        const trackId = Math.floor(Math.random() * 9) + 1; // 1-9
+        window.dispatchEvent(new CustomEvent("lofi-toggle-track", { detail: { id: trackId } }));
+      }
+    }
+
+    // Crossfade FX (Always apply for smoother transitions if not OFF)
     lpf.frequency.linearRampTo(300, 2) // 2s Muffle
     setTimeout(() => {
       lpf.frequency.linearRampTo(1200, 2) // Open back up
