@@ -93,11 +93,13 @@ body *::-webkit-scrollbar-thumb:hover {
   /* roundness of the scroll thumb */
 }
 
-#blurred {
-  color: white;
+.glass,
+#glass {
+  background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  background-color: rgba(0, 0, 0, 40%);
+  -webkit-backdrop-filter: blur(10px);
 }
+
 
 @media screen and (max-width: 600px) {
 

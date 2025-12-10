@@ -46,7 +46,7 @@
 </script>
 
 {#if barType !== "hidden"}
-  <div class="titlebar" data-tauri-drag-region>
+  <div class="titlebar glass" data-tauri-drag-region>
     {#if barType == "mac"}
       <MacControls {noSideEffect} {appWindow} />
     {/if}
@@ -66,8 +66,6 @@
     height: 26px;
     z-index: 100;
     padding: 0 10px;
-    background-color: #00000030;
-    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
   }

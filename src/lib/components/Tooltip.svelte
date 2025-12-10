@@ -91,6 +91,7 @@
 {#if visible}
   <div
     id="global-tooltip"
+    class="glass"
     style="top: {y}px; left: {x}px;"
   >
     {text}
@@ -100,7 +101,6 @@
 <style>
   #global-tooltip {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 4px 8px;
     border-radius: 6px;
@@ -109,9 +109,7 @@
     white-space: nowrap;
     pointer-events: none;
     z-index: 9999;
-    backdrop-filter: blur(4px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: left 0.1s ease-out, opacity 0.3s;
   }
 </style>

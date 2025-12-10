@@ -87,7 +87,7 @@
   }}
   class={"carousel__item " + trackItemAnimationClass}
 >
-  <div class={"carousel__item-body " + (track.isPlaying ? "playing" : "")}>
+  <div class={"carousel__item-body glass " + (track.isPlaying ? "playing" : "")}>
     <img
       class="carousel__item-body__img"
       src="assets/images/{track.id}.jpg"
@@ -131,8 +131,6 @@
     display: flex;
     gap: 20px;
     min-width: max-content;
-    background-color: rgba(0, 0, 0, 40%);
-    backdrop-filter: blur(10px);
   }
 
   .carousel__item-body__img {
@@ -155,7 +153,6 @@
   
   .playing {
     background-color: rgba(0, 0, 0, 60%);
-    backdrop-filter: blur(10px);
   }
   .item-visible {
     opacity: 1;

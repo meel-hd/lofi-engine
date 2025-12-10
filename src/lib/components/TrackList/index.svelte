@@ -199,7 +199,7 @@
     </div>
   </div>
   <div id="btn-view">
-    <button id="navigate-btn" on:click={prevTrack}>
+    <button id="navigate-btn" class="glass" on:click={prevTrack}>
       <IconChevronDown />
     </button>
   </div>
@@ -211,7 +211,6 @@
     height: 65vh;
     padding: 20px 10px;
     border-radius: 20px;
-    backdrop-filter: blur(0px);
     z-index: 20;
   }
 
@@ -246,7 +245,7 @@
     align-items: center;
   }
   #navigate-btn:hover {
-    background-color: rgba(0, 0, 0, 30%);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
   }
 

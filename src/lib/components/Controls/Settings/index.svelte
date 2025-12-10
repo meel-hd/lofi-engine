@@ -49,12 +49,11 @@
     <IconSettings size={25} color={isActive ? "black" : "white"} />
   </button>
   {#if isActive}
-    <div class="settings-container">
+    <div class="settings-container glass">
       <div>
         <Background />
         <Volume />
         <AutoDJ />
-        <small class="info-label">For more information press ESC key</small>
       </div>
     </div>
   {/if}
@@ -73,13 +72,12 @@
     position: absolute;
     right: 0;
     top: 70px;
+    z-index: 100;
     height: 58vh;
     padding: 5px 20px;
     width: 340px; /* Like controls width */
     color: white;
     border-radius: 20px;
-    backdrop-filter: blur(10px);
-    background-color: rgba(0, 0, 0, 40%);
     overflow-y: auto;
     animation: show 0.4s ease-in-out;
   }
@@ -93,21 +91,12 @@
       opacity: 1;
     }
   }
-  .info-label {
-    display: block;
-    font-size: x-small;
-    margin-top: 30px;
-    color: azure;
-  }
 
   @media only screen and (max-width: 600px) {
     .settings-container {
       width: 80vw;
       right: -3vw;
       background-color: rgba(0, 0, 0, 50%);
-    }
-    .info-label {
-      opacity: 0;
     }
   }
 </style>

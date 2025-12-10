@@ -83,7 +83,7 @@
 
 {#if visible}
   <div
-    class="context-menu"
+    class="context-menu glass"
     style="top: {y}px; left: {x}px;"
     on:click|stopPropagation
     on:contextmenu|preventDefault
@@ -139,9 +139,6 @@
     position: fixed;
     z-index: 9999;
     width: 200px;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 6px;

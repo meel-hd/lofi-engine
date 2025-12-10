@@ -186,7 +186,7 @@
   });
 
   let barCount = 0;
-  let sectionBarLength = 8 // 32; // change section every 32 bars
+  let sectionBarLength = 32; // change section every 32 bars
   let isTransitioning = false;
 
   function nextChord() {
@@ -218,7 +218,7 @@
       autoDJTransition();
       // New next transition length
       const barLengthOptions = [16, 20, 24, 28, 32, 48];
-      const sectionBarLength = 8 // barLengthOptions[Math.floor(Math.random() * barLengthOptions.length)];
+      sectionBarLength = barLengthOptions[Math.floor(Math.random() * barLengthOptions.length)];
     }
   }
 
@@ -425,7 +425,7 @@
         <IconPlayerPlayFilled size={30} />
       {/if}
     </button>
-    <button class="generateBtn" on:click={generateProgression}>
+    <button class="generateBtn glass" on:click={generateProgression}>
       <IconRefresh size={16} />
     </button>
   </div>
@@ -433,9 +433,9 @@
   {#if allSamplesLoaded && contextStarted}
     {#if genChordsOnce}
       <ol class="progressionList">
-        <li class="key" id="blurred">{key}</li>
+        <li class="key" id="glass">{key}</li>
         {#each progression as chord, idx}
-          <li id="blurred" class={idx === activeProgressionIndex ? "live" : ""}>
+          <li id="glass" class={idx === activeProgressionIndex ? "live" : ""}>
             {chord.degree}
           </li>
         {/each}
@@ -482,8 +482,6 @@
   }
 
   .generateBtn {
-    background-color: #00000010;
-    backdrop-filter: blur(10px);
     color: white;
     border: none;
     border-radius: 50%;
@@ -513,12 +511,13 @@
 
   .progressionList li {
     padding: 5px 10px;
-    border: 2px transparent;
     border-radius: 4px;
+    color: white;
+    border: 2px solid transparent;
   }
 
   .progressionList li.live {
-    border: 2px solid #ffffff66;
+    border-color:#ffffff66;
   }
 
   .visualizer-container {

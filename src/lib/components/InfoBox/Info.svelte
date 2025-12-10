@@ -19,16 +19,6 @@
   function showNextTime() {
     localStorage.removeItem("shownBefore-info");
   }
-  // Listen to escape key to close info box
-  document.addEventListener(
-    "keydown",
-    function (e) {
-      if (e.key === "Escape") {
-        toggleInfoBox();
-      }
-    },
-    false
-  );
 
   onMount(() => {
     window.addEventListener("lofi-toggle-info", toggleInfoBox);
@@ -39,8 +29,8 @@
 </script>
 
 {#if visible}
-  <div class="info-overlay">
-    <div id="info-box">
+  <div class="info-overlay glass">
+    <div id="info-box" class="glass">
       <div id="top-section">
         <button id="close-btn" on:click={toggleInfoBox}>
           <IconX color="white" size={17} />
@@ -79,8 +69,6 @@
     width: 100%;
     height: 100%;
     z-index: 99; /* on top of everything and under topbar(100 z-index) */
-    background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,8 +76,6 @@
   #info-box {
     padding: 0px 15px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
     border-radius: 20px;
     width: 55vw;
     height: 75vh;

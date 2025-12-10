@@ -24,7 +24,7 @@
   }, 200);
 </script>
 
-<div class="controls">
+<div class="controls glass">
   <Rain volume={volumes.rain} />
   <Thunder volume={volumes.thunder} />
   <Jungle volume={volumes.jungle} />
@@ -42,8 +42,6 @@
     align-items: center;
     padding: 0 20px;
     border-radius: 50px;
-    backdrop-filter: blur(2px);
-    background-color: rgba(0, 0, 0, 28%);
   }
 
   @media only screen and (max-width: 600px) {
