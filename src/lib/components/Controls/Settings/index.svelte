@@ -114,7 +114,6 @@
   .settings-header {
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .settings-header h3 {

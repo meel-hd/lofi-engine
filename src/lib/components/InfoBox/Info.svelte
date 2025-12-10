@@ -119,14 +119,11 @@
   #app-info #tagline {
     font-size: small;
     margin: 5px 10px;
-    font-family: "Courier New", Courier, monospace;
   }
   #bottom-section {
-    margin-top: 20px;
     overflow: hidden;
     overflow-y: scroll;
     height: 45vh;
-    padding-bottom: 50px;
   }
   img {
     aspect-ratio: 1/1;
@@ -138,8 +135,25 @@
   }
 
   @media only screen and (max-width: 600px) {
-    .info-overlay {
-      display: none;
+    #info-box {
+      width: 90vw;
+    }
+    #app-info {
+      margin-top: 20px;
+      flex-direction: column;
+    }
+    img {
+      width: 80px;
+      height: 80px;
+      min-width: auto;
+      min-height: auto;
+      align-self: center;
+    }
+    #app-info h1 {
+      font-size: large;
+    }
+    #bottom-section {
+      height: 40vh;
     }
   }
 </style>
