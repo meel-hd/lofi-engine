@@ -62,6 +62,23 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 2. **Look**: With carefully crafted artworks from talented artists, long study sessions become a joy.
 3. **Ambience**: A windy evening or the sound of waves crashing into the sand of a sunny beach brings peace.
 
+### Advanced Immersion (Auto DJ)
+The new **Immersion** system (Auto DJ) automatically manages the soundscape for you. It offers different modes to suit your needs:
+- **Music**: Focuses on the beat and chords without atmospheric effects.
+- **Atmosphere**: Adds core weather and nature effects for a fuller sound.
+- **World**: Incorporates specific textures like city sounds or wind for deep immersion.
+- **Manual**: Gives you full control to mix and match sounds as you please.
+
+### Internationalization
+LoFi Engine now speaks your language! We have added support for multiple languages to make the experience accessible to everyone.
+- **English**
+- **French** (Français)
+- **Spanish** (Español)
+- **Japanese** (日本語)
+- **Korean** (한국어)
+- **Indonesian** (Bahasa Indonesia)
+- And more coming soon!
+
 ### Accessibility
 Any action or click you can do with the mouse has a shortcut for it with the keyboard. For playback, effects, ambient tracks, look, etc.
 
