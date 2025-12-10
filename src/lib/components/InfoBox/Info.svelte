@@ -47,7 +47,7 @@
           <img id="app-logo" src="LofiEngine.png" alt="" />
           <div>
             <h1>{$t.info.title}</h1>
-            <p id="version">Version 1.0.3</p>
+            <p id="version">Version 1.2.0</p>
             <p id="tagline">
               {$t.info.tagline}
             </p>
