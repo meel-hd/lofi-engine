@@ -153,7 +153,7 @@
       font-size: large;
     }
     #bottom-section {
-      height: 40vh;
+      display: none;
     }
   }
 </style>
