@@ -17,6 +17,17 @@
     localStorage.setItem("shownBefore-info", "true");
   }
 
+  // Listen to escape key to close info box
+  document.addEventListener(
+    "keydown",
+    function (e) {
+      if (e.key === "Escape" && visible) {
+        toggleInfoBox();
+      }
+    },
+    false,
+  );
+
   function showNextTime() {
     localStorage.removeItem("shownBefore-info");
   }
