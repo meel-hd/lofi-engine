@@ -77,6 +77,7 @@ LoFi Engine now speaks your language! We have added support for multiple languag
 - **Japanese** (日本語)
 - **Korean** (한국어)
 - **Indonesian** (Bahasa Indonesia)
+- **Russian** (Русский)
 - And more coming soon!
 
 ### Accessibility

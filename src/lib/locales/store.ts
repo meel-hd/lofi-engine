@@ -6,6 +6,7 @@ import { zh } from './zh';
 import { hi } from './hi';
 import { fr } from './fr';
 import { nl } from './nl';
+import { ru } from './ru';
 
 const locales: Record<string, Translations> = {
     en,
@@ -14,6 +15,7 @@ const locales: Record<string, Translations> = {
     hi,
     fr,
     nl,
+    ru,
 };
 
 const initialLocale = localStorage.getItem('locale') || 'en';
