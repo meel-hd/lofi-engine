@@ -48,6 +48,7 @@
     { code: "fr", label: "Français" },
     { code: "nl", label: "Nederlands" },
     { code: "ja", label: "日本語" },
+    { code: "ru", label: "Русский" },
   ];
 </script>
 
