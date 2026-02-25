@@ -9,6 +9,10 @@
   import localDB from "../../../localDB";
   import { t } from "../../../locales/store";
 
+  const MAX_DIMENSION = 1920;
+  const WEBP_QUALITY  = 0.85;
+  const MAX_FILE_MB   = 20;
+
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
   let bgType = localStorage.getItem("bg-type") || "default";
@@ -17,12 +21,60 @@
   let customBackgrounds = [];
   let allBackgrounds = [];
   let isUploading = false;
+  let isTransitioning = false;
 
   onMount(async () => {
     await loadCustomBackgrounds();
     buildAllBackgrounds();
     applyCurrentBackground();
   });
+
+  /**
+   * Resize + compress an image File to a WebP DataURL.
+   * - Caps the longest side at MAX_DIMENSION
+   * - Encodes as WebP at WEBP_QUALITY
+   * Typical savings: 60–80 % vs. a raw 4 K JPEG.
+   */
+  function compressImage(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+
+        let { width, height } = img;
+
+        if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+          if (width >= height) {
+            height = Math.round((height / width) * MAX_DIMENSION);
+            width  = MAX_DIMENSION;
+          } else {
+            width  = Math.round((width / height) * MAX_DIMENSION);
+            height = MAX_DIMENSION;
+          }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width  = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("Canvas context unavailable")); return; }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        resolve(canvas.toDataURL("image/webp", WEBP_QUALITY));
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("Failed to load image"));
+      };
+
+      img.src = objectUrl;
+    });
+  }
 
   async function loadCustomBackgrounds() {
     const saved = await localDB.getItem("custom-backgrounds");
@@ -39,7 +91,7 @@
         id: `default_${i}`,
         type: "default",
         name: `Background ${i}`,
-        url: `assets/background/bg${i}.jpg`,
+        url: `assets/background/bg${i}.webp`,
       });
     }
 
@@ -74,62 +126,55 @@
     window.dispatchEvent(new CustomEvent("backgroundsUpdated"));
 
     if (bgType === "custom" && customBgId === bg.id) {
-      const currentIndex = allBackgrounds.findIndex((b) => b.id === bg.id);
-      let nextIndex = (currentIndex + 1) % allBackgrounds.length;
-
-      if (nextIndex === 0 && allBackgrounds.length > 1) {
-        nextIndex = allBackgrounds.length - 1;
-      }
-
-      if (allBackgrounds.length > 1) {
-        applyBackground(allBackgrounds[nextIndex]);
+      if (allBackgrounds.length > 0) {
+        applyBackground(allBackgrounds[0]);
       } else {
         localStorage.setItem("bg-type", "default");
         localStorage.removeItem("custom-bg-id");
-        const defaultId = localStorage.getItem("bg-id") || 1;
         const bgElement = document.getElementById("bg");
-        if (bgElement) {
-          bgElement.style.backgroundImage = `url('assets/background/bg${defaultId}.jpg')`;
-        }
+        if (bgElement) bgElement.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
       }
     }
   }
 
-  function handleFileUpload(event: Event) {
+  async function handleFileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files;
+    if (!files || files.length === 0) return;
 
-    if (files && files.length > 0) {
-      isUploading = true;
+    isUploading = true;
 
-      Array.from(files).forEach((file) => {
-        if (file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const dataUrl = e.target?.result as string;
-            const customBg = {
-              id: `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-              name: file.name,
-              dataUrl: dataUrl,
-              size: file.size,
-              type: file.type,
-            };
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith("image/")) continue;
 
-            customBackgrounds.push(customBg);
-            saveCustomBackgrounds();
-            buildAllBackgrounds();
+      if (file.size > MAX_FILE_MB * 1024 * 1024) {
+        console.warn(`Skipping ${file.name}: exceeds ${MAX_FILE_MB} MB`);
+        continue;
+      }
 
-            window.dispatchEvent(new CustomEvent("backgroundsUpdated"));
+      try {
+        const dataUrl = await compressImage(file);
 
-            selectCustomBackground(customBg);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+        const customBg = {
+          id:      `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          name:    file.name,
+          dataUrl,
+          type:    "image/webp",
+        };
+
+        customBackgrounds.push(customBg);
+        saveCustomBackgrounds();
+        buildAllBackgrounds();
+
+        window.dispatchEvent(new CustomEvent("backgroundsUpdated"));
+        selectCustomBackground(customBg);
+      } catch (err) {
+        console.error(`Failed to process ${file.name}:`, err);
+      }
+    }
 
       isUploading = false;
       target.value = "";
-    }
   }
 
   function applyCurrentBackground() {
@@ -147,74 +192,54 @@
         localStorage.removeItem("custom-bg-id");
       }
     }
-    bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
+    bg.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
   }
 
   function nextBg() {
     buildAllBackgrounds();
-
-    let currentIndex = 0;
-
-    if (bgType === "custom" && customBgId) {
-      currentIndex = allBackgrounds.findIndex((bg) => bg.id === customBgId);
-    } else {
-      currentIndex = allBackgrounds.findIndex(
-        (bg) => bg.id === `default_${id}`,
-      );
-    }
-    const nextIndex = (currentIndex + 1) % allBackgrounds.length;
-    const nextBg = allBackgrounds[nextIndex];
-
-    applyBackground(nextBg);
+    const currentIndex = getCurrentIndex();
+    applyBackground(allBackgrounds[(currentIndex + 1) % allBackgrounds.length]);
   }
 
   function prevBg() {
     buildAllBackgrounds();
+    const currentIndex = getCurrentIndex();
+    const prevIndex = currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
+    applyBackground(allBackgrounds[prevIndex]);
+  }
 
-    let currentIndex = 0;
-
-    if (bgType === "custom" && customBgId) {
-      currentIndex = allBackgrounds.findIndex((bg) => bg.id === customBgId);
-    } else {
-      currentIndex = allBackgrounds.findIndex(
-        (bg) => bg.id === `default_${id}`,
-      );
-    }
-    const prevIndex =
-      currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
-    const prevBg = allBackgrounds[prevIndex];
-
-    applyBackground(prevBg);
+  function getCurrentIndex(): number {
+    if (bgType === "custom" && customBgId)
+      return allBackgrounds.findIndex((bg) => bg.id === customBgId);
+    return allBackgrounds.findIndex((bg) => bg.id === `default_${id}`);
   }
 
   function applyBackground(background: any) {
     const bg = document.getElementById("bg");
-    if (bg) {
+    if (!bg) return;
+
+    isTransitioning = true;
+
+    const img = new Image();
+    img.onload = () => {
       bg.style.backgroundImage = `url('${background.url}')`;
+      isTransitioning = false;
+    };
+    img.onerror = () => { isTransitioning = false; };
+    img.src = background.url;
 
-      if (background.type === "default") {
-        const defaultId = background.id.replace("default_", "");
-        id = parseInt(defaultId);
-        bgType = "default";
-        localStorage.setItem("bg-id", id.toString());
-        localStorage.setItem("bg-type", "default");
-        localStorage.removeItem("custom-bg-id");
-      } else {
-        customBgId = background.id;
-        bgType = "custom";
-        localStorage.setItem("bg-type", "custom");
-        localStorage.setItem("custom-bg-id", customBgId);
-      }
-    }
-  }
-
-  function applyDefaultBackground() {
-    const bg = document.getElementById("bg");
-    if (bg) {
-      bg.style.backgroundImage = `url('assets/background/bg${id}.jpg')`;
-      localStorage.setItem("bg-id", id.toString());
+    if (background.type === "default") {
+      const defaultId = background.id.replace("default_", "");
+      id = parseInt(defaultId);
       bgType = "default";
+      localStorage.setItem("bg-id", id.toString());
       localStorage.setItem("bg-type", "default");
+      localStorage.removeItem("custom-bg-id");
+    } else {
+      customBgId = background.id;
+      bgType = "custom";
+      localStorage.setItem("bg-type", "custom");
+      localStorage.setItem("custom-bg-id", customBgId);
     }
   }
 
@@ -273,8 +298,8 @@
           (bgType === "default" && bg.id === `default_${id}`),
       )}
       {#if currentBg}
-        <div class="preview-container">
-          <img id="bg-preview" src={currentBg.url} alt={currentBg.name} />
+        <div class="preview-container" class:transitioning={isTransitioning}>
+          <img id="bg-preview" src={currentBg.url} alt={currentBg.name} loading="lazy" />
           {#if bgType === "custom" && customBgId}
             <button
               class="delete-current-btn"
@@ -289,10 +314,10 @@
           {/if}
         </div>
       {:else}
-        <img id="bg-preview" src="assets/background/bg{id}.jpg" alt="" />
+        <img id="bg-preview" src="assets/background/bg{id}.webp" alt="" loading="lazy" />
       {/if}
     {:else}
-      <img id="bg-preview" src="assets/background/bg{id}.jpg" alt="" />
+      <img id="bg-preview" src="assets/background/bg{id}.webp" alt="" loading="lazy" />
     {/if}
     <button on:click={nextBg}>
       <IconArrowRight size={20} />
@@ -359,6 +384,11 @@
     height: 120px;
     border-radius: 7px;
     margin: 0 10px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   .delete-current-btn {

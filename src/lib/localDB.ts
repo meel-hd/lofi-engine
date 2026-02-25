@@ -5,24 +5,22 @@ const DB_NAME = 'lofi-engine';
 const STORE_NAME = 'kv';
 const VERSION = 1;
 
-function openDB(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, VERSION);
+const dbPromise: Promise<IDBDatabase> = new Promise((resolve, reject) => {
+  const request = indexedDB.open(DB_NAME, VERSION);
 
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME);
-      }
-    };
+  request.onupgradeneeded = () => {
+    const db = request.result;
+    if (!db.objectStoreNames.contains(STORE_NAME)) {
+      db.createObjectStore(STORE_NAME);
+    }
+  };
 
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-};
+  request.onsuccess = () => resolve(request.result);
+  request.onerror = () => reject(request.error);
+});
 
 export async function setItem(key: string, value: string): Promise<void> {
-  const db = await openDB();
+  const db = await dbPromise;
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
@@ -33,7 +31,7 @@ export async function setItem(key: string, value: string): Promise<void> {
 };
 
 export async function getItem(key: string): Promise<string | null> {
-  const db = await openDB();
+  const db = await dbPromise;
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -44,7 +42,7 @@ export async function getItem(key: string): Promise<string | null> {
 }
 
 export async function removeItem(key: string): Promise<void> {
-  const db = await openDB();
+  const db = await dbPromise;
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
@@ -55,7 +53,7 @@ export async function removeItem(key: string): Promise<void> {
 };
 
 export async function clear(): Promise<void> {
-  const db = await openDB();
+  const db = await dbPromise;
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     const store = tx.objectStore(STORE_NAME);
@@ -66,7 +64,7 @@ export async function clear(): Promise<void> {
 };
 
 export async function keys(): Promise<string[]> {
-  const db = await openDB();
+  const db = await dbPromise;
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
