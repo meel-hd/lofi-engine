@@ -12,8 +12,8 @@ importers:
         specifier: ^2.17.0
         version: 2.47.0(svelte@3.59.2)
       '@tauri-apps/api':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: ^2.0.0
+        version: 2.9.0
       '@tauri-apps/plugin-shell':
         specifier: ~2.3.0
         version: 2.3.0
@@ -223,9 +223,6 @@ packages:
   '@tabler/icons@2.47.0':
     resolution: {integrity: sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA==}
 
-  '@tauri-apps/api@2.0.0':
-    resolution: {integrity: sha512-moKgCp2EX7X5GiOx/G/bmoEpkFQVVmyS98UaJU4xUVzan+E1BdwlAKcbip+cGldshYOqL4JSwAEN1OkRXeug0Q==}
-
   '@tauri-apps/api@2.9.0':
     resolution: {integrity: sha512-qD5tMjh7utwBk9/5PrTA/aGr3i5QaJ/Mlt7p8NilQ45WgbifUNPyKWsA63iQ8YfQq6R8ajMapU+/Q8nMcPRLNw==}
 
@@ -388,7 +385,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
@@ -735,8 +732,6 @@ snapshots:
       svelte: 3.59.2
 
   '@tabler/icons@2.47.0': {}
-
-  '@tauri-apps/api@2.0.0': {}
 
   '@tauri-apps/api@2.9.0': {}
 
