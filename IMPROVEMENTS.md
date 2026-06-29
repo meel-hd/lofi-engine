@@ -24,11 +24,14 @@ Implemented by four file-disjoint agents and centrally verified:
   ROBUST-1 · ROBUST-2 · ROBUST-3 · ROBUST-4 · SEC-2 · MISC-1 · MISC-2 · MISC-3 · MISC-4 · MISC-5 · MISC-6 · MISC-7 · MISC-8.
   - Also extended BUG-2/MISC-8 to the instrument classes (`Hat`/`Kick`/`Snare`/`Piano`): removed the dead
     `sampler()` methods that shadowed the field and declared the fields — this fixed **pre-existing** `svelte-check` failures.
+- **DONE (Wave 2 — the cross-cutting refactors, built on shared stores):**
+  - **PERF-3** — `src/lib/stores/volumes.ts` is now the single source of truth; the 200 ms/100 ms localStorage
+    polling in Controls/PlayButton is gone, and `Volume.svelte` writes the store directly.
+  - **BUG-5** — `src/lib/stores/effects.ts` holds effect on/off state; buttons, shortcuts, the context menu, and the
+    Auto-DJ all write it (no more stateless `lofi-toggle-*` events). The Auto-DJ tracks the effects it enabled and
+    turns only those off when leaving ATMOSPHERE/WORLD — it no longer fights manual toggles or gets stuck on.
 - **DONE but needs runtime check:** **SEC-1** — an explicit CSP was added to `tauri.conf.json`, but it must be
   validated in a real `tauri build` (Tone.js may use blob/AudioWorklet workers; user images render as data-URLs).
-- **DEFERRED (Wave 2 — genuinely cross-cutting, would conflict in parallel):**
-  - **PERF-3** — replace the localStorage volume-polling with a shared Svelte store (touches every domain's files).
-  - **BUG-5** — make Auto-DJ effect/track toggling stateful (needs a PlayButton↔effects "set on/off" contract + reset on mode change).
 - **NOT STARTED (larger features, left as roadmap):** GEN-2 (bassline) · GEN-5 (drum-pattern variety) · GEN-7 (inversions/extensions/velocity).
 
 ---
