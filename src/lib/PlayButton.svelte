@@ -25,6 +25,12 @@
   import Noise from "../lib/engine/Drums/Noise";
   import Snare from "../lib/engine/Drums/Snare";
   import Piano from "../lib/engine/Piano/Piano";
+  import Bass from "../lib/engine/Bass/Bass";
+  import { bassHitsForBar } from "../lib/engine/Bass/bassHelpers";
+  import {
+      selectPatternSet,
+      PATTERN_SET_COUNT,
+  } from "../lib/engine/Drums/patterns";
 
   // Convert linear volume (0 to 1) to dB
   const linearToDb = (value) =>
@@ -88,15 +94,22 @@
   const snare = new Snare(() => (snareLoaded = true)).sampler;
   const hat = new Hat(() => (hatLoaded = true)).sampler;
   const noise = Noise;
+  // GEN-2: synth bass (no samples to load) outlines the chord root.
+  const bass = new Bass().synth;
 
   // Sequences
   let chords, melody, kickLoop, snareLoop, hatLoop;
+  // GEN-5: the active drum patterns, swapped per section (index 0 = the
+  // original groove). The drum sequences iterate step indices and look up the
+  // current pattern, so swapping this changes the groove without rebuilding them.
+  let currentPatterns = selectPatternSet(0);
+  const stepIndices = (n) => Array.from({ length: n }, (_, i) => i);
 
   onMount(() => {
     // Setup sequences
     chords = new Tone.Sequence(
       (time, note) => {
-        playChord();
+        playChord(time);
       },
       [""],
       "1n",
@@ -110,46 +123,31 @@
       "8n",
     );
 
+    // Each drum sequence iterates STEP INDICES and looks up the current
+    // pattern token, so a section can swap `currentPatterns` to change the
+    // groove (GEN-5). playDrumHit maps both "C4" (strong) and "." (ghost) to
+    // the single-note sampler.
     kickLoop = new Tone.Sequence(
-      (time, note) => {
-        if (!kickOff) {
-          if (note === "C4" && Math.random() < 0.9) {
-            // @ts-ignore
-            kick.triggerAttack(note);
-          } else if (note === "." && Math.random() < 0.1) {
-            // @ts-ignore
-            kick.triggerAttack("C4");
-          }
-        }
+      (time, i) => {
+        if (!kickOff) playDrumHit(kick, currentPatterns.kick[i], time, 0.9, 0.12);
       },
-      ["C4", "", "", "", "", "", "", "C4", "C4", "", ".", "", "", "", "", ""],
+      stepIndices(16),
       "8n",
     );
 
     snareLoop = new Tone.Sequence(
-      (time, note) => {
-        if (!snareOff) {
-          if (note !== "" && Math.random() < 0.8) {
-            // @ts-ignore
-            snare.triggerAttack(note);
-          }
-        }
+      (time, i) => {
+        if (!snareOff) playDrumHit(snare, currentPatterns.snare[i], time, 0.8, 0.25);
       },
-      ["", "C4"],
+      stepIndices(2),
       "2n",
     );
 
     hatLoop = new Tone.Sequence(
-      (time, note) => {
-        if (!hatOff) {
-          // @ts-ignore
-          if (note !== "" && Math.random() < 0.8) {
-            // @ts-ignore
-            hat.triggerAttack(note);
-          }
-        }
+      (time, i) => {
+        if (!hatOff) playDrumHit(hat, currentPatterns.hat[i], time, 0.8, 0.25);
       },
-      ["C4", "C4", "C4", "C4", "C4", "C4", "C4", "C4"],
+      stepIndices(8),
       "4n",
     );
 
@@ -217,6 +215,8 @@
         seq.dispose();
       }
     });
+    // Dispose the synth bass (GEN-2/BUG-9).
+    if (bass) bass.dispose();
   });
 
   let barCount = 0;
@@ -253,6 +253,10 @@
     barCount++;
     if(barCount >= sectionBarLength) {
       barCount = 0;
+      // GEN-5: swap to a new drum groove for the next section (all modes).
+      currentPatterns = selectPatternSet(
+        Math.floor(Math.random() * PATTERN_SET_COUNT),
+      );
       autoDJTransition();
       // New next transition length
       const barLengthOptions = [16, 20, 24, 28, 32, 48];
@@ -320,7 +324,20 @@
     }, 2000);
   }
 
-  function playChord() {
+  // Map a drum pattern token to a sampler hit: "C4" is a strong hit, "." a
+  // quieter ghost (lower probability), "" a rest. Shared by kick/snare/hat so
+  // any pattern variation can include ghosts (GEN-5).
+  function playDrumHit(inst, token, time, strongProb, ghostProb) {
+    if (token === "C4") {
+      // @ts-ignore
+      if (Math.random() < strongProb) inst.triggerAttack("C4", time);
+    } else if (token === ".") {
+      // @ts-ignore
+      if (Math.random() < ghostProb) inst.triggerAttack("C4", time);
+    }
+  }
+
+  function playChord(time) {
     // Defensive: nothing to play before a progression has been generated (BUG-1).
     if (progression.length === 0 || scale.length === 0) {
       return;
@@ -328,12 +345,30 @@
     const chord = progression[progress];
     const root = Tone.Frequency(key + "3").transpose(chord.semitoneDist);
     const size = 4;
-    const voicing = chord.generateVoicing(size);
+    // GEN-7: occasionally invert or add a diatonic extension for variety; the
+    // bass below still carries the root, so inversions stay grounded.
+    const voicing = chord.generateVoicing(size, {
+      invert: Math.random() < 0.35,
+      extend: Math.random() < 0.4,
+    });
     const notes = Tone.Frequency(root)
       .harmonize(voicing)
       .map((f) => Tone.Frequency(f).toNote());
+    // GEN-7: per-chord velocity so the comping isn't mechanically uniform.
+    const velocity = chord.pickVelocity();
     // @ts-ignore
-    pn.triggerAttackRelease(notes, "1n");
+    pn.triggerAttackRelease(notes, "1n", time, velocity);
+
+    // GEN-2: soft bass outlining the chord root an octave below the comping.
+    const bassRoot = Tone.Frequency(key + "2").transpose(chord.semitoneDist);
+    bassHitsForBar(progress).forEach((hit) => {
+      const noteName = Tone.Frequency(bassRoot).transpose(hit.interval).toNote();
+      const when =
+        time === undefined ? undefined : time + Tone.Time(hit.time).toSeconds();
+      // @ts-ignore
+      bass.triggerAttackRelease(noteName, hit.duration, when);
+    });
+
     nextChord();
   }
 
