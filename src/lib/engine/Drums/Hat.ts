@@ -8,14 +8,11 @@ const vol = new Tone.Volume(-9);
 const sw = new Tone.StereoWidener(0.7);
 
 class Hat {
+	sampler: Tone.Sampler;
 	constructor(cb) {
 		this.sampler = new Tone.Sampler(samples, () => {
 			cb();
-		}).chain(lpf,vol,sw,Tone.Master);
-	}
-
-	sampler() {
-		return this.sampler;
+		}).chain(lpf,vol,sw,Tone.getDestination());
 	}
 }
 

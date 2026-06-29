@@ -11,6 +11,10 @@
   import Visualizer from "../lib/components/Visualizer/index.svelte";
   import ChordProgression from "../lib/engine/Chords/ChordProgression";
   import intervalWeights from "../lib/engine/Chords/IntervalWeights";
+  import {
+      nearestChordToneScalePos,
+      pickWeightedIndex,
+  } from "../lib/engine/Chords/melodyHelpers";
   import Keys from "../lib/engine/Chords/Keys";
   import { fiveToFive } from "../lib/engine/Chords/MajorScale";
   import Hat from "../lib/engine/Drums/Hat";
@@ -27,12 +31,26 @@
     jungle: 1,
     main_track: 1,
   };
-  // Load previous vols or defualt
-  let volumes =
-    JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+  // Load previous vols or default (guard against corrupt localStorage)
+  let volumes;
+  try {
+    volumes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+  } catch (e) {
+    volumes = DEFFAULT_VOLUMES;
+  }
   // Convert linear volume (0 to 1) to dB
   const linearToDb = (value) =>
     value === 0 ? -Infinity : 20 * Math.log10(value);
+
+  // Resting cutoff of the master low-pass. Transitions dip below this and must
+  // ramp back UP to it so the mix never gets permanently darker (GEN-8).
+  const MASTER_LPF_BASE_CUTOFF = 2000;
+  // Tempo / feel. NOTE: these still need listening-based tuning — they are
+  // reasonable starting points, not final values (GEN-3).
+  const BASE_BPM = 150; // lofi sits a touch lower; kept near the original 156
+  const SWING_AMOUNT = 0.5; // was 1.0 (max) — too extreme; ~0.5 is a gentler shuffle
+  // How likely a resolved melody note is pulled onto a chord tone (GEN-1).
+  const CHORD_TONE_PULL = 0.5;
 
   // Setup audio chain
   const cmp = new Tone.Compressor({
@@ -41,11 +59,11 @@
     attack: 0.5,
     release: 0.1,
   });
-  const lpf = new Tone.Filter(2000, "lowpass");
+  const lpf = new Tone.Filter(MASTER_LPF_BASE_CUTOFF, "lowpass");
   const vol = new Tone.Volume(linearToDb(volumes.main_track));
-  Tone.Master.chain(cmp, lpf, vol);
-  Tone.Transport.bpm.value = 156;
-  Tone.Transport.swing = 1;
+  Tone.getDestination().chain(cmp, lpf, vol);
+  Tone.Transport.bpm.value = BASE_BPM;
+  Tone.Transport.swing = SWING_AMOUNT;
 
   // State variables
   let key = "C";
@@ -59,7 +77,6 @@
   let snareLoaded = false;
   let hatLoaded = false;
 
-  let contextStarted = false;
   let genChordsOnce = false;
 
   let kickOff = false;
@@ -80,6 +97,8 @@
 
   // Sequences
   let chords, melody, kickLoop, snareLoop, hatLoop;
+  // Volume-poll interval id (cleared in onDestroy — PERF-2 / BUG-9)
+  let volumeInterval;
 
   onMount(() => {
     // Setup sequences
@@ -148,11 +167,21 @@
     snareLoop.humanize = true;
     hatLoop.humanize = true;
 
-    // Listen for spacebar press
+    // Listen for spacebar press. Route through handleButtonAction so the same
+    // load/generation guards the play button enforces also apply to Space
+    // (CRIT-1 — calling toggle() directly during sample load crashes/freezes).
     const handleKeydown = (e) => {
       if (e.code === "Space") {
+        const target = e.target;
+        const isTyping =
+          target &&
+          (target.tagName === "INPUT" ||
+            target.tagName === "TEXTAREA" ||
+            target.isContentEditable);
+        // Don't hijack Space while the user is typing.
+        if (isTyping) return;
         e.preventDefault();
-        toggle();
+        handleButtonAction();
       }
     };
 
@@ -179,10 +208,19 @@
   });
 
   onDestroy(() => {
+    // Stop the volume-poll interval (PERF-2).
+    if (volumeInterval) clearInterval(volumeInterval);
     if (Tone.Transport.state === "started") {
       noise.stop();
       Tone.Transport.stop();
     }
+    // Dispose the sequences so their scheduled events are released (BUG-9).
+    [chords, melody, kickLoop, snareLoop, hatLoop].forEach((seq) => {
+      if (seq) {
+        seq.stop();
+        seq.dispose();
+      }
+    });
   });
 
   let barCount = 0;
@@ -197,7 +235,11 @@
     const nextMelodyDensity = Math.random() * 0.3 + 0.2;
     const nextMelodyOff = Math.random() < 0.25;
 
-    if (progress === 4) {
+    // Section boundaries derived from the progression length (BUG-7): the
+    // midpoint refreshes drums, the start refreshes drums + melody.
+    const midpoint = Math.floor(progression.length / 2);
+
+    if (progress === midpoint) {
       progress = nextProgress;
       kickOff = nextKickOff;
       snareOff = nextSnareOff;
@@ -230,7 +272,11 @@
 
     // Change keys/chords
     generateProgression()
-    
+
+    // GEN-3: drift the tempo a few BPM per section for variety (kept subtle).
+    const bpmDrift = Math.floor(Math.random() * 7) - 3; // -3..+3
+    Tone.Transport.bpm.rampTo(BASE_BPM + bpmDrift, 2);
+
     // Original Instrument Logic (Applied in ALL active modes: MUSIC, ATMOSPHERE, WORLD)
     // This was the "current main lofi track generation"
     melodyDensity = 0.2 + Math.random() * 0.5;
@@ -263,7 +309,8 @@
     // Crossfade FX (Always apply for smoother transitions if not OFF)
     lpf.frequency.linearRampTo(300, 2) // 2s Muffle
     setTimeout(() => {
-      lpf.frequency.linearRampTo(1200, 2) // Open back up
+      // Restore the full base cutoff so the mix doesn't stay darker (GEN-8).
+      lpf.frequency.linearRampTo(MASTER_LPF_BASE_CUTOFF, 2) // Open back up
       setTimeout(() => {
         isTransitioning = false;
       }, 2000);
@@ -271,6 +318,10 @@
   }
 
   function playChord() {
+    // Defensive: nothing to play before a progression has been generated (BUG-1).
+    if (progression.length === 0 || scale.length === 0) {
+      return;
+    }
     const chord = progression[progress];
     const root = Tone.Frequency(key + "3").transpose(chord.semitoneDist);
     const size = 4;
@@ -284,6 +335,11 @@
   }
 
   function playMelody() {
+    // Defensive: nothing to walk before a scale/progression exists (BUG-1 —
+    // an empty scale used to drive the weighted picker into an infinite loop).
+    if (progression.length === 0 || scale.length === 0) {
+      return;
+    }
     if (melodyOff || !(Math.random() < melodyDensity)) {
       return;
     }
@@ -302,29 +358,30 @@
       }
     }
 
-    let weights = descend
+    const weights = descend
       ? intervalWeights.slice(0, descendRange)
       : intervalWeights.slice(0, ascendRange);
 
-    const sum = weights.reduce((prev, curr) => prev + curr, 0);
-    weights = weights.map((w) => w / sum);
-    for (let i = 1; i < weights.length; i++) {
-      weights[i] += weights[i - 1];
-    }
-
-    const randomWeight = Math.random();
-    let scaleDist = 0;
-    let found = false;
-    while (!found) {
-      if (randomWeight <= weights[scaleDist]) {
-        found = true;
-      } else {
-        scaleDist++;
-      }
+    // Bounded weighted pick: returns -1 for empty weights and never runs past
+    // the array end (BUG-1).
+    const scaleDist = pickWeightedIndex(weights, Math.random());
+    if (scaleDist < 0) {
+      return;
     }
 
     const scalePosChange = descend ? -scaleDist : scaleDist;
-    const newScalePos = scalePos + scalePosChange;
+    let newScalePos = scalePos + scalePosChange;
+
+    // GEN-1: occasionally pull the resolved note onto a chord tone of the
+    // current chord so the melody outlines the harmony (subtle + diatonic).
+    if (Math.random() < CHORD_TONE_PULL) {
+      const snapped = nearestChordToneScalePos(newScalePos, progression[progress]);
+      if (snapped >= 0) {
+        newScalePos = snapped;
+      }
+    }
+    // Keep the walk in-bounds regardless of any nudge.
+    newScalePos = Math.max(0, Math.min(scale.length - 1, newScalePos));
 
     scalePos = newScalePos;
     // @ts-ignore
@@ -368,41 +425,42 @@
     window.dispatchEvent(new CustomEvent("lofi-play-state-changed", { detail: { isPlaying } }));
   }
 
-  function startAudioContext() {
-    Tone.start();
-    contextStarted = true;
-  }
-
   $: allSamplesLoaded = pianoLoaded && kickLoaded && snareLoaded && hatLoaded;
-  $: activeProgressionIndex = (progress + 7) % 8;
+  // Highlight the chord that is currently sounding (one behind `progress`,
+  // which already points at the next chord). Derived from the actual
+  // progression length rather than a hardcoded 8 (BUG-7).
+  $: activeProgressionIndex =
+    progression.length > 0
+      ? (progress + progression.length - 1) % progression.length
+      : 0;
   // Update volume
   onMount(() => {
-    setInterval(() => {
-      let updatedVol =
-        JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+    volumeInterval = setInterval(() => {
+      let updatedVol;
+      try {
+        updatedVol =
+          JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+      } catch (e) {
+        updatedVol = DEFFAULT_VOLUMES;
+      }
       vol.volume.value = linearToDb(updatedVol.main_track);
     }, 100);
   });
-  // automically start audio context after samples are loaded
-  $: if (allSamplesLoaded && !contextStarted) {
-    startAudioContext();
+  // Generate the first progression once samples are loaded so the preview
+  // renders. The AudioContext is NOT started here — it is unlocked only from a
+  // real user gesture via toggle()'s Tone.start() (BUG-6).
+  $: if (allSamplesLoaded && !genChordsOnce) {
     generateProgression();
   }
 
   function handleButtonAction() {
     if (!allSamplesLoaded) {
-      // Do nothing, button is disabled
+      // Button is disabled until every sample has loaded.
       return;
-    } else if (!contextStarted) {
-      // Initialize audio context
-      startAudioContext();
-    } else if (!genChordsOnce) {
-      // Chords not generated yet, can't play
-      return;
-    } else {
-      // Normal play/pause functionality
-      toggle();
     }
+    // By the time samples are loaded the first progression has been generated,
+    // so play/pause is the only remaining action (BUG-6).
+    toggle();
   }
 </script>
 
@@ -415,10 +473,6 @@
     >
       {#if !allSamplesLoaded}
         <IconLoader size={30} class="spinning" />
-      {:else if !contextStarted}
-        <span class="context-text">Initialize Audio</span>
-      {:else if !genChordsOnce}
-        <IconPlayerPlayFilled size={30} class="disabled" />
       {:else if isPlaying}
         <IconPlayerPauseFilled size={30} />
       {:else}
@@ -430,21 +484,19 @@
     </button>
   </div>
 
-  {#if allSamplesLoaded && contextStarted}
-    {#if genChordsOnce}
-      <ol class="progressionList">
-        <li class="key" id="glass">{key}</li>
-        {#each progression as chord, idx}
-          <li id="glass" class={idx === activeProgressionIndex ? "live" : ""}>
-            {chord.degree}
-          </li>
-        {/each}
-      </ol>
-    {/if}
+  {#if genChordsOnce}
+    <ol class="progressionList">
+      <li class="key" id="glass">{key}</li>
+      {#each progression as chord, idx}
+        <li id="glass" class={idx === activeProgressionIndex ? "live" : ""}>
+          {chord.degree}
+        </li>
+      {/each}
+    </ol>
   {/if}
   {#if Tone.Transport.state === "started"}
     <div class="visualizer-container">
-      <Visualizer audio={Tone.Master} />
+      <Visualizer audio={Tone.getDestination()} />
     </div>
   {/if}
 </div>
