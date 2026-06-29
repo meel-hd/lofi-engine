@@ -3,6 +3,7 @@
   import { t } from "../../locales/store";
 
   export let setMeVisible;
+  export let onToggle;
   export let activeAudios = [];
   export let track = {
     id: -1,
@@ -33,8 +34,8 @@
   }
 
   function handleVolumeChange(event) {
-    volume = event.target.value;
-    localStorage.setItem("audioVolume", volume.toString());
+    volume = Number(event.target.value);
+    localStorage.setItem(`audioVolume:${track.id}`, volume.toString());
     activeAudios.forEach((item) => {
       if (item.id === track.id) {
         item.audio.volume = volume;
@@ -42,32 +43,10 @@
     });
   }
 
-  function playTrack() {
-    const audio = new Audio(`assets/engine/tracks/${track.track}`);
-    audio.volume = volume;
-    audio.play();
-    audio.loop = true;
-    activeAudios.push({
-      id: track.id,
-      audio,
-    });
-    track.isPlaying = true;
-    setMeVisible(track.id);
-  }
-
-  function pauseTrack() {
-    activeAudios.forEach((item) => {
-      if (item.id === track.id) {
-        item.audio.pause();
-      }
-    });
-    track.isPlaying = false;
-  }
-
   onMount(() => {
-    const savedVolume = localStorage.getItem("audioVolume");
+    const savedVolume = localStorage.getItem(`audioVolume:${track.id}`);
     if (savedVolume !== null) {
-      volume = parseFloat(savedVolume);
+      volume = Number(savedVolume);
     }
   });
 
@@ -82,9 +61,7 @@
       setMeVisible(track.id);
     }
   }}
-  on:click={() => {
-    track.isPlaying ? pauseTrack() : playTrack();
-  }}
+  on:click={() => onToggle(track.id)}
   class={"carousel__item " + trackItemAnimationClass}
 >
   <div
@@ -97,7 +74,7 @@
     />
     <div>
       <p id="title">Track {track.id}</p>
-      <p id="info">{$t.tracks[track.id].quote}</p>
+      <p id="info">{$t.tracks[track.id]?.quote}</p>
       {#if track.isPlaying}
         <input
           type="range"

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconChevronDown } from "@tabler/icons-svelte";
   import TrackListItem from "./TrackListItem.svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   let tracks = [
     {
@@ -54,65 +54,8 @@
   let activeAudios = [];
   let isMobileHidden = false; // Used to hide track list on mobile due to tight space
 
-  // Shortcut for stoping all effects with "k" key
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "k") {
-      activeAudios.forEach((item) => {
-        item.audio.pause();
-      });
-      console.log("activeAudios", activeAudios);
-      activeAudios = [];
-      tracks.forEach((track) => {
-        track.isPlaying = false;
-      });
-    }
-  });
-
-  // Add toggle for each track with number keys
-  //  through (1-9) on keyboard
-  for (let i = 1; i < 10; i++) {
-    window.addEventListener("keydown", (e) => {
-      if (e.key === i.toString()) {
-        tracks[i - 1].isPlaying = !tracks[i - 1].isPlaying;
-        if (tracks[i - 1].isPlaying) {
-          const audio = new Audio(
-            `assets/engine/tracks/${tracks[i - 1].track}`,
-          );
-          audio.play();
-          audio.loop = true;
-          activeAudios.push({
-            id: tracks[i - 1].id,
-            audio,
-          });
-          visibleTrackId = i;
-        } else {
-          activeAudios.forEach((item) => {
-            if (item.id === tracks[i - 1].id) {
-              item.audio.pause();
-              // Remove from activeAudios
-              activeAudios = activeAudios.filter(
-                (item) => item.id !== tracks[i - 1].id,
-              );
-            }
-          });
-        }
-      }
-    });
-  }
-
   // Visible tracks animation
   let visibleTrackId = 1;
-  window.addEventListener("keydown", (e) => {
-    // Ignore change when event is targeting inputs
-    if (e.target instanceof HTMLElement && !e.target.closest("input")) {
-      if (e.key == "ArrowUp") {
-        prevTrack();
-      }
-      if (e.key == "ArrowDown") {
-        nextTrack();
-      }
-    }
-  });
 
   function nextTrack() {
     visibleTrackId < 9 ? visibleTrackId++ : (visibleTrackId = 1);
@@ -137,29 +80,80 @@
     }
   }
 
-  function toggleTrack(id: number) {
-    tracks[id - 1].isPlaying = !tracks[id - 1].isPlaying;
-    if (tracks[id - 1].isPlaying) {
-      const audio = new Audio(`assets/engine/tracks/${tracks[id - 1].track}`);
-      audio.play();
-      audio.loop = true;
-      activeAudios.push({
-        id: tracks[id - 1].id,
-        audio,
-      });
+  function getSavedVolume(id) {
+    const saved = localStorage.getItem(`audioVolume:${id}`);
+    return saved !== null ? Number(saved) : 0.5;
+  }
+
+  // Single source of truth for starting/stopping a track's audio.
+  // All control paths (click, number keys, "k", Auto-DJ) funnel through here.
+  function setTrack(id, shouldPlay) {
+    const track = tracks[id - 1];
+    if (!track) return;
+    if (shouldPlay) {
+      // Never create a second Audio for a track that is already playing
+      if (!activeAudios.some((item) => item.id === id)) {
+        const audio = new Audio(`assets/engine/tracks/${track.track}`);
+        audio.loop = true;
+        audio.volume = getSavedVolume(id);
+        audio.play().catch(() => {});
+        activeAudios.push({ id, audio });
+      }
+      track.isPlaying = true;
       visibleTrackId = id;
     } else {
       activeAudios.forEach((item) => {
-        if (item.id === tracks[id - 1].id) {
+        if (item.id === id) {
           item.audio.pause();
-          // Remove from activeAudios
-          activeAudios = activeAudios.filter(
-            (item) => item.id !== tracks[id - 1].id,
-          );
         }
       });
+      // Remove the entry so it can't leak (single source of truth)
+      activeAudios = activeAudios.filter((item) => item.id !== id);
+      track.isPlaying = false;
     }
+    activeAudios = activeAudios; // Keep parent + children sharing one reference
     tracks = tracks; // Trigger reactivity
+  }
+
+  function toggleTrack(id) {
+    setTrack(id, !tracks[id - 1].isPlaying);
+  }
+
+  function stopAllTracks() {
+    activeAudios.forEach((item) => item.audio.pause());
+    activeAudios = [];
+    tracks.forEach((track) => (track.isPlaying = false));
+    tracks = tracks; // Trigger reactivity
+  }
+
+  // Ignore shortcuts while typing in inputs/textareas/contenteditable
+  function isTypingTarget(target) {
+    return (
+      target instanceof HTMLElement &&
+      (target.closest("input, textarea") !== null || target.isContentEditable)
+    );
+  }
+
+  function handleKeydown(e) {
+    if (isTypingTarget(e.target)) return;
+
+    if (e.key === "k") {
+      stopAllTracks();
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      prevTrack();
+      return;
+    }
+    if (e.key === "ArrowDown") {
+      nextTrack();
+      return;
+    }
+    // Toggle a track with the number keys (1-9)
+    const trackNumber = Number(e.key);
+    if (Number.isInteger(trackNumber) && trackNumber >= 1 && trackNumber <= 9) {
+      toggleTrack(trackNumber);
+    }
   }
 
   onMount(() => {
@@ -173,11 +167,19 @@
         isMobileHidden = e.detail.isActive;
       }
     };
+    window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-track", handleToggleTrack);
     window.addEventListener("settings-open-changed", handleSettingsOpen);
     return () => {
+      window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-track", handleToggleTrack);
+      window.removeEventListener("settings-open-changed", handleSettingsOpen);
     };
+  });
+
+  onDestroy(() => {
+    activeAudios.forEach((item) => item.audio.pause());
+    activeAudios = [];
   });
 </script>
 
@@ -192,6 +194,7 @@
           {activeAudios}
           {track}
           {visibleTrackId}
+          onToggle={toggleTrack}
           setMeVisible={(id) => (visibleTrackId = id)}
         />
       {/each}
