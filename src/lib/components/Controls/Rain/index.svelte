@@ -2,43 +2,38 @@
   import { IconCloudRain } from "@tabler/icons-svelte";
   import { onMount, onDestroy } from "svelte";
   import RainAnimation from "./RainAnimation.svelte";
-
-  export let volume: number;
+  import { effects, toggleEffect } from "../../../stores/effects";
+  import { volumes } from "../../../stores/volumes";
 
   let rain = new Audio("assets/engine/effects/rain.mp3");
-  let isRaining = false;
-
-  function toggleRain() {
-    if (isRaining) {
-      rain.pause();
-    } else {
-      rain.play().catch(() => {});
-      rain.loop = true;
-      rain.volume = volume;
-    }
-
-    isRaining = !isRaining;
-  }
 
   // Shortuct to toggle rain with "A" key
   function handleKeydown(e: KeyboardEvent) {
     if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
       return;
     if (e.key === "a") {
-      toggleRain();
+      toggleEffect("rain");
     }
   }
 
-  // Keep the audio element's volume in sync with the prop
-  $: if (rain) rain.volume = volume;
+  // Drive playback from the store (single source of truth)
+  $: if (rain) {
+    if ($effects.rain) {
+      rain.loop = true;
+      rain.play().catch(() => {});
+    } else {
+      rain.pause();
+    }
+  }
+
+  // Keep the audio element's volume in sync with the store
+  $: if (rain) rain.volume = $volumes.rain;
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("lofi-toggle-rain", toggleRain);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("lofi-toggle-rain", toggleRain);
     };
   });
 
@@ -50,13 +45,13 @@
 <div>
   <button
     style={`
-      background-color: ${isRaining ? "white" : "transparent"};
+      background-color: ${$effects.rain ? "white" : "transparent"};
       `}
-    on:click={toggleRain}
+    on:click={() => toggleEffect("rain")}
   >
-    <IconCloudRain size={25} color={isRaining ? "black" : "white"} />
+    <IconCloudRain size={25} color={$effects.rain ? "black" : "white"} />
   </button>
-  <RainAnimation {isRaining} />
+  <RainAnimation isRaining={$effects.rain} />
 </div>
 
 <style>

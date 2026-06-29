@@ -6,9 +6,12 @@
       IconRefresh,
   } from "@tabler/icons-svelte";
   import { onDestroy, onMount } from "svelte";
+  import { get } from "svelte/store";
 // @ts-ignore
   import * as Tone from "tone";
   import Visualizer from "../lib/components/Visualizer/index.svelte";
+  import { volumes } from "../lib/stores/volumes";
+  import { setEffect, type EffectKey } from "../lib/stores/effects";
   import ChordProgression from "../lib/engine/Chords/ChordProgression";
   import intervalWeights from "../lib/engine/Chords/IntervalWeights";
   import {
@@ -23,21 +26,6 @@
   import Snare from "../lib/engine/Drums/Snare";
   import Piano from "../lib/engine/Piano/Piano";
 
-  const STORAGE_KEY = "Volumes";
-  const DEFFAULT_VOLUMES = {
-    rain: 1,
-    thunder: 1,
-    campfire: 1,
-    jungle: 1,
-    main_track: 1,
-  };
-  // Load previous vols or default (guard against corrupt localStorage)
-  let volumes;
-  try {
-    volumes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
-  } catch (e) {
-    volumes = DEFFAULT_VOLUMES;
-  }
   // Convert linear volume (0 to 1) to dB
   const linearToDb = (value) =>
     value === 0 ? -Infinity : 20 * Math.log10(value);
@@ -60,8 +48,11 @@
     release: 0.1,
   });
   const lpf = new Tone.Filter(MASTER_LPF_BASE_CUTOFF, "lowpass");
-  const vol = new Tone.Volume(linearToDb(volumes.main_track));
+  const vol = new Tone.Volume(linearToDb(get(volumes).main_track));
   Tone.getDestination().chain(cmp, lpf, vol);
+  // Keep the master volume in sync with the store (PERF-3) — replaces the old
+  // 100ms localStorage poll.
+  $: vol.volume.value = linearToDb($volumes.main_track);
   Tone.Transport.bpm.value = BASE_BPM;
   Tone.Transport.swing = SWING_AMOUNT;
 
@@ -87,6 +78,9 @@
 
   let isPlaying = false;
   let autoDJMode = "MUSIC";
+  // Effects the Auto-DJ has switched on, so it can turn off exactly what it
+  // enabled (and only that) when leaving ATMOSPHERE/WORLD (BUG-5).
+  const djEffects = new Set<EffectKey>();
 
   // Initialize instruments
   const pn = new Piano(() => (pianoLoaded = true)).sampler;
@@ -97,8 +91,6 @@
 
   // Sequences
   let chords, melody, kickLoop, snareLoop, hatLoop;
-  // Volume-poll interval id (cleared in onDestroy — PERF-2 / BUG-9)
-  let volumeInterval;
 
   onMount(() => {
     // Setup sequences
@@ -191,6 +183,12 @@
 
     const handleAutoDJModeChange = (e) => {
       autoDJMode = e.detail.mode;
+      // BUG-5: leaving the effect-driving modes turns OFF only the effects the
+      // Auto-DJ enabled, leaving any user-enabled effects untouched.
+      if (autoDJMode === "MUSIC" || autoDJMode === "MANUAL") {
+        djEffects.forEach((eff) => setEffect(eff, false));
+        djEffects.clear();
+      }
     };
 
     window.addEventListener("keydown", handleKeydown);
@@ -208,8 +206,6 @@
   });
 
   onDestroy(() => {
-    // Stop the volume-poll interval (PERF-2).
-    if (volumeInterval) clearInterval(volumeInterval);
     if (Tone.Transport.state === "started") {
       noise.stop();
       Tone.Transport.stop();
@@ -285,14 +281,21 @@
     hatOff = Math.random() < 0.22;
     melodyOff = Math.random() < 0.25;
 
-    // Smart Effects: Toggle environmental effects randomly
+    // Smart Effects: engage/disengage environmental effects via the store so the
+    // Auto-DJ tracks exactly what it turned on and never fights the user (BUG-5).
     // Applied in ATMOSPHERE and WORLD
     if (autoDJMode === "ATMOSPHERE" || autoDJMode === "WORLD") {
-      const effects = ["rain", "thunder", "jungle", "campfire"];
-      // 30% chance to toggle an effect
+      const effectKeys: EffectKey[] = ["rain", "thunder", "jungle", "campfire"];
+      // 30% chance to flip one of the Auto-DJ's own effects on/off
       if (Math.random() < 0.3) {
-        const effect = effects[Math.floor(Math.random() * effects.length)];
-        window.dispatchEvent(new CustomEvent(`lofi-toggle-${effect}`));
+        const effect = effectKeys[Math.floor(Math.random() * effectKeys.length)];
+        if (djEffects.has(effect)) {
+          setEffect(effect, false);
+          djEffects.delete(effect);
+        } else {
+          setEffect(effect, true);
+          djEffects.add(effect);
+        }
       }
     }
 
@@ -433,19 +436,6 @@
     progression.length > 0
       ? (progress + progression.length - 1) % progression.length
       : 0;
-  // Update volume
-  onMount(() => {
-    volumeInterval = setInterval(() => {
-      let updatedVol;
-      try {
-        updatedVol =
-          JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
-      } catch (e) {
-        updatedVol = DEFFAULT_VOLUMES;
-      }
-      vol.volume.value = linearToDb(updatedVol.main_track);
-    }, 100);
-  });
   // Generate the first progression once samples are loaded so the preview
   // renders. The AudioContext is NOT started here — it is unlocked only from a
   // real user gesture via toggle()'s Tone.start() (BUG-6).

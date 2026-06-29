@@ -1,43 +1,38 @@
 <script lang="ts">
   import { IconTrees } from "@tabler/icons-svelte";
   import { onMount, onDestroy } from "svelte";
-
-  export let volume: number;
+  import { effects, toggleEffect } from "../../../stores/effects";
+  import { volumes } from "../../../stores/volumes";
 
   let jungle = new Audio("assets/engine/effects/jungle.mp3");
-  let isActive = false;
-
-  function toggleJungle() {
-    if (isActive) {
-      jungle.pause();
-    } else {
-      jungle.play().catch(() => {});
-      jungle.loop = true;
-      jungle.volume = volume;
-    }
-
-    isActive = !isActive;
-  }
 
   // Shortuct to toggle jungle with "D" key
   function handleKeydown(e: KeyboardEvent) {
     if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
       return;
     if (e.key === "d") {
-      toggleJungle();
+      toggleEffect("jungle");
     }
   }
 
-  // Keep the audio element's volume in sync with the prop
-  $: if (jungle) jungle.volume = volume;
+  // Drive playback from the store (single source of truth)
+  $: if (jungle) {
+    if ($effects.jungle) {
+      jungle.loop = true;
+      jungle.play().catch(() => {});
+    } else {
+      jungle.pause();
+    }
+  }
+
+  // Keep the audio element's volume in sync with the store
+  $: if (jungle) jungle.volume = $volumes.jungle;
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("lofi-toggle-jungle", toggleJungle);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("lofi-toggle-jungle", toggleJungle);
     };
   });
 
@@ -48,11 +43,11 @@
 
 <button
   style={`
-        background-color: ${isActive ? "white" : "transparent"};
+        background-color: ${$effects.jungle ? "white" : "transparent"};
         `}
-  on:click={toggleJungle}
+  on:click={() => toggleEffect("jungle")}
 >
-  <IconTrees size={25} color={isActive ? "black" : "white"} />
+  <IconTrees size={25} color={$effects.jungle ? "black" : "white"} />
 </button>
 
 <style>

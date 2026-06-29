@@ -1,43 +1,38 @@
 <script lang="ts">
   import { IconCampfire } from "@tabler/icons-svelte";
   import { onMount, onDestroy } from "svelte";
-
-  export let volume: number;
+  import { effects, toggleEffect } from "../../../stores/effects";
+  import { volumes } from "../../../stores/volumes";
 
   let fire = new Audio("assets/engine/effects/fire.mp3");
-  let isFire = false;
-
-  function toggleFire() {
-    if (isFire) {
-      fire.pause();
-    } else {
-      fire.play().catch(() => {});
-      fire.loop = true;
-      fire.volume = volume;
-    }
-
-    isFire = !isFire;
-  }
 
   // Shortuct to toggle fire with "F" key
   function handleKeydown(e: KeyboardEvent) {
     if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
       return;
     if (e.key === "f") {
-      toggleFire();
+      toggleEffect("campfire");
     }
   }
 
-  // Keep the audio element's volume in sync with the prop
-  $: if (fire) fire.volume = volume;
+  // Drive playback from the store (single source of truth)
+  $: if (fire) {
+    if ($effects.campfire) {
+      fire.loop = true;
+      fire.play().catch(() => {});
+    } else {
+      fire.pause();
+    }
+  }
+
+  // Keep the audio element's volume in sync with the store
+  $: if (fire) fire.volume = $volumes.campfire;
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("lofi-toggle-campfire", toggleFire);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("lofi-toggle-campfire", toggleFire);
     };
   });
 
@@ -48,11 +43,11 @@
 
 <button
   style={`
-        background-color: ${isFire ? "white" : "transparent"};
+        background-color: ${$effects.campfire ? "white" : "transparent"};
         `}
-  on:click={toggleFire}
+  on:click={() => toggleEffect("campfire")}
 >
-  <IconCampfire size={25} color={isFire ? "black" : "white"} />
+  <IconCampfire size={25} color={$effects.campfire ? "black" : "white"} />
 </button>
 
 <style>

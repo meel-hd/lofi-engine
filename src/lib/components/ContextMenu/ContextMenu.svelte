@@ -11,6 +11,10 @@
     IconInfoCircle,
   } from "@tabler/icons-svelte";
   import { t } from "../../locales/store";
+  import {
+    toggleEffect as toggleEffectState,
+    type EffectKey,
+  } from "../../stores/effects";
 
   let visible = false;
   let x = 0;
@@ -53,8 +57,8 @@
     window.location.reload();
   }
 
-  function toggleEffect(effect: string) {
-    window.dispatchEvent(new CustomEvent(`lofi-toggle-${effect}`));
+  function toggleEffect(effect: EffectKey) {
+    toggleEffectState(effect);
     visible = false;
   }
 

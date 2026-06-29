@@ -1,43 +1,38 @@
 <script lang="ts">
   import { IconCloudStorm } from "@tabler/icons-svelte";
   import { onMount, onDestroy } from "svelte";
-
-  export let volume: number;
+  import { effects, toggleEffect } from "../../../stores/effects";
+  import { volumes } from "../../../stores/volumes";
 
   let storm = new Audio("assets/engine/effects/thunder.mp3");
-  let isStorming = false;
-
-  function toggleThunder() {
-    if (isStorming) {
-      storm.pause();
-    } else {
-      storm.play().catch(() => {});
-      storm.loop = true;
-      storm.volume = volume;
-    }
-
-    isStorming = !isStorming;
-  }
 
   // Shortuct to toggle storm with "S" key
   function handleKeydown(e: KeyboardEvent) {
     if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
       return;
     if (e.key === "s") {
-      toggleThunder();
+      toggleEffect("thunder");
     }
   }
 
-  // Keep the audio element's volume in sync with the prop
-  $: if (storm) storm.volume = volume;
+  // Drive playback from the store (single source of truth)
+  $: if (storm) {
+    if ($effects.thunder) {
+      storm.loop = true;
+      storm.play().catch(() => {});
+    } else {
+      storm.pause();
+    }
+  }
+
+  // Keep the audio element's volume in sync with the store
+  $: if (storm) storm.volume = $volumes.thunder;
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("lofi-toggle-thunder", toggleThunder);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("lofi-toggle-thunder", toggleThunder);
     };
   });
 
@@ -48,11 +43,11 @@
 
 <button
   style={`
-    background-color: ${isStorming ? "white" : "transparent"};
+    background-color: ${$effects.thunder ? "white" : "transparent"};
     `}
-  on:click={toggleThunder}
+  on:click={() => toggleEffect("thunder")}
 >
-  <IconCloudStorm size={25} color={isStorming ? "black" : "white"} />
+  <IconCloudStorm size={25} color={$effects.thunder ? "black" : "white"} />
 </button>
 
 <style>
