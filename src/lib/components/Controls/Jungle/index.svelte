@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconTrees } from "@tabler/icons-svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   export let volume: number;
 
@@ -11,7 +11,7 @@
     if (isActive) {
       jungle.pause();
     } else {
-      jungle.play();
+      jungle.play().catch(() => {});
       jungle.loop = true;
       jungle.volume = volume;
     }
@@ -20,21 +20,29 @@
   }
 
   // Shortuct to toggle jungle with "D" key
-  window.addEventListener("keydown", (e) => {
+  function handleKeydown(e: KeyboardEvent) {
+    if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
+      return;
     if (e.key === "d") {
       toggleJungle();
     }
-  });
-  // Update volume
+  }
+
+  // Keep the audio element's volume in sync with the prop
+  $: if (jungle) jungle.volume = volume;
+
   onMount(() => {
+    window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-jungle", toggleJungle);
-    setInterval(() => {
-      jungle.volume = volume;
-    },100);
 
     return () => {
+      window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-jungle", toggleJungle);
     };
+  });
+
+  onDestroy(() => {
+    jungle.pause();
   });
 </script>
 

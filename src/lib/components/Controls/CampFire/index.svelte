@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconCampfire } from "@tabler/icons-svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   export let volume: number;
 
@@ -11,7 +11,7 @@
     if (isFire) {
       fire.pause();
     } else {
-      fire.play();
+      fire.play().catch(() => {});
       fire.loop = true;
       fire.volume = volume;
     }
@@ -20,22 +20,29 @@
   }
 
   // Shortuct to toggle fire with "F" key
-  window.addEventListener("keydown", (e) => {
+  function handleKeydown(e: KeyboardEvent) {
+    if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
+      return;
     if (e.key === "f") {
       toggleFire();
     }
-  });
+  }
 
-  // Update volume
+  // Keep the audio element's volume in sync with the prop
+  $: if (fire) fire.volume = volume;
+
   onMount(() => {
+    window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-campfire", toggleFire);
-    setInterval(() => {
-      fire.volume = volume;
-    },100);
 
     return () => {
+      window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-campfire", toggleFire);
     };
+  });
+
+  onDestroy(() => {
+    fire.pause();
   });
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconCloudRain } from "@tabler/icons-svelte";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import RainAnimation from "./RainAnimation.svelte";
 
   export let volume: number;
@@ -12,7 +12,7 @@
     if (isRaining) {
       rain.pause();
     } else {
-      rain.play();
+      rain.play().catch(() => {});
       rain.loop = true;
       rain.volume = volume;
     }
@@ -21,22 +21,29 @@
   }
 
   // Shortuct to toggle rain with "A" key
-  window.addEventListener("keydown", (e) => {
+  function handleKeydown(e: KeyboardEvent) {
+    if ((e.target as HTMLElement)?.closest("input, textarea, [contenteditable]"))
+      return;
     if (e.key === "a") {
       toggleRain();
     }
-  });
+  }
+
+  // Keep the audio element's volume in sync with the prop
+  $: if (rain) rain.volume = volume;
 
   onMount(() => {
+    window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-rain", toggleRain);
-    
-    setInterval(() => {
-      rain.volume = volume;
-    },100);
 
     return () => {
+      window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-rain", toggleRain);
     };
+  });
+
+  onDestroy(() => {
+    rain.pause();
   });
 </script>
 
