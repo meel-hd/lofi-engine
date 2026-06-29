@@ -59,29 +59,27 @@
     targetElement = null;
   }
 
+  function handleMouseOut(e: MouseEvent) {
+    // Only hide if we mouse out of the target
+    const target = (e.target as HTMLElement).closest("[data-tooltip]");
+    if (target) {
+      // Check if we moved to a child? No, mouseout bubbles.
+      // Simpler: just check if relatedTarget is not inside the target
+      if (!target.contains(e.relatedTarget as Node)) {
+        hide();
+      }
+    }
+  }
+
   onMount(() => {
     window.addEventListener("mouseover", show);
-    window.addEventListener("mouseout", (e) => {
-      // Only hide if we mouse out of the target
-      const target = (e.target as HTMLElement).closest("[data-tooltip]");
-      if (target) {
-         // Check if we moved to a child? No, mouseout bubbles.
-         // Simpler: just check if relatedTarget is not inside the target
-         if (!target.contains(e.relatedTarget as Node)) {
-             hide();
-         }
-      }
-    });
-    
-    // Also hide on click usually? Or keep it?
-    // Let's keep it simple.
-    
+    window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("scroll", updatePosition, true); // Capture scroll to update pos
     window.addEventListener("resize", updatePosition);
 
     return () => {
       window.removeEventListener("mouseover", show);
-      window.removeEventListener("mouseout", hide); // Fix listener removal
+      window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("scroll", updatePosition, true);
       window.removeEventListener("resize", updatePosition);
     };

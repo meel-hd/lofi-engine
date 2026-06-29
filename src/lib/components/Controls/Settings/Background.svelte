@@ -79,7 +79,12 @@
   async function loadCustomBackgrounds() {
     const saved = await localDB.getItem("custom-backgrounds");
     if (saved) {
-      customBackgrounds = JSON.parse(saved);
+      try {
+        customBackgrounds = JSON.parse(saved);
+      } catch (err) {
+        console.error("Failed to parse saved custom backgrounds:", err);
+        customBackgrounds = [];
+      }
     }
   }
 

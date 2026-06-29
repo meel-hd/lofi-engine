@@ -18,6 +18,13 @@ const locales: Record<string, Translations> = {
     ru,
 };
 
+// Locales that render right-to-left. None ship today, but keeping the set
+// here means adding an RTL locale "just works" without touching the layout.
+const rtlLocales = new Set(['ar', 'he', 'fa', 'ur']);
+
+const dirFor = (lang: string): 'ltr' | 'rtl' =>
+    rtlLocales.has(lang) ? 'rtl' : 'ltr';
+
 const initialLocale = localStorage.getItem('locale') || 'en';
 
 export const locale = writable<string>(initialLocale);
@@ -26,8 +33,8 @@ export const t = derived(locale, ($locale) => {
     return locales[$locale] || locales['en'];
 });
 
-export const dir = derived(locale, () => {
-    return 'ltr';
+export const dir = derived(locale, ($locale) => {
+    return dirFor($locale);
 });
 
 export const setLocale = (lang: string) => {
@@ -35,7 +42,7 @@ export const setLocale = (lang: string) => {
         locale.set(lang);
         localStorage.setItem('locale', lang);
         // Update document direction immediately for better UX
-        document.documentElement.dir = 'ltr';
+        document.documentElement.dir = dirFor(lang);
         document.documentElement.lang = lang;
     }
 };

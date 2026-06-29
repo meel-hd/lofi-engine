@@ -5,20 +5,22 @@
   export let appWindow;
   export let noSideEffect = false;
 
+  let pollInterval: ReturnType<typeof setInterval>;
+
   onMount(() => {
     const close = document.getElementById("close-mac");
     const minimize = document.getElementById("minimize-mac");
     const maximize = document.getElementById("maximize-mac");
 
-    close.addEventListener("click", () => {
+    const handleClose = () => {
       appWindow.close();
-    });
+    };
 
-    minimize.addEventListener("click", () => {
+    const handleMinimize = () => {
       appWindow.minimize();
-    });
+    };
 
-    maximize.addEventListener("click", () => {
+    const handleMaximize = () => {
       if (isMaximized) {
         appWindow.unmaximize();
         isMaximized = false;
@@ -26,21 +28,34 @@
         appWindow.maximize();
         isMaximized = true;
       }
-    });
+    };
+
+    close.addEventListener("click", handleClose);
+    minimize.addEventListener("click", handleMinimize);
+    maximize.addEventListener("click", handleMaximize);
 
     // watch if window is maximized
     // from other sources apart from top bar
-    !noSideEffect && setInterval(() => {
-      appWindow.isMaximized().then((maximized) => {
-        isMaximized = maximized;
-        // Remove the rounded corners when maximized
-        if (isMaximized) {
-          document.body.style.borderRadius = "0px";
-        } else {
-          document.body.style.borderRadius = "10px";
-        }
-      });
-    }, 300);
+    if (!noSideEffect) {
+      pollInterval = setInterval(() => {
+        appWindow.isMaximized().then((maximized) => {
+          isMaximized = maximized;
+          // Remove the rounded corners when maximized
+          if (isMaximized) {
+            document.body.style.borderRadius = "0px";
+          } else {
+            document.body.style.borderRadius = "10px";
+          }
+        });
+      }, 300);
+    }
+
+    return () => {
+      close.removeEventListener("click", handleClose);
+      minimize.removeEventListener("click", handleMinimize);
+      maximize.removeEventListener("click", handleMaximize);
+      if (pollInterval) clearInterval(pollInterval);
+    };
   });
 </script>
 

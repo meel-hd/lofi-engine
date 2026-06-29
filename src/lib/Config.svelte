@@ -3,12 +3,17 @@
  -->
 
 <script lang="ts">
+  import { onMount } from "svelte";
+
   // Disable Right Click
-  document.addEventListener(
-    "contextmenu",
-    function (e) {
+  onMount(() => {
+    const preventContextMenu = (e: Event) => {
       e.preventDefault();
-    },
-    false
-  );
+    };
+    document.addEventListener("contextmenu", preventContextMenu, false);
+
+    return () => {
+      document.removeEventListener("contextmenu", preventContextMenu, false);
+    };
+  });
 </script>

@@ -15,20 +15,11 @@
   }
 
   // Shortuct to toggle settings with "J" key
-  window.addEventListener("keydown", (e) => {
+  function handleKeydown(e: KeyboardEvent) {
     if (e.key === "j") {
       toggle();
     }
-  });
-
-  // when mounted toggle settings
-  // to excute settings of children (old saved)
-  onMount(() => {
-    toggle();
-    setTimeout(() => {
-      toggle();
-    }, 10);
-  });
+  }
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -39,7 +30,18 @@
       isActive = false;
     }
   };
-  document.addEventListener("click", handleClickOutside);
+
+  // Saved child settings are applied without opening the panel:
+  // Background by App.svelte (and Background's own onMount), Volume via the
+  // localStorage-polled volume sync, and AutoDJ on its first interaction.
+  onMount(() => {
+    window.addEventListener("keydown", handleKeydown);
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  });
 
   const languages = [
     { code: "en", label: "English" },

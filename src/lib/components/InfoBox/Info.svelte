@@ -17,16 +17,12 @@
     localStorage.setItem("shownBefore-info", "true");
   }
 
-  // Listen to escape key to close info box
-  document.addEventListener(
-    "keydown",
-    function (e) {
-      if (e.key === "Escape" && visible) {
-        toggleInfoBox();
-      }
-    },
-    false,
-  );
+  // Escape key toggles the info box (show + hide)
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      toggleInfoBox();
+    }
+  }
 
   function showNextTime() {
     localStorage.removeItem("shownBefore-info");
@@ -34,8 +30,10 @@
 
   onMount(() => {
     window.addEventListener("lofi-toggle-info", toggleInfoBox);
+    document.addEventListener("keydown", handleKeydown);
     return () => {
       window.removeEventListener("lofi-toggle-info", toggleInfoBox);
+      document.removeEventListener("keydown", handleKeydown);
     };
   });
 </script>

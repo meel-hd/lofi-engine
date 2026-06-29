@@ -1,4 +1,6 @@
-export const ru = {
+import type { Translations } from './types';
+
+export const ru: Translations = {
     settings: {
         title: 'Настройки',
         background: {

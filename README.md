@@ -73,10 +73,10 @@ The new **Immersion** system (Auto DJ) automatically manages the soundscape for 
 LoFi Engine now speaks your language! We have added support for multiple languages to make the experience accessible to everyone.
 - **English**
 - **French** (Français)
-- **Spanish** (Español)
 - **Japanese** (日本語)
-- **Korean** (한국어)
-- **Indonesian** (Bahasa Indonesia)
+- **Chinese** (中文)
+- **Hindi** (हिन्दी)
+- **Dutch** (Nederlands)
 - **Russian** (Русский)
 - And more coming soon!
 

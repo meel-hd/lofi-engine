@@ -18,7 +18,7 @@
   <a href="https://LofiEngine.com" target="_blank">
     <IconLink size={25} />
   </a> -->
-  <a href="https://github.com/meel-hd/lofi-engine" target="_blank">
+  <a href="https://github.com/meel-hd/lofi-engine" target="_blank" rel="noopener noreferrer">
     <IconBrandGithub size={25} />
   </a>
 </div>
