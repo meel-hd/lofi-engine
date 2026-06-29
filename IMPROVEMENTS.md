@@ -32,7 +32,12 @@ Implemented by four file-disjoint agents and centrally verified:
     turns only those off when leaving ATMOSPHERE/WORLD — it no longer fights manual toggles or gets stuck on.
 - **DONE but needs runtime check:** **SEC-1** — an explicit CSP was added to `tauri.conf.json`, but it must be
   validated in a real `tauri build` (Tone.js may use blob/AudioWorklet workers; user images render as data-URLs).
-- **NOT STARTED (larger features, left as roadmap):** GEN-2 (bassline) · GEN-5 (drum-pattern variety) · GEN-7 (inversions/extensions/velocity).
+- **DONE (Wave 3 — the roadmap musical features, built as tested engine modules + a single PlayButton integration):**
+  - **GEN-2** — `engine/Bass/` adds a soft synth bass that outlines the chord root an octave below the comping.
+  - **GEN-5** — `engine/Drums/patterns.ts` is a library of groove variations; the drum sequences now iterate step
+    indices and look up the current pattern, so each section swaps to a new groove (the original groove is set 0).
+  - **GEN-7** — `Chord.generateVoicing` gained opt-in inversions/extensions and a `pickVelocity()` for per-chord
+    dynamics; `playChord` uses them so the comping isn't mechanically uniform.
 
 ---
 
