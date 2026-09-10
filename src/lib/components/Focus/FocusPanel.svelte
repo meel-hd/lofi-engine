@@ -54,21 +54,23 @@
 
 <div class:mini={$mini} class="focus-layer">
   <nav aria-label={$t.focus.focus} class="focus-nav">
-    <button
-      class="focus-trigger glass"
-      on:click={() => {
-        timerOpen.set(true);
-        activePanel.set(null);
-      }}
-      >{#if $timer.status === "running"}<i></i>{/if}{$t.focus.focus}</button
-    >
-    <button
-      class="glass"
-      on:click={() => {
-        activePanel.set("tasks");
-        timerOpen.set(false);
-      }}>{$t.focus.tasks}</button
-    >
+    {#if !$zen}
+      <button
+        class="focus-trigger glass"
+        on:click={() => {
+          timerOpen.set(true);
+          activePanel.set(null);
+        }}
+        >{#if $timer.status === "running"}<i></i>{/if}{$t.focus.focus}</button
+      >
+      <button
+        class="glass"
+        on:click={() => {
+          activePanel.set("tasks");
+          timerOpen.set(false);
+        }}>{$t.focus.tasks}</button
+      >
+    {/if}
     <button
       class="zen-trigger glass"
       data-tooltip={$zen ? $t.focus.exit_zen : $t.focus.zen}
@@ -77,7 +79,7 @@
     >
       <IconYinYang size={15} />
     </button>
-    <Settings />
+    {#if !$zen}<Settings />{/if}
     {#if "__TAURI_INTERNALS__" in window}<button on:click={toggleMini}
         >{$mini ? $t.focus.normal : $t.focus.mini}</button
       >{/if}

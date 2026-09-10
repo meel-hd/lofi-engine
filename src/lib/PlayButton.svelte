@@ -8,6 +8,7 @@
   import { onDestroy, onMount } from "svelte";
   import { isEditableTarget } from "./keyboard";
   import { t } from "./locales/store";
+  import { zen } from "./focus/store";
 // @ts-ignore
   import * as Tone from "tone";
   import Visualizer from "../lib/components/Visualizer/index.svelte";
@@ -431,6 +432,7 @@
 </script>
 
 <div>
+  {#if !$zen}
   <div class="controls">
     <button
       class="play-button"
@@ -450,8 +452,9 @@
       {/if}
     </button>
   </div>
+  {/if}
 
-  {#if allSamplesLoaded && contextStarted}
+  {#if !$zen && allSamplesLoaded && contextStarted}
     {#if genChordsOnce}
       <ol class="progressionList glass">
         <li class="key">{key}</li>
@@ -485,7 +488,7 @@
       </ol>
     {/if}
   {/if}
-  {#if Tone.Transport.state === "started"}
+  {#if !$zen && Tone.Transport.state === "started"}
     <div class="visualizer-container">
       <Visualizer audio={Tone.Master} />
     </div>

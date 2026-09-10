@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import { isEditableTarget } from "../../keyboard";
   import { t } from "../../locales/store";
+  import { zen } from "../../focus/store";
 
   // Set true to show the trigger while debugging its position.
   const SHOW_TRACK_TRIGGER = false;
@@ -239,7 +240,7 @@
 </div>
 
   <!-- Active tracks remain available as quick toggle buttons. -->
-  <div class:visualizer-active={visualizerActive} class="active-tracks" aria-label="Active tracks">
+  <div class:visualizer-active={visualizerActive && !$zen} class="active-tracks" aria-label="Active tracks">
     {#each tracks.filter((track) => track.isPlaying) as track (track.id)}
       <button
         class="active-track glass"
