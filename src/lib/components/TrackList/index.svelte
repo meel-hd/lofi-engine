@@ -380,7 +380,7 @@
   .active-tracks {
     position: fixed;
     left: 16px;
-    bottom: 24px;
+    bottom: 18px;
     display: flex;
     align-items: center;
     gap: 4px;

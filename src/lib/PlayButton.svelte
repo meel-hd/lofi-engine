@@ -591,11 +591,17 @@
     grid-template-columns: repeat(3, 3px);
     grid-template-rows: repeat(3, 3px);
     gap: 3px;
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
   }
 
   .chord-dot {
     width: 3px;
     height: 3px;
+    min-width: 3px;
+    min-height: 3px;
+    aspect-ratio: 1;
     border-radius: 50%;
     background: currentColor;
   }
@@ -625,7 +631,7 @@
   .visualizer-container {
     position: absolute;
     left: 30px;
-    bottom: 30px;
+    bottom: 18px;
     height: 180px;
     overflow: hidden;
     margin-top: 10px;
