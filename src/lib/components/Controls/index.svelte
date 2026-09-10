@@ -33,14 +33,14 @@
 
 <style>
   .controls {
-    width: 280px;
-    height: 50px;
+    width: 201.6px;
+    height: 36px;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    border-radius: 50px;
+    padding: 3px 10px;
+    border-radius: 36px;
   }
 
   .controls.zen {
@@ -63,7 +63,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      width: 85vw;
+      width: 61.2vw;
     }
   }
 </style>

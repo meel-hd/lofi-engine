@@ -47,11 +47,16 @@
         `}
   on:click={toggleJungle}
 >
-  <IconTrees size={25} color={isActive ? "black" : "white"} />
+  <IconTrees size={18} color={isActive ? "black" : "white"} />
 </button>
 
 <style>
   button {
+    width: 26.64px;
+    height: 26.64px;
+    padding: 0;
+    display: grid;
+    place-items: center;
     color: white;
     border-radius: 50%;
     aspect-ratio: 4/4;

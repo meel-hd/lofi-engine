@@ -48,11 +48,16 @@
         `}
   on:click={toggleFire}
 >
-  <IconCampfire size={25} color={isFire ? "black" : "white"} />
+  <IconCampfire size={18} color={isFire ? "black" : "white"} />
 </button>
 
 <style>
   button {
+    width: 26.64px;
+    height: 26.64px;
+    padding: 0;
+    display: grid;
+    place-items: center;
     color: white;
     border-radius: 50%;
     aspect-ratio: 4/4;

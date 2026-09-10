@@ -48,11 +48,16 @@
     `}
   on:click={toggleThunder}
 >
-  <IconCloudStorm size={25} color={isStorming ? "black" : "white"} />
+  <IconCloudStorm size={18} color={isStorming ? "black" : "white"} />
 </button>
 
 <style>
   button {
+    width: 26.64px;
+    height: 26.64px;
+    padding: 0;
+    display: grid;
+    place-items: center;
     color: white;
     border-radius: 50%;
     aspect-ratio: 4/4;

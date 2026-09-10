@@ -50,13 +50,18 @@
       `}
     on:click={toggleRain}
   >
-    <IconCloudRain size={25} color={isRaining ? "black" : "white"} />
+    <IconCloudRain size={18} color={isRaining ? "black" : "white"} />
   </button>
   <RainAnimation {isRaining} />
 </div>
 
 <style>
   button {
+    width: 26.64px;
+    height: 26.64px;
+    padding: 0;
+    display: grid;
+    place-items: center;
     color: white;
     border-radius: 50%;
     aspect-ratio: 4/4;
