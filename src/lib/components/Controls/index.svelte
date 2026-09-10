@@ -46,6 +46,12 @@
   }
 
   .controls.zen {
+    position: relative;
+    isolation: isolate;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
     visibility: hidden;
     pointer-events: none;
   }
