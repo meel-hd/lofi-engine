@@ -2,7 +2,6 @@
   import CampFire from "./CampFire/index.svelte";
   import Jungle from "./Jungle/index.svelte";
   import Rain from "./Rain/index.svelte";
-  import Settings from "./Settings/index.svelte";
   import Thunder from "./Thunder/index.svelte";
   import { zen } from "../../focus/store";
 
@@ -30,12 +29,11 @@
   <Thunder volume={volumes.thunder} />
   <Jungle volume={volumes.jungle} />
   <CampFire volume={volumes.campfire} />
-  <Settings />
 </div>
 
 <style>
   .controls {
-    width: 340px;
+    width: 280px;
     height: 50px;
     color: white;
     display: flex;

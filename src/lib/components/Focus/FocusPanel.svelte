@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { IconYinYang } from "@tabler/icons-svelte";
+  import Settings from "../Controls/Settings/index.svelte";
   import TimerView from "./TimerView.svelte";
   import TaskPanel from "./TaskPanel.svelte";
   import {
@@ -76,6 +77,7 @@
     >
       <IconYinYang size={15} />
     </button>
+    <Settings />
     {#if "__TAURI_INTERNALS__" in window}<button on:click={toggleMini}
         >{$mini ? $t.focus.normal : $t.focus.mini}</button
       >{/if}

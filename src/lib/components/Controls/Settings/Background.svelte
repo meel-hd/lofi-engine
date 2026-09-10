@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
-    IconArrowLeft,
-    IconArrowRight,
+    IconChevronLeft,
+    IconChevronRight,
     IconPlus,
     IconTrash,
   } from "@tabler/icons-svelte";
@@ -297,7 +297,7 @@
 
   <div class="container">
     <button on:click={prevBg}>
-      <IconArrowLeft size={20} />
+      <IconChevronLeft size={20} />
     </button>
     {#if allBackgrounds.length > 0}
       {@const currentBg = allBackgrounds.find(
@@ -343,7 +343,7 @@
       />
     {/if}
     <button on:click={nextBg}>
-      <IconArrowRight size={20} />
+      <IconChevronRight size={20} />
     </button>
   </div>
 
@@ -455,6 +455,12 @@
     color: white;
     overflow: hidden;
   }
+  .container > button {
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+
   button:hover {
     backdrop-filter: blur(10px);
     background-color: rgba(0, 0, 0, 10%);

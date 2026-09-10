@@ -110,6 +110,11 @@
 </div>
 
 <style>
+    @media (min-width: 701px) {
+        h4 {
+            margin-top: 0;
+        }
+    }
     h5 {
         margin-left: 10px;
         margin-bottom: -35px;

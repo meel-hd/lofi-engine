@@ -10,6 +10,15 @@
 
   let targetElement: HTMLElement | null = null;
 
+  function tooltipLayer(node: HTMLDivElement) {
+    // Native dialogs render above every z-index; popovers share their top layer.
+    const popover = node as HTMLDivElement & { showPopover?: () => void };
+    if (popover.showPopover) {
+      node.setAttribute("popover", "manual");
+      popover.showPopover();
+    }
+  }
+
   function updatePosition() {
     if (!targetElement || !visible) return;
 
@@ -78,18 +87,21 @@
     
     window.addEventListener("scroll", updatePosition, true); // Capture scroll to update pos
     window.addEventListener("resize", updatePosition);
+    window.addEventListener("close", hide, true);
 
     return () => {
       window.removeEventListener("mouseover", show);
       window.removeEventListener("mouseout", hide); // Fix listener removal
       window.removeEventListener("scroll", updatePosition, true);
       window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("close", hide, true);
     };
   });
 </script>
 
 {#if visible}
   <div
+    use:tooltipLayer
     id="global-tooltip"
     class="glass"
     style="top: {y}px; left: {x}px;"
@@ -101,6 +113,9 @@
 <style>
   #global-tooltip {
     position: fixed;
+    inset: auto;
+    margin: 0;
+    border: 0;
     color: white;
     padding: 4px 8px;
     border-radius: 6px;

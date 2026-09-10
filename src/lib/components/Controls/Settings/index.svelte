@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { IconSettings } from "@tabler/icons-svelte";
-  import { onMount } from "svelte";
+  import { IconSettings, IconX } from "@tabler/icons-svelte";
   import Background from "./Background.svelte";
   import Volume from "./Volume.svelte";
   import AutoDJ from "./AutoDJ.svelte";
@@ -10,60 +9,43 @@
 
   let isActive = false;
 
-  function portal(node: HTMLElement) {
-    document.body.appendChild(node);
-    const place = () => {
-      const anchor = document.getElementById("settings-box");
-      if (!anchor) return;
-      const rect = anchor.getBoundingClientRect();
-      node.style.top = `${Math.round(rect.bottom + 20)}px`;
-      node.style.right = `${Math.round(window.innerWidth - rect.right)}px`;
-    };
-    place();
-    window.addEventListener("resize", place);
-    return {
-      destroy() {
-        window.removeEventListener("resize", place);
-        node.remove();
-      },
-    };
-  }
+  let dialog: HTMLDialogElement;
 
-  function toggle() {
-    isActive = !isActive;
+  function syncOpenState() {
+    isActive = dialog.open;
     window.dispatchEvent(
       new CustomEvent("settings-open-changed", { detail: { isActive } }),
     );
   }
 
-  // Shortuct to toggle settings with "J" key
-  window.addEventListener("keydown", (e) => {
-    if (isEditableTarget(e.target)) return;
+  function close() {
+    dialog.close();
+    syncOpenState();
+  }
 
-    if (e.key === "j") {
+  function toggle() {
+    if (dialog.open) {
+      close();
+    } else {
+      dialog.showModal();
+      syncOpenState();
+    }
+  }
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (isEditableTarget(event.target) || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (event.key.toLowerCase() === "j") {
+      event.preventDefault();
       toggle();
     }
-  });
+  }
 
-  // when mounted toggle settings
-  // to excute settings of children (old saved)
-  onMount(() => {
-    toggle();
-    setTimeout(() => {
-      toggle();
-    }, 10);
-  });
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      isActive &&
-      event.target instanceof HTMLElement &&
-      !event.target.closest("#settings-box, .settings-container")
-    ) {
-      isActive = false;
-    }
-  };
-  document.addEventListener("click", handleClickOutside);
+  function handleBackdropClick(event: MouseEvent) {
+    if (event.target !== dialog) return;
+    const rect = dialog.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right ||
+        event.clientY < rect.top || event.clientY > rect.bottom) close();
+  }
 
   const languages = [
     { code: "en", label: "English" },
@@ -76,66 +58,114 @@
   ];
 </script>
 
-<div id="settings-box">
-  <button
-    style={`
-          background-color: ${isActive ? "white" : "transparent"};
-          `}
-    on:click={toggle}
-  >
-    <IconSettings size={25} color={isActive ? "black" : "white"} />
-  </button>
-  {#if isActive}
-    <div class="settings-container glass" use:portal>
-      <div class="settings-header">
-        <h3>{$t.settings.title}</h3>
-      </div>
-      <div class="settings-content">
-        <Background />
-        <Volume />
-        <AutoDJ />
-        <div class="section language-section">
-          <h4>{$t.settings.language.title}</h4>
-          <div class="lang-switcher">
-            {#each languages as lang}
-              <button
-                class:active={$locale === lang.code}
-                on:click={() => setLocale(lang.code)}
-              >
-                {lang.label}
-              </button>
-            {/each}
-          </div>
+<svelte:window on:keydown={handleKeydown} />
+
+<button
+  class="settings-trigger glass"
+  data-tooltip={$t.settings.title}
+  aria-label={$t.settings.title}
+  aria-haspopup="dialog"
+  aria-expanded={isActive}
+  aria-controls="settings-modal"
+  on:click={toggle}
+>
+  <IconSettings size={15} />
+</button>
+
+<!-- Escape provides native keyboard dismissal for backdrop clicks. -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<dialog
+  bind:this={dialog}
+  id="settings-modal"
+  class="settings-container glass"
+  aria-labelledby="settings-title"
+  on:close={syncOpenState}
+  on:click={handleBackdropClick}
+>
+  <div class="settings-header">
+    <h3 id="settings-title">{$t.settings.title}</h3>
+    <button class="close-button" aria-label="Close settings" on:click={close}>
+      <IconX size={17} />
+    </button>
+  </div>
+  <div class="settings-content">
+    <div class="settings-column">
+      <Background />
+      <AutoDJ />
+      <div class="section language-section">
+        <h4>{$t.settings.language.title}</h4>
+        <div class="lang-switcher">
+          {#each languages as lang}
+            <button
+              class:active={$locale === lang.code}
+              on:click={() => setLocale(lang.code)}
+            >
+              {lang.label}
+            </button>
+          {/each}
         </div>
       </div>
     </div>
-  {/if}
-</div>
+    <div class="settings-column">
+      <Volume />
+    </div>
+  </div>
+</dialog>
 
 <style>
-  button {
+  .settings-trigger,
+  .close-button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    box-sizing: border-box;
+    padding: 0;
     color: white;
-    border-radius: 50%;
-    aspect-ratio: 4/4;
+    border: 0;
+    border-radius: 6px;
   }
-  #settings-box {
-    position: relative;
+
+  .settings-trigger:hover,
+  .close-button:hover {
+    background: var(--glass-hover-background);
   }
+
+  button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
   .settings-container {
     position: fixed;
-    z-index: 100;
-    height: 58vh;
-    padding: 20px;
-    width: 340px; /* Like controls width */
+    inset: 0;
+    margin: auto;
+    box-sizing: border-box;
+    max-height: min(588px, calc(100dvh - 48px));
+    padding: 24px;
+    width: min(800px, calc(100vw - 32px));
+    max-width: none;
     color: white;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
     overflow-y: auto;
-    animation: show 0.4s ease-in-out;
-    display: flex;
-    flex-direction: column;
+    pointer-events: auto;
+    box-shadow: 0 24px 80px #00000050;
+  }
+
+  .settings-container[open] {
+    animation: show 0.2s ease-out;
+  }
+
+  .settings-container::backdrop {
+    background: #00000060;
   }
 
   .settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 20px;
     padding-bottom: 10px;
   }
@@ -147,6 +177,14 @@
   }
 
   .settings-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    align-items: start;
+  }
+
+  .settings-column {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -203,12 +241,16 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
-  @media only screen and (max-width: 600px) {
-    .settings-container {
-      width: 80vw;
-      right: -3vw;
-      background-color: rgba(0, 0, 0, 50%);
-      height: 55vh;
+  @media (max-width: 700px) {
+    .settings-content {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .settings-container[open] {
+      animation: none;
     }
   }
 </style>

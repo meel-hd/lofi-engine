@@ -61,7 +61,7 @@
   .modes {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 0;
     padding: 0 10px;
   }
 
@@ -70,10 +70,20 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
     padding: 8px 12px;
-    border-radius: 20px;
+    border-radius: 0;
     cursor: pointer;
     font-size: 0.9em;
     transition: all 0.2s;
+  }
+
+  button:first-child {
+    border-start-start-radius: 20px;
+    border-end-start-radius: 20px;
+  }
+
+  button:last-child {
+    border-start-end-radius: 20px;
+    border-end-end-radius: 20px;
   }
 
   button:hover {
