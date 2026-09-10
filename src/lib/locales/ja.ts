@@ -2,6 +2,7 @@ import type { Translations } from './types';
 
 export const ja: Translations = {
     settings: {
+        rain_speed: '雨の速度',
         title: '設定',
         background: {
             title: '背景',

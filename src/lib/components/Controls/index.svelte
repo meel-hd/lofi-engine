@@ -33,11 +33,12 @@
 
 <style>
   .controls {
-    width: 201.6px;
+    width: auto;
     height: 36px;
     color: white;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
     align-items: center;
     padding: 3px 10px;
     border-radius: 36px;

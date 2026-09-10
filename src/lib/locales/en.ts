@@ -1,5 +1,6 @@
 export const en = {
     settings: {
+        rain_speed: 'Rain speed',
         title: 'Settings',
         background: {
             title: 'Background',

@@ -47,8 +47,9 @@
   }
 
   h4 {
-    margin-left: 10px;
+    margin-left: 0;
     margin-bottom: 4px;
+    font-size: 1em;
   }
 
   p {

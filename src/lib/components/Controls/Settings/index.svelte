@@ -2,6 +2,7 @@
   import { IconSettings, IconX } from "@tabler/icons-svelte";
   import Background from "./Background.svelte";
   import Volume from "./Volume.svelte";
+  import { rainSpeed } from "../Rain/speed";
   import AutoDJ from "./AutoDJ.svelte";
 
   import { t, locale, setLocale } from "../../../locales/store";
@@ -108,6 +109,17 @@
     </div>
     <div class="settings-column">
       <Volume />
+      <section class="rain-speed-section">
+        <h4><label for="rain-speed">{$t.settings.rain_speed}</label></h4>
+        <input
+          id="rain-speed"
+          type="range"
+          min="0.25"
+          max="2"
+          step="0.25"
+          bind:value={$rainSpeed}
+        />
+      </section>
     </div>
   </div>
 </dialog>
@@ -141,16 +153,21 @@
     inset: 0;
     margin: auto;
     box-sizing: border-box;
-    max-height: min(588px, calc(100dvh - 48px));
+    max-height: min(647px, calc(100dvh - 48px));
     padding: 24px;
     width: min(800px, calc(100vw - 32px));
     max-width: none;
     color: white;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 0;
     border-radius: 20px;
     overflow-y: auto;
     pointer-events: auto;
     box-shadow: 0 24px 80px #00000050;
+  }
+
+  .settings-container:focus,
+  .settings-container:focus-visible {
+    outline: none;
   }
 
   .settings-container[open] {
@@ -190,8 +207,27 @@
     gap: 20px;
   }
 
+  .rain-speed-section {
+    margin: 0;
+  }
+
+  #rain-speed {
+    width: 90%;
+    margin-left: 10px;
+  }
+
+  #rain-speed::-webkit-slider-runnable-track {
+    height: 3px;
+  }
+
   .section h4 {
     margin: 0 0 10px 0;
+    font-size: 1em;
+    opacity: 0.9;
+  }
+
+  .rain-speed-section h4 {
+    margin: 0 0 10px;
     font-size: 1em;
     opacity: 0.9;
   }

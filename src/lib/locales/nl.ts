@@ -2,6 +2,7 @@ import type { Translations } from './types';
 
 export const nl: Translations = {
     settings: {
+        rain_speed: 'Regensnelheid',
         title: 'Instellingen',
         background: {
             title: 'Achtergrond',

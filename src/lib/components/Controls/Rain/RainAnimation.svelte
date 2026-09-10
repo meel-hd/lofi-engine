@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { rainSpeed } from "./speed";
+
   export let isRaining = false;
 </script>
 
 <div>
   {#if isRaining}
-    <div class="rain" />
+    <div class="rain" style:animation-duration={`${0.3 / $rainSpeed}s`} />
   {/if}
 </div>
 

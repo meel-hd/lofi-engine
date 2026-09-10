@@ -2,6 +2,7 @@ import type { Translations } from './types';
 
 export const fr: Translations = {
     settings: {
+        rain_speed: 'Vitesse de la pluie',
         title: 'Paramètres',
         background: {
             title: 'Arrière-plan',

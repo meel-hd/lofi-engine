@@ -2,6 +2,7 @@ import type { Translations } from './types';
 
 export const zh: Translations = {
     settings: {
+        rain_speed: '雨速',
         title: '设置',
         background: {
             title: '背景',

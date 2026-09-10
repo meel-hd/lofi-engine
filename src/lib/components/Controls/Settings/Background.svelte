@@ -366,7 +366,7 @@
   .header h4 {
     margin: 0;
     color: white;
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   .upload-btn {

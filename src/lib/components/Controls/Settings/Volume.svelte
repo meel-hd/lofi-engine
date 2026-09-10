@@ -110,6 +110,9 @@
 </div>
 
 <style>
+    h4 {
+        font-size: 1em;
+    }
     @media (min-width: 701px) {
         h4 {
             margin-top: 0;

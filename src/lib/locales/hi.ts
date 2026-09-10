@@ -2,6 +2,7 @@ import type { Translations } from './types';
 
 export const hi: Translations = {
     settings: {
+        rain_speed: 'बारिश की गति',
         title: 'सेटिंग्स',
         background: {
             title: 'पृष्ठभूमि',
