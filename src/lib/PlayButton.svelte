@@ -51,6 +51,16 @@
   // State variables
   let key = "C";
   let progression = [];
+  const dotPatterns = [
+    [],
+    [5],
+    [1, 9],
+    [1, 5, 9],
+    [1, 3, 7, 9],
+    [1, 3, 5, 7, 9],
+    [1, 3, 4, 6, 7, 9],
+    [1, 3, 4, 5, 6, 7, 9],
+  ];
   let scale = [];
   let progress = 0;
   let scalePos = 0;
@@ -438,20 +448,38 @@
         <IconPlayerPlayFilled size={30} />
       {/if}
     </button>
-    <button class="generateBtn glass" on:click={generateProgression}>
-      <IconRefresh size={16} />
-    </button>
   </div>
 
   {#if allSamplesLoaded && contextStarted}
     {#if genChordsOnce}
-      <ol class="progressionList">
-        <li class="key glass">{key}</li>
+      <ol class="progressionList glass">
+        <li class="key">{key}</li>
         {#each progression as chord, idx}
-          <li class={`glass ${idx === activeProgressionIndex ? "live" : ""}`}>
-            {chord.degree}
+          <li class:live={idx === activeProgressionIndex}>
+            <span
+              class="chord-dots"
+              role="img"
+              aria-label={String(chord.degree)}
+            >
+              {#each dotPatterns[chord.degree] as cell}
+                <span
+                  class="chord-dot"
+                  aria-hidden="true"
+                  style={`grid-row: ${Math.ceil(cell / 3)}; grid-column: ${(cell - 1) % 3 + 1}`}
+                ></span>
+              {/each}
+            </span>
           </li>
         {/each}
+        <li class="generate-slot">
+          <button
+            class="generateBtn"
+            aria-label="New notes"
+            on:click={generateProgression}
+          >
+            <IconRefresh size={16} />
+          </button>
+        </li>
       </ol>
     {/if}
   {/if}
@@ -498,39 +526,95 @@
     color: white;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
     outline: none;
+  }
+
+  .generateBtn:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .progressionList .generate-slot {
+    position: relative;
+    padding-inline-start: 8px;
+    margin-inline-start: 4px;
+  }
+
+  .generate-slot::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.16);
   }
 
   .progressionList {
     position: fixed;
-    bottom: 0;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 4px;
     list-style: none;
-    padding: 0;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
+    margin: 0;
+    padding: 5px;
+    border-radius: 12px;
     z-index: 1;
   }
 
   .progressionList li {
-    padding: 5px 10px;
-    border-radius: 4px;
-    color: white;
-    border: 2px solid transparent;
+    display: grid;
+    place-items: center;
+    min-width: 26px;
+    height: 28px;
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chord-dots {
+    display: grid;
+    grid-template-columns: repeat(3, 3px);
+    grid-template-rows: repeat(3, 3px);
+    gap: 3px;
+  }
+
+  .chord-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .progressionList .key {
+    position: relative;
+    padding-inline: 4px 12px;
+    margin-inline-end: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+  }
+
+  .progressionList .key::after {
+    content: "";
+    position: absolute;
+    inset-inline-end: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.16);
   }
 
   .progressionList li.live {
-    border-color:#ffffff66;
+    color: white;
   }
 
   .visualizer-container {
@@ -547,10 +631,9 @@
       margin-bottom: 40px;
     }
     .progressionList {
-      bottom: 0;
-      left: 0;
-      width: 100vw;
-      transform: scale(0.8);
+      bottom: 50px;
+      gap: 2px;
+      padding: 3px;
     }
     .visualizer-container {
       display: none;
