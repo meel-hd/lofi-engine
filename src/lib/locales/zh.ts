@@ -19,6 +19,7 @@ export const zh: Translations = {
         },
         autodj: {
             title: '沉浸感',
+            description: '选择 Lofi Engine 自动添加的氛围程度。',
             modes: {
                 music: {
                     label: '音乐',
@@ -99,5 +100,25 @@ export const zh: Translations = {
         7: { quote: "过去是参考之地，而非居住之所。" },
         8: { quote: "旅程不会永远持续，但记忆会。" },
         9: { quote: "请帮帮我，我在水下。" },
+    },
+    focus: {
+        focus: '专注', tasks: '任务', mini: '迷你', normal: '普通',
+        zen: '禅模式', exit_zen: '退出禅模式',
+        paused: '已暂停', short_break: '短休息', long_break: '长休息',
+        start: '开始', pause: '暂停', resume: '继续', skip: '跳过', end: '结束',
+        settings: '设置', stats: '统计', close_timer: '关闭计时器', close_tasks: '关闭任务',
+        placeholder: '你正在专注什么？', add: '添加', completed: '已完成',
+        active: '当前专注任务', inactive: '未激活任务', select: '设为专注任务',
+        unselect: '取消选择专注任务', complete: '标记完成', incomplete: '标记未完成',
+        remove: '删除任务', completed_task: '已完成任务',
+        task_actions: '任务操作',
+        empty: '添加任务以将其关联到你的 Pomodoro。', working_on: '正在处理',
+        pomodoros_completed: '已完成的 Pomodoro', rounds: '轮次', rounds_complete: '轮已完成',
+        minutes: '分钟', notifications: '桌面通知', today_minutes: '今日分钟',
+        today_pomodoros: '今日 Pomo', week_minutes: '本周分钟', week_pomodoros: '本周 Pomo',
+        week_focus: '过去七天的专注时间',
+        last_seven_days: '过去 7 天', no_focus_data: '尚未记录专注时间',
+        focus_time: '专注时间', break_time: '休息时间',
+        break_over: '休息结束了。', take_break: '做得好。花一点时间恢复精力。',
     },
 };

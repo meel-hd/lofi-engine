@@ -6,6 +6,7 @@
       IconRefresh,
   } from "@tabler/icons-svelte";
   import { onDestroy, onMount } from "svelte";
+  import { isEditableTarget } from "./keyboard";
 // @ts-ignore
   import * as Tone from "tone";
   import Visualizer from "../lib/components/Visualizer/index.svelte";
@@ -150,6 +151,8 @@
 
     // Listen for spacebar press
     const handleKeydown = (e) => {
+      if (isEditableTarget(e.target)) return;
+
       if (e.code === "Space") {
         e.preventDefault();
         toggle();
@@ -164,9 +167,18 @@
       autoDJMode = e.detail.mode;
     };
 
+    // Pomodoro breaks soften the existing generator instead of creating a second audio path.
+    // The normal volume polling below restores the user's chosen setting on the next focus phase.
+    const handleFocusPhase = (e) => {
+      const isBreak = e.detail?.phase === "shortBreak" || e.detail?.phase === "longBreak";
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || DEFFAULT_VOLUMES;
+      vol.volume.rampTo(linearToDb(saved.main_track * (isBreak ? 0.7 : 1)), 0.35);
+    };
+
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("lofi-toggle-play", handleCustomToggle);
     window.addEventListener("auto-dj-mode-changed", handleAutoDJModeChange);
+    window.addEventListener("lofi-focus-phase", handleFocusPhase);
 
     // Initialize mode
     autoDJMode = localStorage.getItem("AutoDJMode") || "MUSIC";
@@ -175,6 +187,7 @@
       window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("lofi-toggle-play", handleCustomToggle);
       window.removeEventListener("auto-dj-mode-changed", handleAutoDJModeChange);
+      window.removeEventListener("lofi-focus-phase", handleFocusPhase);
     };
   });
 
@@ -433,9 +446,9 @@
   {#if allSamplesLoaded && contextStarted}
     {#if genChordsOnce}
       <ol class="progressionList">
-        <li class="key" id="glass">{key}</li>
+        <li class="key glass">{key}</li>
         {#each progression as chord, idx}
-          <li id="glass" class={idx === activeProgressionIndex ? "live" : ""}>
+          <li class={`glass ${idx === activeProgressionIndex ? "live" : ""}`}>
             {chord.degree}
           </li>
         {/each}

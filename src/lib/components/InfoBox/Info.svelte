@@ -4,6 +4,7 @@
   import SocialLinks from "./SocialLinks.svelte";
   import { onMount } from "svelte";
   import { t } from "../../locales/store";
+  import { isEditableTarget } from "../../keyboard";
 
   let visible = false;
 
@@ -21,6 +22,8 @@
   document.addEventListener(
     "keydown",
     function (e) {
+      if (isEditableTarget(e.target)) return;
+
       if (e.key === "Escape" && visible) {
         toggleInfoBox();
       }

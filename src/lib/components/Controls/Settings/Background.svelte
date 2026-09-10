@@ -8,10 +8,11 @@
   import { onMount } from "svelte";
   import localDB from "../../../localDB";
   import { t } from "../../../locales/store";
+  import { isEditableTarget } from "../../../keyboard";
 
   const MAX_DIMENSION = 1920;
-  const WEBP_QUALITY  = 0.85;
-  const MAX_FILE_MB   = 20;
+  const WEBP_QUALITY = 0.85;
+  const MAX_FILE_MB = 20;
 
   // get id from localstorage
   let id: any = localStorage.getItem("bg-id") || 1;
@@ -48,19 +49,22 @@
         if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
           if (width >= height) {
             height = Math.round((height / width) * MAX_DIMENSION);
-            width  = MAX_DIMENSION;
+            width = MAX_DIMENSION;
           } else {
-            width  = Math.round((width / height) * MAX_DIMENSION);
+            width = Math.round((width / height) * MAX_DIMENSION);
             height = MAX_DIMENSION;
           }
         }
 
         const canvas = document.createElement("canvas");
-        canvas.width  = width;
+        canvas.width = width;
         canvas.height = height;
 
         const ctx = canvas.getContext("2d");
-        if (!ctx) { reject(new Error("Canvas context unavailable")); return; }
+        if (!ctx) {
+          reject(new Error("Canvas context unavailable"));
+          return;
+        }
 
         ctx.drawImage(img, 0, 0, width, height);
 
@@ -132,7 +136,8 @@
         localStorage.setItem("bg-type", "default");
         localStorage.removeItem("custom-bg-id");
         const bgElement = document.getElementById("bg");
-        if (bgElement) bgElement.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
+        if (bgElement)
+          bgElement.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
       }
     }
   }
@@ -156,10 +161,10 @@
         const dataUrl = await compressImage(file);
 
         const customBg = {
-          id:      `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-          name:    file.name,
+          id: `custom_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          name: file.name,
           dataUrl,
-          type:    "image/webp",
+          type: "image/webp",
         };
 
         customBackgrounds.push(customBg);
@@ -173,8 +178,8 @@
       }
     }
 
-      isUploading = false;
-      target.value = "";
+    isUploading = false;
+    target.value = "";
   }
 
   function applyCurrentBackground() {
@@ -204,7 +209,8 @@
   function prevBg() {
     buildAllBackgrounds();
     const currentIndex = getCurrentIndex();
-    const prevIndex = currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
+    const prevIndex =
+      currentIndex === 0 ? allBackgrounds.length - 1 : currentIndex - 1;
     applyBackground(allBackgrounds[prevIndex]);
   }
 
@@ -225,7 +231,9 @@
       bg.style.backgroundImage = `url('${background.url}')`;
       isTransitioning = false;
     };
-    img.onerror = () => { isTransitioning = false; };
+    img.onerror = () => {
+      isTransitioning = false;
+    };
     img.src = background.url;
 
     if (background.type === "default") {
@@ -256,12 +264,12 @@
   });
 
   window.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.target instanceof HTMLElement && !e.target.closest("input")) {
-      if (e.key === "ArrowRight") {
-        nextBg();
-      } else if (e.key === "ArrowLeft") {
-        prevBg();
-      }
+    if (isEditableTarget(e.target)) return;
+
+    if (e.key === "ArrowRight") {
+      nextBg();
+    } else if (e.key === "ArrowLeft") {
+      prevBg();
     }
   });
 </script>
@@ -299,7 +307,12 @@
       )}
       {#if currentBg}
         <div class="preview-container" class:transitioning={isTransitioning}>
-          <img id="bg-preview" src={currentBg.url} alt={currentBg.name} loading="lazy" />
+          <img
+            id="bg-preview"
+            src={currentBg.url}
+            alt={currentBg.name}
+            loading="lazy"
+          />
           {#if bgType === "custom" && customBgId}
             <button
               class="delete-current-btn"
@@ -314,10 +327,20 @@
           {/if}
         </div>
       {:else}
-        <img id="bg-preview" src="assets/background/bg{id}.webp" alt="" loading="lazy" />
+        <img
+          id="bg-preview"
+          src="assets/background/bg{id}.webp"
+          alt=""
+          loading="lazy"
+        />
       {/if}
     {:else}
-      <img id="bg-preview" src="assets/background/bg{id}.webp" alt="" loading="lazy" />
+      <img
+        id="bg-preview"
+        src="assets/background/bg{id}.webp"
+        alt=""
+        loading="lazy"
+      />
     {/if}
     <button on:click={nextBg}>
       <IconArrowRight size={20} />
@@ -387,8 +410,12 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   .delete-current-btn {

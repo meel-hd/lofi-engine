@@ -1,4 +1,6 @@
-export const ru = {
+import type { Translations } from './types';
+
+export const ru: Translations = {
     settings: {
         title: 'Настройки',
         background: {
@@ -17,6 +19,7 @@ export const ru = {
         },
         autodj: {
             title: 'Погружение',
+            description: 'Выберите, сколько атмосферы Lofi Engine будет добавлять автоматически.',
             modes: {
                 music: {
                     label: 'Музыка',
@@ -97,5 +100,25 @@ export const ru = {
         7: { quote: 'Прошлое - это место отсчета, а не место жительства.' },
         8: { quote: 'Путешествия не вечны, но воспоминания остаются.' },
         9: { quote: 'Пожалуйста, помогите мне, я под водой.' },
+    },
+    focus: {
+        focus: 'Фокус', tasks: 'Задачи', mini: 'Мини', normal: 'Обычный',
+        zen: 'Режим дзен', exit_zen: 'Выйти из режима дзен',
+        paused: 'Пауза', short_break: 'Короткий перерыв', long_break: 'Длинный перерыв',
+        start: 'Начать', pause: 'Пауза', resume: 'Продолжить', skip: 'Пропустить', end: 'Завершить',
+        settings: 'Настройки', stats: 'Статистика', close_timer: 'Закрыть таймер', close_tasks: 'Закрыть задачи',
+        placeholder: 'На чём вы сосредоточены?', add: 'Добавить', completed: 'Завершённые',
+        active: 'Активная задача для фокуса', inactive: 'Неактивная задача', select: 'Выбрать для фокуса',
+        unselect: 'Снять выбор задачи', complete: 'Отметить выполненной', incomplete: 'Отметить невыполненной',
+        remove: 'Удалить задачу', completed_task: 'Выполненная задача',
+        task_actions: 'Действия с задачей',
+        empty: 'Добавьте задачу, чтобы связать её с вашими Pomodoro.', working_on: 'Работа над',
+        pomodoros_completed: 'завершённых Pomodoro', rounds: 'Раунды', rounds_complete: 'раундов завершено',
+        minutes: 'мин', notifications: 'Уведомления на рабочем столе', today_minutes: 'мин сегодня',
+        today_pomodoros: 'Pomo сегодня', week_minutes: 'мин за неделю', week_pomodoros: 'Pomo за неделю',
+        week_focus: 'Время фокуса за последние семь дней',
+        last_seven_days: 'Последние 7 дней', no_focus_data: 'Время фокуса ещё не записано',
+        focus_time: 'Время фокуса', break_time: 'Время перерыва',
+        break_over: 'Ваш перерыв закончился.', take_break: 'Отличная работа. Уделите минуту отдыху.',
     },
 };

@@ -4,6 +4,7 @@
   import Rain from "./Rain/index.svelte";
   import Settings from "./Settings/index.svelte";
   import Thunder from "./Thunder/index.svelte";
+  import { zen } from "../../focus/store";
 
   const STORAGE_KEY = "Volumes";
   const DEFFAULT_VOLUMES = {
@@ -24,7 +25,7 @@
   }, 200);
 </script>
 
-<div class="controls glass">
+<div class:zen={$zen} class="controls glass">
   <Rain volume={volumes.rain} />
   <Thunder volume={volumes.thunder} />
   <Jungle volume={volumes.jungle} />
@@ -42,6 +43,15 @@
     align-items: center;
     padding: 0 20px;
     border-radius: 50px;
+  }
+
+  .controls.zen {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .controls.zen :global(.rain) {
+    visibility: visible;
   }
 
   @media only screen and (max-width: 600px) {

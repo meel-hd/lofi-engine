@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconTrees } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import { isEditableTarget } from "../../../keyboard";
 
   export let volume: number;
 
@@ -21,6 +22,8 @@
 
   // Shortuct to toggle jungle with "D" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "d") {
       toggleJungle();
     }
@@ -30,7 +33,7 @@
     window.addEventListener("lofi-toggle-jungle", toggleJungle);
     setInterval(() => {
       jungle.volume = volume;
-    },100);
+    }, 100);
 
     return () => {
       window.removeEventListener("lofi-toggle-jungle", toggleJungle);

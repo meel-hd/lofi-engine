@@ -121,7 +121,6 @@
     align-items: center;
     position: absolute;
     width: 100%;
-    will-change: transform, opacity;
     transition-duration: 500ms;
   }
   .carousel__item-body {
@@ -154,7 +153,7 @@
   }
 
   .playing {
-    background-color: rgba(0, 0, 0, 60%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
   }
   .item-visible {
     opacity: 1;

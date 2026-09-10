@@ -16,6 +16,8 @@
     "@tabler/icons-svelte": "^2.17.0",
     "@tauri-apps/api": "^2.0.0",
     "@tauri-apps/plugin-shell": "~2.3.0",
+    "@tauri-apps/plugin-notification": "~2.4.0",
+    "@tauri-apps/plugin-window-state": "~2.4.1",
     "tone": "^14.7.30"
   },
   "devDependencies": {

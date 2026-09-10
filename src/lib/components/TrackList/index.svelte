@@ -2,6 +2,7 @@
   import { IconChevronDown } from "@tabler/icons-svelte";
   import TrackListItem from "./TrackListItem.svelte";
   import { onMount } from "svelte";
+  import { isEditableTarget } from "../../keyboard";
 
   let tracks = [
     {
@@ -56,6 +57,8 @@
 
   // Shortcut for stoping all effects with "k" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "k") {
       activeAudios.forEach((item) => {
         item.audio.pause();
@@ -72,6 +75,8 @@
   //  through (1-9) on keyboard
   for (let i = 1; i < 10; i++) {
     window.addEventListener("keydown", (e) => {
+      if (isEditableTarget(e.target)) return;
+
       if (e.key === i.toString()) {
         tracks[i - 1].isPlaying = !tracks[i - 1].isPlaying;
         if (tracks[i - 1].isPlaying) {
@@ -103,14 +108,13 @@
   // Visible tracks animation
   let visibleTrackId = 1;
   window.addEventListener("keydown", (e) => {
-    // Ignore change when event is targeting inputs
-    if (e.target instanceof HTMLElement && !e.target.closest("input")) {
-      if (e.key == "ArrowUp") {
-        prevTrack();
-      }
-      if (e.key == "ArrowDown") {
-        nextTrack();
-      }
+    if (isEditableTarget(e.target)) return;
+
+    if (e.key == "ArrowUp") {
+      prevTrack();
+    }
+    if (e.key == "ArrowDown") {
+      nextTrack();
     }
   });
 

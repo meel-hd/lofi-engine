@@ -1,4 +1,7 @@
 :root {
+  --glass-background: rgba(0, 0, 0, 0.3);
+  --glass-hover-background: rgba(255, 255, 255, 0.1);
+  --glass-blur: 10px;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
@@ -95,9 +98,9 @@ body *::-webkit-scrollbar-thumb:hover {
 
 .glass,
 #glass {
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background-color: var(--glass-background);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 

@@ -19,6 +19,7 @@ export const fr: Translations = {
         },
         autodj: {
             title: 'Immersion',
+            description: 'Choisissez la quantité d’ambiance ajoutée automatiquement par Lofi Engine.',
             modes: {
                 music: {
                     label: 'Musique',
@@ -99,5 +100,25 @@ export const fr: Translations = {
         7: { quote: "Le passé est un lieu de référence, pas un lieu de résidence." },
         8: { quote: "Les voyages ne durent pas éternellement, mais les souvenirs si." },
         9: { quote: "Aidez-moi s'il vous plaît, je suis sous l'eau." },
+    },
+    focus: {
+        focus: 'Concentration', tasks: 'Tâches', mini: 'Mini', normal: 'Normal',
+        zen: 'Mode Zen', exit_zen: 'Quitter le mode Zen',
+        paused: 'En pause', short_break: 'Pause courte', long_break: 'Pause longue',
+        start: 'Démarrer', pause: 'Mettre en pause', resume: 'Reprendre', skip: 'Passer', end: 'Terminer',
+        settings: 'Réglages', stats: 'Statistiques', close_timer: 'Fermer le minuteur', close_tasks: 'Fermer les tâches',
+        placeholder: 'Sur quoi vous concentrez-vous ?', add: 'Ajouter', completed: 'Terminées',
+        active: 'Tâche de concentration active', inactive: 'Tâche inactive', select: 'Définir comme tâche active',
+        unselect: 'Désélectionner la tâche active', complete: 'Marquer comme terminée', incomplete: 'Marquer comme non terminée',
+        remove: 'Supprimer la tâche', completed_task: 'Tâche terminée',
+        task_actions: 'Actions de la tâche',
+        empty: 'Ajoutez une tâche pour la lier à vos Pomodoros.', working_on: 'En cours',
+        pomodoros_completed: 'Pomodoros terminés', rounds: 'Séries', rounds_complete: 'séries terminées',
+        minutes: 'min', notifications: 'Notifications de bureau', today_minutes: "min aujourd’hui",
+        today_pomodoros: "Pomos aujourd’hui", week_minutes: 'min cette semaine', week_pomodoros: 'Pomos cette semaine',
+        week_focus: 'Temps de concentration des sept derniers jours',
+        last_seven_days: '7 derniers jours', no_focus_data: 'Aucun temps de concentration enregistré',
+        focus_time: 'Temps de concentration', break_time: 'Temps de pause',
+        break_over: 'Votre pause est terminée.', take_break: 'Beau travail. Prenez un moment pour vous ressourcer.',
     },
 };

@@ -26,6 +26,7 @@
 
 <div class="auto-dj-container">
   <h4>{$t.settings.autodj.title}</h4>
+  <p>{$t.settings.autodj.description}</p>
   <div class="modes">
     {#each MODES as m}
       <button
@@ -47,7 +48,14 @@
 
   h4 {
     margin-left: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin: 0 10px 10px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   .modes {

@@ -19,6 +19,7 @@ export const nl: Translations = {
         },
         autodj: {
             title: 'Immersie',
+            description: 'Kies hoeveel sfeer Lofi Engine automatisch toevoegt.',
             modes: {
                 music: {
                     label: 'Muziek',
@@ -99,5 +100,25 @@ export const nl: Translations = {
         7: { quote: "Het verleden is een plaats van referentie, geen plaats van verblijf." },
         8: { quote: "Reizen duren niet eeuwig, maar herinneringen wel." },
         9: { quote: "Help me alsjeblieft, ik ben onder water." },
+    },
+    focus: {
+        focus: 'Focus', tasks: 'Taken', mini: 'Mini', normal: 'Normaal',
+        zen: 'Zen-modus', exit_zen: 'Zen-modus afsluiten',
+        paused: 'Gepauzeerd', short_break: 'Korte pauze', long_break: 'Lange pauze',
+        start: 'Starten', pause: 'Pauzeren', resume: 'Hervatten', skip: 'Overslaan', end: 'Stoppen',
+        settings: 'Instellingen', stats: 'Statistieken', close_timer: 'Timer sluiten', close_tasks: 'Taken sluiten',
+        placeholder: 'Waar focus je op?', add: 'Toevoegen', completed: 'Voltooid',
+        active: 'Actieve focustaak', inactive: 'Inactieve taak', select: 'Kies als focustaak',
+        unselect: 'Focustaak deselecteren', complete: 'Markeer als voltooid', incomplete: 'Markeer als onvoltooid',
+        remove: 'Taak verwijderen', completed_task: 'Voltooide taak',
+        task_actions: 'Taakacties',
+        empty: 'Voeg een taak toe om die aan je Pomodoro’s te koppelen.', working_on: 'Bezig met',
+        pomodoros_completed: 'voltooide Pomodoro’s', rounds: 'Rondes', rounds_complete: 'rondes voltooid',
+        minutes: 'min', notifications: 'Bureaubladmeldingen', today_minutes: 'min vandaag',
+        today_pomodoros: 'Pomos vandaag', week_minutes: 'min deze week', week_pomodoros: 'Pomos deze week',
+        week_focus: 'Focustijd van de afgelopen zeven dagen',
+        last_seven_days: 'Afgelopen 7 dagen', no_focus_data: 'Nog geen focustijd geregistreerd',
+        focus_time: 'Focustijd', break_time: 'Pauzetijd',
+        break_over: 'Je pauze is voorbij.', take_break: 'Goed gedaan. Neem even de tijd om op te laden.',
     },
 };

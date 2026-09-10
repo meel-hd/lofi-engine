@@ -11,6 +11,7 @@
     IconInfoCircle,
   } from "@tabler/icons-svelte";
   import { t } from "../../locales/store";
+  import { isEditableTarget } from "../../keyboard";
 
   let visible = false;
   let x = 0;
@@ -39,6 +40,8 @@
   }
 
   function handleKeydown(e: KeyboardEvent) {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "Escape" && visible) {
       visible = false;
     }

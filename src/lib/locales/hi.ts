@@ -19,6 +19,7 @@ export const hi: Translations = {
         },
         autodj: {
             title: 'इमर्शन',
+            description: 'चुनें कि Lofi Engine अपने आप कितना माहौल जोड़े।',
             modes: {
                 music: {
                     label: 'संगीत',
@@ -99,5 +100,25 @@ export const hi: Translations = {
         7: { quote: "अतीत संदर्भ का स्थान है, निवास का स्थान नहीं।" },
         8: { quote: "यात्राएं हमेशा के लिए नहीं रहतीं, लेकिन यादें रहती हैं।" },
         9: { quote: "कृपया मेरी मदद करें, मैं पानी के नीचे हूँ।" },
+    },
+    focus: {
+        focus: 'फोकस', tasks: 'कार्य', mini: 'मिनी', normal: 'सामान्य',
+        zen: 'ज़ेन मोड', exit_zen: 'ज़ेन मोड से बाहर निकलें',
+        paused: 'रुका हुआ', short_break: 'छोटा विराम', long_break: 'लंबा विराम',
+        start: 'शुरू', pause: 'रोकें', resume: 'जारी रखें', skip: 'छोड़ें', end: 'समाप्त',
+        settings: 'सेटिंग्स', stats: 'आँकड़े', close_timer: 'टाइमर बंद करें', close_tasks: 'कार्य बंद करें',
+        placeholder: 'आप किस पर ध्यान दे रहे हैं?', add: 'जोड़ें', completed: 'पूर्ण',
+        active: 'सक्रिय फोकस कार्य', inactive: 'निष्क्रिय कार्य', select: 'फोकस कार्य चुनें',
+        unselect: 'फोकस कार्य का चयन हटाएँ', complete: 'पूर्ण चिह्नित करें', incomplete: 'अपूर्ण चिह्नित करें',
+        remove: 'कार्य हटाएँ', completed_task: 'पूर्ण कार्य',
+        task_actions: 'कार्य विकल्प',
+        empty: 'अपने Pomodoro से जोड़ने के लिए एक कार्य जोड़ें।', working_on: 'इस पर काम कर रहे हैं',
+        pomodoros_completed: 'पूर्ण Pomodoro', rounds: 'राउंड', rounds_complete: 'राउंड पूर्ण',
+        minutes: 'मिनट', notifications: 'डेस्कटॉप सूचनाएँ', today_minutes: 'आज मिनट',
+        today_pomodoros: 'आज Pomo', week_minutes: 'सप्ताह मिनट', week_pomodoros: 'सप्ताह Pomo',
+        week_focus: 'पिछले सात दिनों का फोकस समय',
+        last_seven_days: 'पिछले 7 दिन', no_focus_data: 'अभी तक कोई फोकस समय दर्ज नहीं है',
+        focus_time: 'फोकस समय', break_time: 'विराम समय',
+        break_over: 'आपका विराम समाप्त हो गया है।', take_break: 'बहुत बढ़िया। ऊर्जा पाने के लिए एक क्षण लें।',
     },
 };

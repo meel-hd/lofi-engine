@@ -9,6 +9,8 @@
   import Config from "./lib/Config.svelte";
   import ContextMenu from "./lib/components/ContextMenu/ContextMenu.svelte";
   import Tooltip from "./lib/components/Tooltip.svelte";
+  import FocusPanel from "./lib/components/Focus/FocusPanel.svelte";
+  import { zen } from "./lib/focus/store";
 
   onMount(() => {
     // Initialize direction
@@ -61,11 +63,12 @@
   <Config />
   <TopBar />
   <section class="content">
-    <TrackList />
+    <div class:zen-hidden={$zen} class="track-list-slot"><TrackList /></div>
     <Controls />
     <Info />
   </section>
   <PlayButton />
+  <FocusPanel />
   <ContextMenu />
   <Tooltip />
 </main>
@@ -92,5 +95,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .track-list-slot {
+    display: contents;
+  }
+
+  .zen-hidden {
+    display: none;
   }
 </style>

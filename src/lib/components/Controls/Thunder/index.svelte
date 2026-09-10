@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconCloudStorm } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import { isEditableTarget } from "../../../keyboard";
 
   export let volume: number;
 
@@ -21,6 +22,8 @@
 
   // Shortuct to toggle storm with "S" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "s") {
       toggleThunder();
     }

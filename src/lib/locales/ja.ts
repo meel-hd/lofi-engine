@@ -19,6 +19,7 @@ export const ja: Translations = {
         },
         autodj: {
             title: '没入感',
+            description: 'Lofi Engine が自動で加える雰囲気の量を選びます。',
             modes: {
                 music: {
                     label: '音楽',
@@ -99,5 +100,25 @@ export const ja: Translations = {
         7: { quote: "過去は参照する場所であり、居住する場所ではない。" },
         8: { quote: "旅は永遠には続かないが、思い出は続く。" },
         9: { quote: "助けて、水の中にいるの。" },
+    },
+    focus: {
+        focus: '集中', tasks: 'タスク', mini: 'ミニ', normal: '通常',
+        zen: '禅モード', exit_zen: '禅モードを終了',
+        paused: '一時停止', short_break: '短い休憩', long_break: '長い休憩',
+        start: '開始', pause: '一時停止', resume: '再開', skip: 'スキップ', end: '終了',
+        settings: '設定', stats: '統計', close_timer: 'タイマーを閉じる', close_tasks: 'タスクを閉じる',
+        placeholder: '何に集中しますか？', add: '追加', completed: '完了',
+        active: '現在の集中タスク', inactive: '未選択のタスク', select: '集中タスクに選択',
+        unselect: '集中タスクの選択を解除', complete: '完了にする', incomplete: '未完了にする',
+        remove: 'タスクを削除', completed_task: '完了したタスク',
+        task_actions: 'タスク操作',
+        empty: 'Pomodoro に関連付けるタスクを追加してください。', working_on: '取り組み中',
+        pomodoros_completed: '完了した Pomodoro', rounds: 'ラウンド', rounds_complete: 'ラウンド完了',
+        minutes: '分', notifications: 'デスクトップ通知', today_minutes: '今日の分',
+        today_pomodoros: '今日の Pomo', week_minutes: '今週の分', week_pomodoros: '今週の Pomo',
+        week_focus: '過去7日間の集中時間',
+        last_seven_days: '過去7日間', no_focus_data: '集中時間はまだ記録されていません',
+        focus_time: '集中時間', break_time: '休憩時間',
+        break_over: '休憩が終わりました。', take_break: 'お疲れさまでした。少し休憩しましょう。',
     },
 };

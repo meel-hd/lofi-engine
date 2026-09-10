@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconCloudRain } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import { isEditableTarget } from "../../../keyboard";
   import RainAnimation from "./RainAnimation.svelte";
 
   export let volume: number;
@@ -22,6 +23,8 @@
 
   // Shortuct to toggle rain with "A" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "a") {
       toggleRain();
     }
@@ -29,10 +32,10 @@
 
   onMount(() => {
     window.addEventListener("lofi-toggle-rain", toggleRain);
-    
+
     setInterval(() => {
       rain.volume = volume;
-    },100);
+    }, 100);
 
     return () => {
       window.removeEventListener("lofi-toggle-rain", toggleRain);

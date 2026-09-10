@@ -41,6 +41,9 @@
     "core:window:allow-start-dragging",
     "core:webview:allow-print",
     "shell:allow-open",
-    "shell:default"
+    "shell:default",
+    "core:tray:default",
+    "notification:default",
+    "window-state:default"
   ]
 }

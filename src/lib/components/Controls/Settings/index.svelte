@@ -6,16 +6,40 @@
   import AutoDJ from "./AutoDJ.svelte";
 
   import { t, locale, setLocale } from "../../../locales/store";
+  import { isEditableTarget } from "../../../keyboard";
 
   let isActive = false;
 
+  function portal(node: HTMLElement) {
+    document.body.appendChild(node);
+    const place = () => {
+      const anchor = document.getElementById("settings-box");
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      node.style.top = `${Math.round(rect.bottom + 20)}px`;
+      node.style.right = `${Math.round(window.innerWidth - rect.right)}px`;
+    };
+    place();
+    window.addEventListener("resize", place);
+    return {
+      destroy() {
+        window.removeEventListener("resize", place);
+        node.remove();
+      },
+    };
+  }
+
   function toggle() {
     isActive = !isActive;
-    window.dispatchEvent(new CustomEvent("settings-open-changed", { detail: { isActive } }));
+    window.dispatchEvent(
+      new CustomEvent("settings-open-changed", { detail: { isActive } }),
+    );
   }
 
   // Shortuct to toggle settings with "J" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "j") {
       toggle();
     }
@@ -34,7 +58,7 @@
     if (
       isActive &&
       event.target instanceof HTMLElement &&
-      !event.target.closest("#settings-box")
+      !event.target.closest("#settings-box, .settings-container")
     ) {
       isActive = false;
     }
@@ -62,7 +86,7 @@
     <IconSettings size={25} color={isActive ? "black" : "white"} />
   </button>
   {#if isActive}
-    <div class="settings-container glass">
+    <div class="settings-container glass" use:portal>
       <div class="settings-header">
         <h3>{$t.settings.title}</h3>
       </div>
@@ -98,9 +122,7 @@
     position: relative;
   }
   .settings-container {
-    position: absolute;
-    right: 0;
-    top: 70px;
+    position: fixed;
     z-index: 100;
     height: 58vh;
     padding: 20px;

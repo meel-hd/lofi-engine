@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconCampfire } from "@tabler/icons-svelte";
   import { onMount } from "svelte";
+  import { isEditableTarget } from "../../../keyboard";
 
   export let volume: number;
 
@@ -21,6 +22,8 @@
 
   // Shortuct to toggle fire with "F" key
   window.addEventListener("keydown", (e) => {
+    if (isEditableTarget(e.target)) return;
+
     if (e.key === "f") {
       toggleFire();
     }
@@ -31,7 +34,7 @@
     window.addEventListener("lofi-toggle-campfire", toggleFire);
     setInterval(() => {
       fire.volume = volume;
-    },100);
+    }, 100);
 
     return () => {
       window.removeEventListener("lofi-toggle-campfire", toggleFire);
