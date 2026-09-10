@@ -33,7 +33,7 @@
   <div class="freqList">
     {#each freqs as freq, i (i)}
       <div 
-        class="freqBar"
+        class="freqBar glass"
         style="height: {Math.max(3 * (69 + 0.5 * freq), 10)}px;"
       ></div>
     {/each}
@@ -49,8 +49,10 @@
     }
     
     .freqBar {
+      --glass-background: rgba(255, 255, 255, 0.2);
       flex: 1;
-      background-color: rgba(255, 255, 255, 0.7);
+      outline: 1px solid rgba(255, 255, 255, 0.1);
+      outline-offset: -1px;
       margin: 0 2px;
       min-width: 5px;
       border-radius: 2px 2px 0 0;
