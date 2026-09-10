@@ -33,6 +33,11 @@
 
 <style>
   .controls {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
     width: auto;
     height: 36px;
     color: white;
@@ -57,12 +62,14 @@
 
   .controls.zen :global(.rain) {
     visibility: visible;
+    top: -60px;
+    height: calc(110vh + 60px);
   }
 
   @media only screen and (max-width: 600px) {
     .controls {
-      position: absolute;
       left: 50%;
+      right: auto;
       transform: translateX(-50%);
       width: 61.2vw;
     }

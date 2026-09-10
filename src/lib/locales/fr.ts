@@ -107,7 +107,7 @@ export const fr: Translations = {
         zen: 'Mode Zen', exit_zen: 'Quitter le mode Zen',
         paused: 'En pause', short_break: 'Pause courte', long_break: 'Pause longue',
         start: 'Démarrer', pause: 'Mettre en pause', resume: 'Reprendre', skip: 'Passer', end: 'Terminer',
-        settings: 'Réglages', stats: 'Statistiques', close_timer: 'Fermer le minuteur', close_tasks: 'Fermer les tâches',
+        settings: 'Réglages', stats: 'Statistiques', close_timer: 'Fermer le minuteur', close_tasks: 'Fermer les tâches', cancel: 'Annuler', shuffle_notes: 'Mélanger les notes',
         placeholder: 'Sur quoi vous concentrez-vous ?', add: 'Ajouter', completed: 'Terminées',
         active: 'Tâche de concentration active', inactive: 'Tâche inactive', select: 'Définir comme tâche active',
         unselect: 'Désélectionner la tâche active', complete: 'Marquer comme terminée', incomplete: 'Marquer comme non terminée',

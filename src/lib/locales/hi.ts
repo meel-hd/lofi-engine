@@ -107,7 +107,7 @@ export const hi: Translations = {
         zen: 'ज़ेन मोड', exit_zen: 'ज़ेन मोड से बाहर निकलें',
         paused: 'रुका हुआ', short_break: 'छोटा विराम', long_break: 'लंबा विराम',
         start: 'शुरू', pause: 'रोकें', resume: 'जारी रखें', skip: 'छोड़ें', end: 'समाप्त',
-        settings: 'सेटिंग्स', stats: 'आँकड़े', close_timer: 'टाइमर बंद करें', close_tasks: 'कार्य बंद करें',
+        settings: 'सेटिंग्स', stats: 'आँकड़े', close_timer: 'टाइमर बंद करें', close_tasks: 'कार्य बंद करें', cancel: 'रद्द करें', shuffle_notes: 'नोट्स शफल करें',
         placeholder: 'आप किस पर ध्यान दे रहे हैं?', add: 'जोड़ें', completed: 'पूर्ण',
         active: 'सक्रिय फोकस कार्य', inactive: 'निष्क्रिय कार्य', select: 'फोकस कार्य चुनें',
         unselect: 'फोकस कार्य का चयन हटाएँ', complete: 'पूर्ण चिह्नित करें', incomplete: 'अपूर्ण चिह्नित करें',

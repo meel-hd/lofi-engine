@@ -107,7 +107,7 @@ export const ja: Translations = {
         zen: '禅モード', exit_zen: '禅モードを終了',
         paused: '一時停止', short_break: '短い休憩', long_break: '長い休憩',
         start: '開始', pause: '一時停止', resume: '再開', skip: 'スキップ', end: '終了',
-        settings: '設定', stats: '統計', close_timer: 'タイマーを閉じる', close_tasks: 'タスクを閉じる',
+        settings: '設定', stats: '統計', close_timer: 'タイマーを閉じる', close_tasks: 'タスクを閉じる', cancel: 'キャンセル', shuffle_notes: 'ノートをシャッフル',
         placeholder: '何に集中しますか？', add: '追加', completed: '完了',
         active: '現在の集中タスク', inactive: '未選択のタスク', select: '集中タスクに選択',
         unselect: '集中タスクの選択を解除', complete: '完了にする', incomplete: '未完了にする',

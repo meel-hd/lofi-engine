@@ -107,7 +107,7 @@ export const nl: Translations = {
         zen: 'Zen-modus', exit_zen: 'Zen-modus afsluiten',
         paused: 'Gepauzeerd', short_break: 'Korte pauze', long_break: 'Lange pauze',
         start: 'Starten', pause: 'Pauzeren', resume: 'Hervatten', skip: 'Overslaan', end: 'Stoppen',
-        settings: 'Instellingen', stats: 'Statistieken', close_timer: 'Timer sluiten', close_tasks: 'Taken sluiten',
+        settings: 'Instellingen', stats: 'Statistieken', close_timer: 'Timer sluiten', close_tasks: 'Taken sluiten', cancel: 'Annuleren', shuffle_notes: 'Noten mixen',
         placeholder: 'Waar focus je op?', add: 'Toevoegen', completed: 'Voltooid',
         active: 'Actieve focustaak', inactive: 'Inactieve taak', select: 'Kies als focustaak',
         unselect: 'Focustaak deselecteren', complete: 'Markeer als voltooid', incomplete: 'Markeer als onvoltooid',

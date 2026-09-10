@@ -128,17 +128,17 @@
     width: 100%;
     color: white;
     border-radius: 8px;
-    padding-right: 15px;
+    padding-right: 12px;
     display: flex;
-    gap: 20px;
+    gap: 12px;
     min-width: max-content;
   }
 
   .carousel__item-body__img {
-    width: 80px;
-    min-width: 80px;
-    height: 80px;
-    margin: 10px;
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
+    margin: 8px;
     border-radius: 5px;
     overflow: hidden;
   }
@@ -168,12 +168,12 @@
   .item-before-visible {
     opacity: 0.5;
     visibility: visible;
-    transform: scale(0.8) translate(0, -150px);
+    transform: scale(0.8) translate(0, -115px);
   }
   .item-after-visible {
     opacity: 0.5;
     visibility: visible;
-    transform: scale(0.8) translate(0, 150px);
+    transform: scale(0.8) translate(0, 115px);
   }
   .volume-slider {
     position: absolute;

@@ -107,7 +107,7 @@ export const zh: Translations = {
         zen: '禅模式', exit_zen: '退出禅模式',
         paused: '已暂停', short_break: '短休息', long_break: '长休息',
         start: '开始', pause: '暂停', resume: '继续', skip: '跳过', end: '结束',
-        settings: '设置', stats: '统计', close_timer: '关闭计时器', close_tasks: '关闭任务',
+        settings: '设置', stats: '统计', close_timer: '关闭计时器', close_tasks: '关闭任务', cancel: '取消', shuffle_notes: '随机重排音符',
         placeholder: '你正在专注什么？', add: '添加', completed: '已完成',
         active: '当前专注任务', inactive: '未激活任务', select: '设为专注任务',
         unselect: '取消选择专注任务', complete: '标记完成', incomplete: '标记未完成',

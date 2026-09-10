@@ -107,7 +107,7 @@ export const ru: Translations = {
         zen: 'Режим дзен', exit_zen: 'Выйти из режима дзен',
         paused: 'Пауза', short_break: 'Короткий перерыв', long_break: 'Длинный перерыв',
         start: 'Начать', pause: 'Пауза', resume: 'Продолжить', skip: 'Пропустить', end: 'Завершить',
-        settings: 'Настройки', stats: 'Статистика', close_timer: 'Закрыть таймер', close_tasks: 'Закрыть задачи',
+        settings: 'Настройки', stats: 'Статистика', close_timer: 'Закрыть таймер', close_tasks: 'Закрыть задачи', cancel: 'Отмена', shuffle_notes: 'Перемешать ноты',
         placeholder: 'На чём вы сосредоточены?', add: 'Добавить', completed: 'Завершённые',
         active: 'Активная задача для фокуса', inactive: 'Неактивная задача', select: 'Выбрать для фокуса',
         unselect: 'Снять выбор задачи', complete: 'Отметить выполненной', incomplete: 'Отметить невыполненной',

@@ -63,7 +63,7 @@
   <Config />
   <TopBar />
   <section class="content">
-    <div class:zen-hidden={$zen} class="track-list-slot"><TrackList /></div>
+    <div class="track-list-slot"><TrackList /></div>
     <Controls />
     <Info />
   </section>
@@ -101,7 +101,4 @@
     display: contents;
   }
 
-  .zen-hidden {
-    display: none;
-  }
 </style>

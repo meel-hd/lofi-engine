@@ -162,8 +162,10 @@
   }
   @media (max-width: 700px) {
     .focus-nav {
-      right: 12px;
+      left: 50%;
+      right: auto;
       bottom: 7px;
+      transform: translateX(-50%);
       flex-wrap: wrap;
       justify-content: flex-end;
     }

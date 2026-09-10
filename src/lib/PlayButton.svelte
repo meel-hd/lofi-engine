@@ -7,6 +7,7 @@
   } from "@tabler/icons-svelte";
   import { onDestroy, onMount } from "svelte";
   import { isEditableTarget } from "./keyboard";
+  import { t } from "./locales/store";
 // @ts-ignore
   import * as Tone from "tone";
   import Visualizer from "../lib/components/Visualizer/index.svelte";
@@ -474,7 +475,8 @@
         <li class="generate-slot">
           <button
             class="generateBtn"
-            aria-label="New notes"
+            data-tooltip={$t.focus.shuffle_notes}
+            aria-label={$t.focus.shuffle_notes}
             on:click={generateProgression}
           >
             <IconRefresh size={16} />

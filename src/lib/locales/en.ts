@@ -119,6 +119,8 @@ export const en = {
         stats: 'Stats',
         close_timer: 'Close timer',
         close_tasks: 'Close tasks',
+        cancel: 'Cancel',
+        shuffle_notes: 'Shuffle notes',
         placeholder: 'What are you focusing on?',
         add: 'Add',
         completed: 'Completed',
