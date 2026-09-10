@@ -7,47 +7,47 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 
 <p align="center">
   <a href="https://github.com/meel-hd/lofi-engine/releases/tag/app-v1.2.0">
-    <img src="https://img.shields.io/badge/Download-LoFi_Engine-blue?style=for-the-badge&logo=github" alt="Download">
+    <img src="https://img.shields.io/badge/Download-LoFi_Engine-blue?style=flat&logo=github" alt="Download">
   </a>
 </p>
 
 <p align="center">
-   <img  alt="Screenshot" src="screenshots/screenshot.jpeg" />
+   <img  alt="Screenshot" src="screenshots/screenshot.png" />
+</p>
+
+## Sponsors
+
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://insion.co/logo-dark.svg" />
+      <img alt="Insion" src="https://insion.co/logo-light.svg" height="26" align="absmiddle" />
+    </picture>
+  <a href="https://insion.co/"><strong>Insion</strong></a>&nbsp;&nbsp;
+  <a href="https://insion.co/">
+  </a>
+</p>
+
+<p align="center">
+   <samp>Build safer products with intelligent content moderation.</samp>
 </p>
 
 ## Table of Contents
-
-- [Introduction](#lofi-engine)
 - [Tech Stack](#tech-stack)
-- [Roadmap](#roadmap)
 - [Features](#features)
+- [Productivity](#productivity)
 - [Run Locally](#run-locally)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Tech Stack
 
-[![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
-[![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=for-the-badge&logo=Tauri&logoColor=white)](https://tauri.app/)
-[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
-[![Tone.js](https://img.shields.io/badge/Tone.js-009688?style=for-the-badge&logo=javascript&logoColor=white)](https://tonejs.github.io/)
+[![Svelte](https://img.shields.io/badge/Svelte-4A4A55?style=flat&logo=svelte&logoColor=FF3E00)](https://svelte.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-B73BFE?style=flat&logo=vite&logoColor=FFD62E)](https://vitejs.dev/)
+[![Tauri](https://img.shields.io/badge/Tauri-FFC131?style=flat&logo=Tauri&logoColor=white)](https://tauri.app/)
+[![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat&logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![Tone.js](https://img.shields.io/badge/Tone.js-009688?style=flat&logo=javascript&logoColor=white)](https://tonejs.github.io/)
 
-## Roadmap
-- [x] Procedural LoFi track generation using Tone.js
-- [x] Customizable ambient tracks
-- [x] Customizable effects
-- [x] Customizable look and feel
-- [x] Keyboard shortcuts for all actions
-- [x] Offline support
-- [x] Cross-platform support (Linux, Mac, Windows)
-- [x] [Browser deployment](https://lofi-engine.vercel.app/)
-- [ ] Purchasing a domain
-- [ ] Mobile support (iOS, Android)
-- [ ] More customization options and effects
-- [ ] Improved procedural generation algorithms
-- [ ] User feedback integration
 
 
 
@@ -62,12 +62,22 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 2. **Look**: With carefully crafted artworks from talented artists, long study sessions become a joy.
 3. **Ambience**: A windy evening or the sound of waves crashing into the sand of a sunny beach brings peace.
 
-### Advanced Immersion (Auto DJ)
+### Advanced Immersion
 The new **Immersion** system (Auto DJ) automatically manages the soundscape for you. It offers different modes to suit your needs:
 - **Music**: Focuses on the beat and chords without atmospheric effects.
 - **Atmosphere**: Adds core weather and nature effects for a fuller sound.
 - **World**: Incorporates specific textures like city sounds or wind for deep immersion.
 - **Manual**: Gives you full control to mix and match sounds as you please.
+
+### Productivity
+
+Stay in flow without leaving your scene:
+
+- **Pomodoro timer** with configurable focus and break durations, automatic phase switching, and desktop notifications.
+- **Focus tasks** to select what you are working on, track completed Pomodoros, and keep completed work organized.
+- **Focus stats** with daily and weekly totals plus a seven-day focus-time graph.
+- **Zen mode** to hide the track list and effects controls while your scene and music continue.
+- **Desktop conveniences**: mini player mode and a system-tray menu for window visibility, play/pause, phase skipping, and quitting.
 
 ### Internationalization
 LoFi Engine now speaks your language! We have added support for multiple languages to make the experience accessible to everyone.
@@ -78,14 +88,11 @@ LoFi Engine now speaks your language! We have added support for multiple languag
 - **Korean** (한국어)
 - **Indonesian** (Bahasa Indonesia)
 - **Russian** (Русский)
-- And more coming soon!
 
 ### Accessibility
 Any action or click you can do with the mouse has a shortcut for it with the keyboard. For playback, effects, ambient tracks, look, etc.
 
-All information about the app and **shortcuts** is available in the *info box* accessible via the **ESC** key.
-
-![info-box](screenshots/info-box.png)
+All information about the app and **shortcuts** is available in the *info box* accessible via the **Right Click** Context menu > **About**.
 
 ### Procedural LoFi Track Generation
 
