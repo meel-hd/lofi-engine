@@ -61,8 +61,14 @@
 </script>
 
 {#if visible}
-  <div class="info-overlay glass">
-    <div id="info-box" class="glass">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div
+    class="info-overlay glass"
+    on:click|self={toggleInfoBox}
+    on:contextmenu|preventDefault|stopPropagation
+    on:pointerdown|stopPropagation
+  >
+    <div id="info-box" class="glass" role="dialog" aria-modal="true" aria-labelledby="info-title">
       <div id="top-section">
         <button id="close-btn" on:click={toggleInfoBox}>
           <IconX color="white" size={17} />
@@ -77,7 +83,7 @@
         <div id="app-info">
           <img id="app-logo" src="LofiEngine.png" alt="" />
           <div>
-            <h1>{$t.info.title}</h1>
+            <h1 id="info-title">{$t.info.title}</h1>
             <p id="version">Version 1.2.0</p>
             <p id="tagline">
               {$t.info.tagline}
