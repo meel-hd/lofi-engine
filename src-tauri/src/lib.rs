@@ -19,7 +19,7 @@ struct Geometry {
 #[derive(Default)]
 struct WindowState(Mutex<Option<Geometry>>);
 
-#[derive(serde::Serialize)]
+#[derive(Clone, serde::Serialize)]
 struct TrayAction {
     action: String,
 }

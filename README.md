@@ -63,7 +63,7 @@ Generate LoFi music on the go. You create your own atmosphere; LoFi Engine sets 
 3. **Ambience**: A windy evening or the sound of waves crashing into the sand of a sunny beach brings peace.
 
 ### Advanced Immersion
-The new **Immersion** system (Auto DJ) automatically manages the soundscape for you. It offers different modes to suit your needs:
+The **Immersion** system, code name: `Auto DJ`, automatically manages the soundscape for you. It offers different modes to suit your needs:
 - **Music**: Focuses on the beat and chords without atmospheric effects.
 - **Atmosphere**: Adds core weather and nature effects for a fuller sound.
 - **World**: Incorporates specific textures like city sounds or wind for deep immersion.
@@ -80,7 +80,7 @@ Stay in flow without leaving your scene:
 - **Desktop conveniences**: mini player mode and a system-tray menu for window visibility, play/pause, phase skipping, and quitting.
 
 ### Internationalization
-LoFi Engine now speaks your language! We have added support for multiple languages to make the experience accessible to everyone.
+LoFi Engine speaks your language! We have support for multiple languages to make the experience accessible to everyone.
 - **English**
 - **French** (Français)
 - **Spanish** (Español)
@@ -96,7 +96,7 @@ All information about the app and **shortcuts** is available in the *info box* a
 
 ### Procedural LoFi Track Generation
 
-The LoFi track is now generated procedurally using **Tone.js**, providing a dynamic and unique listening experience every time. We are actively seeking feedback from users to refine and improve the track generation process. Your input will help us enhance the quality, variety, and customization of the generated music.
+The LoFi track is generated procedurally using **Tone.js**, providing a dynamic and unique listening experience every time. 
 
 If you have suggestions or encounter any issues, please let us know by opening an issue or contributing directly to the project. Together, we can make LoFi Engine even better!
 
