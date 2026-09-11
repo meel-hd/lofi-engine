@@ -46,7 +46,7 @@
 </script>
 
 {#if barType !== "hidden"}
-  <div class="titlebar glass" data-tauri-drag-region>
+  <div class="titlebar glass" role="dialog" data-tauri-drag-region>
     {#if barType == "mac"}
       <MacControls {noSideEffect} {appWindow} />
     {/if}

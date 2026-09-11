@@ -91,9 +91,7 @@
       <IconYinYang size={15} />
     </button>
     {#if !$zen}<Settings />{/if}
-    {#if "__TAURI_INTERNALS__" in window}<button on:click={toggleMini}
-        >{$mini ? $t.focus.normal : $t.focus.mini}</button
-      >{/if}
+    <!-- TODO: Restore the Mini Mode control after its native window behavior is complete. -->
   </nav>
   {#if $timerOpen}<div class="modal" on:click|self={() => timerOpen.set(false)}>
       <TimerView onClose={() => timerOpen.set(false)} />

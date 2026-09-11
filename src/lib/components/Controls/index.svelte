@@ -24,7 +24,7 @@
   }, 200);
 </script>
 
-<div class:zen={$zen} class="controls glass">
+<div class:zen={$zen} class="controls glass" role="dialog">
   <Rain volume={volumes.rain} />
   <Thunder volume={volumes.thunder} />
   <Jungle volume={volumes.jungle} />
@@ -34,7 +34,7 @@
 <style>
   .controls {
     position: absolute;
-    top: 24px;
+    top: 30px;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
