@@ -70,6 +70,7 @@
     if (track.isPlaying) {
       const audio = new Audio(`assets/engine/tracks/${track.track}`);
       audio.loop = true;
+      audio.volume = getTrackVolume(track.id);
       audio.play();
       activeAudios.push({ id: track.id, audio });
     } else {
@@ -92,6 +93,19 @@
     tracks.forEach((track) => (track.isPlaying = false));
     tracks = tracks;
     window.dispatchEvent(new CustomEvent("ambient-tracks-changed", { detail: { count: 0 } }));
+  }
+
+  function getTrackVolume(id: number) {
+    const saved = localStorage.getItem(`audioVolume-${id}`) ?? localStorage.getItem("audioVolume");
+    const volume = saved === null ? 0.5 : Number(saved);
+    return Number.isFinite(volume) ? Math.max(0, Math.min(1, volume)) : 0.5;
+  }
+
+  function updateTrackVolume(id: number, event: Event) {
+    const volume = Number((event.currentTarget as HTMLInputElement).value);
+    localStorage.setItem(`audioVolume-${id}`, String(volume));
+    const activeTrack = activeAudios.find((item) => item.id === id);
+    if (activeTrack) activeTrack.audio.volume = volume;
   }
 
   function updateHoveredTrack(event: PointerEvent) {
@@ -246,17 +260,32 @@
   <!-- Active tracks remain available as quick toggle buttons. -->
   <div class:visualizer-active={visualizerActive && !$zen} class="active-tracks" aria-label="Active tracks">
     {#each tracks.filter((track) => track.isPlaying) as track (track.id)}
-      <button
-        class="active-track glass"
-        aria-label={`Pause track ${track.id}`}
-        aria-pressed="true"
-        on:click={() => toggleTrack(track.id)}
-        on:pointerdown|stopPropagation
-      >
-        <img src={`assets/images/${track.id}.jpg`} alt="" />
-        <span class="active-track-number">{track.id}</span>
-        <span class="active-track-close"><IconX size={14} /></span>
-      </button>
+      <div class="active-track-wrap">
+        <input
+          class="active-track-volume"
+          aria-label={`Volume for track ${track.id}`}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={getTrackVolume(track.id)}
+          on:input={(event) => updateTrackVolume(track.id, event)}
+          on:click|stopPropagation
+          on:pointerdown|stopPropagation
+        />
+        <button
+          class="active-track glass"
+          aria-label={`Pause track ${track.id}`}
+          data-tooltip={$t.tracks[track.id].quote}
+          aria-pressed="true"
+          on:click={() => toggleTrack(track.id)}
+          on:pointerdown|stopPropagation
+        >
+          <img src={`assets/images/${track.id}.jpg`} alt="" />
+          <span class="active-track-number">{track.id}</span>
+          <span class="active-track-close"><IconX size={14} /></span>
+        </button>
+      </div>
     {/each}
   </div>
 
@@ -405,6 +434,24 @@
     border-radius: 50%;
     color: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  .active-track-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .active-track-volume {
+    align-self: center;
+    width: 4px;
+    height: 54px;
+    padding: 0;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    accent-color: white;
+    cursor: ns-resize;
   }
 
   .active-track img {

@@ -60,6 +60,7 @@ input[type="range"]:active {
   background-color: #00000070;
   border-radius: 10px;
   height: 3px;
+  width: 3px;
 }
 
 ::-webkit-slider-thumb {
@@ -69,6 +70,7 @@ input[type="range"]:active {
   border-radius: 50%;
   background-color: white;
   margin-top: -5px;
+  margin-left: -5px;
   box-shadow: 1px 2px 4px 2px #00000060;
 }
 
