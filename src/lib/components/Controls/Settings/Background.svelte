@@ -24,6 +24,7 @@
   let allBackgrounds = [];
   let isUploading = false;
   let isTransitioning = false;
+  let backgroundRequestId = 0;
 
   onMount(async () => {
     await loadCustomBackgrounds();
@@ -190,7 +191,11 @@
     if (bgType === "custom" && customBgId) {
       const customBg = customBackgrounds.find((bg) => bg.id === customBgId);
       if (customBg) {
-        bg.style.backgroundImage = `url('${customBg.dataUrl}')`;
+        setLoadedBackground(bg, {
+          id: customBg.id,
+          type: "custom",
+          url: customBg.dataUrl,
+        });
         return;
       } else {
         bgType = "default";
@@ -200,7 +205,53 @@
     }
     const defaultBackground = getDefaultBackground(id);
     id = defaultBackground.id;
-    bg.style.backgroundImage = `url('${defaultBackground.url}')`;
+    setLoadedBackground(bg, {
+      id: `default_${defaultBackground.id}`,
+      type: "default",
+      url: defaultBackground.url,
+    });
+  }
+
+  function setLoadedBackground(bg: HTMLElement, background: any) {
+    const requestId = ++backgroundRequestId;
+    isTransitioning = true;
+    setBackgroundLoading(true);
+
+    const img = new Image();
+    img.onload = () => {
+      if (requestId !== backgroundRequestId) return;
+      bg.style.backgroundImage = `url('${background.url}')`;
+      isTransitioning = false;
+      setBackgroundLoading(false);
+      preloadAdjacentBackgrounds(background.id);
+    };
+    img.onerror = () => {
+      if (requestId !== backgroundRequestId) return;
+      isTransitioning = false;
+      setBackgroundLoading(false);
+    };
+    img.src = background.url;
+  }
+
+  function setBackgroundLoading(isLoading: boolean) {
+    window.dispatchEvent(
+      new CustomEvent("background-loading-changed", { detail: { isLoading } }),
+    );
+  }
+
+  function preloadAdjacentBackgrounds(currentId: string) {
+    const currentIndex = allBackgrounds.findIndex((bg) => bg.id === currentId);
+    if (currentIndex === -1 || allBackgrounds.length < 2) return;
+
+    const adjacentIndexes = [
+      (currentIndex + 1) % allBackgrounds.length,
+      (currentIndex - 1 + allBackgrounds.length) % allBackgrounds.length,
+    ];
+
+    for (const index of adjacentIndexes) {
+      const img = new Image();
+      img.src = allBackgrounds[index].url;
+    }
   }
 
   function nextBg() {
@@ -227,18 +278,6 @@
     const bg = document.getElementById("bg");
     if (!bg) return;
 
-    isTransitioning = true;
-
-    const img = new Image();
-    img.onload = () => {
-      bg.style.backgroundImage = `url('${background.url}')`;
-      isTransitioning = false;
-    };
-    img.onerror = () => {
-      isTransitioning = false;
-    };
-    img.src = background.url;
-
     if (background.type === "default") {
       const defaultId = background.id.replace("default_", "");
       id = parseInt(defaultId);
@@ -252,6 +291,8 @@
       localStorage.setItem("bg-type", "custom");
       localStorage.setItem("custom-bg-id", customBgId);
     }
+
+    setLoadedBackground(bg, background);
   }
 
   window.addEventListener("customBackgroundSelected", (event: CustomEvent) => {

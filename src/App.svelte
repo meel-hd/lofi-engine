@@ -15,6 +15,8 @@
 
   let activeTrackCount = 0;
   let mainTrackPlaying = false;
+  let backgroundIsLoading = false;
+  let initialBackgroundRequestId = 0;
   let ambientSounds = { rain: false, thunder: false, jungle: false, campfire: false };
 
   $: showEffectsWarning =
@@ -33,9 +35,14 @@
     const handleMainTrackState = (event: CustomEvent) => {
       mainTrackPlaying = Boolean(event.detail?.isPlaying);
     };
+    const handleBackgroundLoading = (event: CustomEvent) => {
+      backgroundIsLoading = Boolean(event.detail?.isLoading);
+      if (backgroundIsLoading) initialBackgroundRequestId += 1;
+    };
     window.addEventListener("ambient-tracks-changed", handleTrackState);
     window.addEventListener("ambient-sound-state-changed", handleAmbientState);
     window.addEventListener("lofi-play-state-changed", handleMainTrackState);
+    window.addEventListener("background-loading-changed", handleBackgroundLoading);
 
     // Initialize direction
     document.documentElement.dir = $dir;
@@ -45,6 +52,22 @@
     const bgType = localStorage.getItem("bg-type") || "default";
 
     if (bgEl) {
+      const setBackgroundImage = (src: string) => {
+        const requestId = ++initialBackgroundRequestId;
+        backgroundIsLoading = true;
+        const img = new Image();
+        img.onload = () => {
+          if (requestId !== initialBackgroundRequestId) return;
+          bgEl.style.backgroundImage = `url('${src}')`;
+          backgroundIsLoading = false;
+        };
+        img.onerror = () => {
+          if (requestId !== initialBackgroundRequestId) return;
+          backgroundIsLoading = false;
+        };
+        img.src = src;
+      };
+
       if (bgType === "custom") {
         const customBgId = localStorage.getItem("custom-bg-id");
         if (customBgId) {
@@ -54,11 +77,7 @@
               const customs = JSON.parse(saved) as Array<{ id: string; dataUrl: string }>;
               const match   = customs.find((b) => b.id === customBgId);
               if (match) {
-                const img  = new Image();
-                img.onload = () => {
-                  bgEl.style.backgroundImage = `url('${match.dataUrl}')`;
-                };
-                img.src = match.dataUrl;
+                setBackgroundImage(match.dataUrl);
               }
             }
           });
@@ -66,17 +85,14 @@
       } else {
         const id = localStorage.getItem("bg-id") || "1";
         const src = getDefaultBackground(id).url;
-        const img = new Image();
-        img.onload = () => {
-          bgEl.style.backgroundImage = `url('${src}')`;
-        };
-        img.src = src;
+        setBackgroundImage(src);
       }
     }
     return () => {
       window.removeEventListener("ambient-tracks-changed", handleTrackState);
       window.removeEventListener("ambient-sound-state-changed", handleAmbientState);
       window.removeEventListener("lofi-play-state-changed", handleMainTrackState);
+      window.removeEventListener("background-loading-changed", handleBackgroundLoading);
     };
   });
 
@@ -89,6 +105,11 @@
 </script>
 
 <main id="bg" class="container">
+  {#if backgroundIsLoading}
+    <div class="background-loading" role="status" aria-label="Loading background">
+      <div class="background-spinner"></div>
+    </div>
+  {/if}
   <Config />
   <TopBar />
   <section class="content">
@@ -114,6 +135,30 @@
     background-size: cover;
     background-position: center;
     transition: background-image 0.3s ease;
+  }
+
+  .background-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .background-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: background-spin 0.8s linear infinite;
+  }
+
+  @keyframes background-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .content {
