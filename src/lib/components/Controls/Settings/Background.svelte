@@ -9,6 +9,7 @@
   import localDB from "../../../localDB";
   import { t } from "../../../locales/store";
   import { isEditableTarget } from "../../../keyboard";
+  import { defaultBackgrounds, getDefaultBackground } from "../../../backgrounds";
 
   const MAX_DIMENSION = 1920;
   const WEBP_QUALITY = 0.85;
@@ -90,14 +91,14 @@
   function buildAllBackgrounds() {
     allBackgrounds = [];
 
-    for (let i = 1; i <= 10; i++) {
+    defaultBackgrounds.forEach((background) => {
       allBackgrounds.push({
-        id: `default_${i}`,
+        id: `default_${background.id}`,
         type: "default",
-        name: `Background ${i}`,
-        url: `assets/background/bg${i}.webp`,
+        name: `Background ${background.id}`,
+        url: background.url,
       });
-    }
+    });
 
     customBackgrounds.forEach((bg) => {
       allBackgrounds.push({
@@ -137,7 +138,7 @@
         localStorage.removeItem("custom-bg-id");
         const bgElement = document.getElementById("bg");
         if (bgElement)
-          bgElement.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
+          bgElement.style.backgroundImage = `url('${getDefaultBackground(id).url}')`;
       }
     }
   }
@@ -197,7 +198,9 @@
         localStorage.removeItem("custom-bg-id");
       }
     }
-    bg.style.backgroundImage = `url('assets/background/bg${id}.webp')`;
+    const defaultBackground = getDefaultBackground(id);
+    id = defaultBackground.id;
+    bg.style.backgroundImage = `url('${defaultBackground.url}')`;
   }
 
   function nextBg() {
@@ -329,7 +332,7 @@
       {:else}
         <img
           id="bg-preview"
-          src="assets/background/bg{id}.webp"
+          src={getDefaultBackground(id).url}
           alt=""
           loading="lazy"
         />
@@ -337,7 +340,7 @@
     {:else}
       <img
         id="bg-preview"
-        src="assets/background/bg{id}.webp"
+        src={getDefaultBackground(id).url}
         alt=""
         loading="lazy"
       />

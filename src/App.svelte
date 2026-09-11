@@ -11,6 +11,7 @@
   import Tooltip from "./lib/components/Tooltip.svelte";
   import FocusPanel from "./lib/components/Focus/FocusPanel.svelte";
   import { zen } from "./lib/focus/store";
+  import { getDefaultBackground } from "./lib/backgrounds";
 
   let activeTrackCount = 0;
   let mainTrackPlaying = false;
@@ -63,8 +64,8 @@
           });
         }
       } else {
-        const id  = localStorage.getItem("bg-id") || "1";
-        const src = `assets/background/bg${id}.webp`;
+        const id = localStorage.getItem("bg-id") || "1";
+        const src = getDefaultBackground(id).url;
         const img = new Image();
         img.onload = () => {
           bgEl.style.backgroundImage = `url('${src}')`;
