@@ -261,18 +261,20 @@
   <div class:visualizer-active={visualizerActive && !$zen} class="active-tracks" aria-label="Active tracks">
     {#each tracks.filter((track) => track.isPlaying) as track (track.id)}
       <div class="active-track-wrap">
-        <input
-          class="active-track-volume"
-          aria-label={`Volume for track ${track.id}`}
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={getTrackVolume(track.id)}
-          on:input={(event) => updateTrackVolume(track.id, event)}
-          on:click|stopPropagation
-          on:pointerdown|stopPropagation
-        />
+        {#if !$zen}
+          <input
+            class="active-track-volume"
+            aria-label={`Volume for track ${track.id}`}
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={getTrackVolume(track.id)}
+            on:input={(event) => updateTrackVolume(track.id, event)}
+            on:click|stopPropagation
+            on:pointerdown|stopPropagation
+          />
+        {/if}
         <button
           class="active-track glass"
           aria-label={`Pause track ${track.id}`}
