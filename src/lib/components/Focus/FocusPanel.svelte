@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { IconYinYang } from "@tabler/icons-svelte";
+  import { IconAlertTriangle, IconYinYang } from "@tabler/icons-svelte";
   import Settings from "../Controls/Settings/index.svelte";
   import TimerView from "./TimerView.svelte";
   import TaskPanel from "./TaskPanel.svelte";
@@ -13,6 +13,8 @@
     zen,
   } from "../../focus/store";
   import { t } from "../../locales/store";
+
+  export let showEffectsWarning = false;
 
   async function toggleMini() {
     if (!("__TAURI_INTERNALS__" in window)) return;
@@ -54,6 +56,15 @@
 
 <div class:mini={$mini} class="focus-layer">
   <nav aria-label={$t.focus.focus} class="focus-nav">
+    {#if showEffectsWarning}
+      <button
+        class="effects-warning glass"
+        data-tooltip={$t.effects_warning}
+        aria-label={$t.effects_warning}
+      >
+        <IconAlertTriangle size={15} />
+      </button>
+    {/if}
     {#if !$zen}
       <button
         class="focus-trigger glass"
@@ -123,6 +134,15 @@
   }
   .focus-nav button:hover {
     background: var(--glass-hover-background);
+  }
+
+  .effects-warning {
+    display: grid;
+    width: 28px;
+    padding: 0 !important;
+    place-items: center;
+    color: #facc15 !important;
+    border-radius: 50% !important;
   }
   .focus-trigger {
     display: inline-flex;

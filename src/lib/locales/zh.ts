@@ -45,6 +45,7 @@ export const zh: Translations = {
             select: '选择语言',
         },
     },
+    effects_warning: '效果够多了，老兄',
     info: {
         title: 'Lofi Engine',
         tagline: '创造属于你的氛围，Lofi Engine 设定心情。',

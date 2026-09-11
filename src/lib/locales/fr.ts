@@ -45,6 +45,7 @@ export const fr: Translations = {
             select: 'Sélectionner la langue',
         },
     },
+    effects_warning: 'Assez d’effets, mec',
     info: {
         title: 'Lofi Engine',
         tagline: 'Créez votre propre atmosphère, Lofi Engine met l\'ambiance.',

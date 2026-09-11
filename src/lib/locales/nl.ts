@@ -45,6 +45,7 @@ export const nl: Translations = {
             select: 'Selecteer taal',
         },
     },
+    effects_warning: 'Genoeg effecten, man',
     info: {
         title: 'Lofi Engine',
         tagline: 'Creëer je eigen sfeer, Lofi Engine bepaalt de stemming.',

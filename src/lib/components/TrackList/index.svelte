@@ -80,6 +80,9 @@
     }
 
     tracks = tracks;
+    window.dispatchEvent(new CustomEvent("ambient-tracks-changed", {
+      detail: { count: tracks.filter((item) => item.isPlaying).length },
+    }));
   }
 
   // Keyboard K and other callers use this to stop every ambient track.
@@ -88,6 +91,7 @@
     activeAudios = [];
     tracks.forEach((track) => (track.isPlaying = false));
     tracks = tracks;
+    window.dispatchEvent(new CustomEvent("ambient-tracks-changed", { detail: { count: 0 } }));
   }
 
   function updateHoveredTrack(event: PointerEvent) {

@@ -43,6 +43,7 @@ export const en = {
             select: 'Select Language',
         },
     },
+    effects_warning: 'Enough effects bro',
     info: {
         title: 'Lofi Engine',
         tagline: 'Create your own atmosphere, Lofi Engine sets the mood.',

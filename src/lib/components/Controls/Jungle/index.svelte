@@ -18,6 +18,9 @@
     }
 
     isActive = !isActive;
+    window.dispatchEvent(new CustomEvent("ambient-sound-state-changed", {
+      detail: { id: "jungle", active: isActive },
+    }));
   }
 
   // Shortuct to toggle jungle with "D" key

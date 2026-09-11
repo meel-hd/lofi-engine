@@ -45,6 +45,7 @@ export const ja: Translations = {
             select: '言語を選択',
         },
     },
+    effects_warning: 'エフェクト多すぎるよ',
     info: {
         title: 'Lofi Engine',
         tagline: 'あなただけの雰囲気を作り出す、Lofi Engineがムードを演出します。',

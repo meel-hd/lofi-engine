@@ -19,6 +19,9 @@
     }
 
     isRaining = !isRaining;
+    window.dispatchEvent(new CustomEvent("ambient-sound-state-changed", {
+      detail: { id: "rain", active: isRaining },
+    }));
   }
 
   // Shortuct to toggle rain with "A" key

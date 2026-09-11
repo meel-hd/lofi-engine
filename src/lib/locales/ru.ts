@@ -45,6 +45,7 @@ export const ru: Translations = {
             select: 'Выбрать язык',
         },
     },
+    effects_warning: 'Хватит эффектов, брат',
     info: {
         title: 'Lofi Engine',
         tagline: 'Создай свою атмосферу — Lofi Engine задаёт настроение.',

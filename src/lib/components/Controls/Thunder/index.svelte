@@ -18,6 +18,9 @@
     }
 
     isStorming = !isStorming;
+    window.dispatchEvent(new CustomEvent("ambient-sound-state-changed", {
+      detail: { id: "thunder", active: isStorming },
+    }));
   }
 
   // Shortuct to toggle storm with "S" key

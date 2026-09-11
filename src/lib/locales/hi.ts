@@ -45,6 +45,7 @@ export const hi: Translations = {
             select: 'भाषा चुनें',
         },
     },
+    effects_warning: 'बहुत सारे इफ़ेक्ट हो गए, भाई',
     info: {
         title: 'Lofi Engine',
         tagline: 'अपना खुद का माहौल बनाएं, Lofi Engine मूड सेट करता है।',

@@ -12,7 +12,30 @@
   import FocusPanel from "./lib/components/Focus/FocusPanel.svelte";
   import { zen } from "./lib/focus/store";
 
+  let activeTrackCount = 0;
+  let mainTrackPlaying = false;
+  let ambientSounds = { rain: false, thunder: false, jungle: false, campfire: false };
+
+  $: showEffectsWarning =
+    mainTrackPlaying &&
+    activeTrackCount === 9 &&
+    Object.values(ambientSounds).every(Boolean);
+
   onMount(() => {
+    const handleTrackState = (event: CustomEvent) => {
+      activeTrackCount = event.detail?.count || 0;
+    };
+    const handleAmbientState = (event: CustomEvent) => {
+      const { id, active } = event.detail || {};
+      if (id in ambientSounds) ambientSounds = { ...ambientSounds, [id]: Boolean(active) };
+    };
+    const handleMainTrackState = (event: CustomEvent) => {
+      mainTrackPlaying = Boolean(event.detail?.isPlaying);
+    };
+    window.addEventListener("ambient-tracks-changed", handleTrackState);
+    window.addEventListener("ambient-sound-state-changed", handleAmbientState);
+    window.addEventListener("lofi-play-state-changed", handleMainTrackState);
+
     // Initialize direction
     document.documentElement.dir = $dir;
     document.documentElement.lang = $locale;
@@ -49,6 +72,11 @@
         img.src = src;
       }
     }
+    return () => {
+      window.removeEventListener("ambient-tracks-changed", handleTrackState);
+      window.removeEventListener("ambient-sound-state-changed", handleAmbientState);
+      window.removeEventListener("lofi-play-state-changed", handleMainTrackState);
+    };
   });
 
   $: {
@@ -68,7 +96,7 @@
     <Info />
   </section>
   <PlayButton />
-  <FocusPanel />
+  <FocusPanel showEffectsWarning={showEffectsWarning} />
   <ContextMenu />
   <Tooltip />
 </main>

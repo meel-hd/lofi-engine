@@ -18,6 +18,9 @@
     }
 
     isFire = !isFire;
+    window.dispatchEvent(new CustomEvent("ambient-sound-state-changed", {
+      detail: { id: "campfire", active: isFire },
+    }));
   }
 
   // Shortuct to toggle fire with "F" key
