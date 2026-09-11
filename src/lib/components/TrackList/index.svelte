@@ -56,7 +56,13 @@
       envelope: { attack: 0.005, decay: 0.04, sustain: 0, release: 0.08 },
     }).toDestination();
     void Tone.start();
-    const notes = { select: "C6", cancel: "E4", toggle: "G6", off: "D4", close: "A4" };
+    const notes = {
+      select: "C6",
+      cancel: "E4",
+      toggle: "G6",
+      off: "D4",
+      close: "A4",
+    };
     uiSynth.triggerAttackRelease(
       notes[kind],
       kind === "toggle" || kind === "off" || kind === "close" ? "8n" : "32n",
@@ -81,9 +87,11 @@
     }
 
     tracks = tracks;
-    window.dispatchEvent(new CustomEvent("ambient-tracks-changed", {
-      detail: { count: tracks.filter((item) => item.isPlaying).length },
-    }));
+    window.dispatchEvent(
+      new CustomEvent("ambient-tracks-changed", {
+        detail: { count: tracks.filter((item) => item.isPlaying).length },
+      }),
+    );
   }
 
   // Keyboard K and other callers use this to stop every ambient track.
@@ -92,11 +100,15 @@
     activeAudios = [];
     tracks.forEach((track) => (track.isPlaying = false));
     tracks = tracks;
-    window.dispatchEvent(new CustomEvent("ambient-tracks-changed", { detail: { count: 0 } }));
+    window.dispatchEvent(
+      new CustomEvent("ambient-tracks-changed", { detail: { count: 0 } }),
+    );
   }
 
   function getTrackVolume(id: number) {
-    const saved = localStorage.getItem(`audioVolume-${id}`) ?? localStorage.getItem("audioVolume");
+    const saved =
+      localStorage.getItem(`audioVolume-${id}`) ??
+      localStorage.getItem("audioVolume");
     const volume = saved === null ? 0.5 : Number(saved);
     return Number.isFinite(volume) ? Math.max(0, Math.min(1, volume)) : 0.5;
   }
@@ -123,14 +135,21 @@
 
     isDragging = true;
     const slice = (Math.PI * 2) / tracks.length;
-    const angle = (Math.atan2(y, x) + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
-    const nextTrackId = Math.floor((angle + slice / 2) / slice) % tracks.length + 1;
+    const angle =
+      (Math.atan2(y, x) + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
+    const nextTrackId =
+      (Math.floor((angle + slice / 2) / slice) % tracks.length) + 1;
     if (nextTrackId !== hoveredTrackId) playUiSound("select");
     hoveredTrackId = nextTrackId;
   }
 
   function handlePointerDown(event: PointerEvent) {
-    if (window.innerWidth <= 600 || event.button !== 0 || isClickableTarget(event.target)) return;
+    if (
+      window.innerWidth <= 600 ||
+      event.button !== 0 ||
+      isClickableTarget(event.target)
+    )
+      return;
     anchorX = event.clientX;
     anchorY = event.clientY;
     menuOpen = true;
@@ -251,45 +270,50 @@
   </button>
   {#if menuOpen}
     {#if hoveredTrackId !== null}
-      <div class="track-description glass">{$t.tracks[hoveredTrackId].quote}</div>
+      <div class="track-description glass">
+        {$t.tracks[hoveredTrackId].quote}
+      </div>
     {/if}
   {/if}
-
 </div>
 
-  <!-- Active tracks remain available as quick toggle buttons. -->
-  <div class:visualizer-active={visualizerActive && !$zen} class="active-tracks" aria-label="Active tracks">
-    {#each tracks.filter((track) => track.isPlaying) as track (track.id)}
-      <div class="active-track-wrap">
-        {#if !$zen}
-          <input
-            class="active-track-volume"
-            aria-label={`Volume for track ${track.id}`}
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={getTrackVolume(track.id)}
-            on:input={(event) => updateTrackVolume(track.id, event)}
-            on:click|stopPropagation
-            on:pointerdown|stopPropagation
-          />
-        {/if}
-        <button
-          class="active-track glass"
-          aria-label={`Pause track ${track.id}`}
-          data-tooltip={$t.tracks[track.id].quote}
-          aria-pressed="true"
-          on:click={() => toggleTrack(track.id)}
+<!-- Active tracks remain available as quick toggle buttons. -->
+<div
+  class:visualizer-active={visualizerActive && !$zen}
+  class="active-tracks"
+  aria-label="Active tracks"
+>
+  {#each tracks.filter((track) => track.isPlaying) as track (track.id)}
+    <div class="active-track-wrap">
+      {#if !$zen}
+        <input
+          class="active-track-volume"
+          aria-label={`Volume for track ${track.id}`}
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={getTrackVolume(track.id)}
+          on:input={(event) => updateTrackVolume(track.id, event)}
+          on:click|stopPropagation
           on:pointerdown|stopPropagation
-        >
-          <img src={`assets/images/${track.id}.jpg`} alt="" />
-          <span class="active-track-number">{track.id}</span>
-          <span class="active-track-close"><IconX size={14} /></span>
-        </button>
-      </div>
-    {/each}
-  </div>
+        />
+      {/if}
+      <button
+        class="active-track glass"
+        aria-label={`Pause track ${track.id}`}
+        data-tooltip={$t.tracks[track.id].quote}
+        aria-pressed="true"
+        on:click={() => toggleTrack(track.id)}
+        on:pointerdown|stopPropagation
+      >
+        <img src={`assets/images/${track.id}.jpg`} alt="" />
+        <span class="active-track-number">{track.id}</span>
+        <span class="active-track-close"><IconX size={14} /></span>
+      </button>
+    </div>
+  {/each}
+</div>
 
 <style>
   .track-selector {
@@ -363,7 +387,10 @@
     overflow: hidden;
     border-radius: 50%;
     opacity: 1;
-    transition: transform 140ms ease, opacity 140ms ease, box-shadow 140ms ease;
+    transition:
+      transform 140ms ease,
+      opacity 140ms ease,
+      box-shadow 140ms ease;
   }
 
   .track-option img {
@@ -384,15 +411,21 @@
   }
 
   .track-option.targeted {
-    box-shadow: 0 0 0 3px white, 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 0 0 3px white,
+      0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
   .track-option.playing {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.75), 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 0.75),
+      0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
   .track-option.playing.targeted {
-    box-shadow: 0 0 0 3px #ff4444, 0 8px 20px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 0 0 3px #ff4444,
+      0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
   .track-description {
@@ -454,6 +487,14 @@
     direction: rtl;
     accent-color: white;
     cursor: ns-resize;
+  }
+
+  .active-track-volume::-webkit-slider-thumb {
+    margin-left: -4px;
+  }
+
+  .active-track-volume::-webkit-slider-runnable-track {
+    width: 5px;
   }
 
   .active-track img {

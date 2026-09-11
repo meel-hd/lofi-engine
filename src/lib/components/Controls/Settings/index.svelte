@@ -216,10 +216,6 @@
     margin-left: 10px;
   }
 
-  #rain-speed::-webkit-slider-runnable-track {
-    height: 3px;
-  }
-
   .section h4 {
     margin: 0 0 10px 0;
     font-size: 1em;
