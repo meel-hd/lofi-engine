@@ -86,7 +86,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 0 10px;
+    padding: 0 10px 1rem;
   }
   h4,
   h5 {

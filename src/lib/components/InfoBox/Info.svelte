@@ -1,5 +1,6 @@
 <script lang="ts">
   import { IconEye, IconX } from "@tabler/icons-svelte";
+  import Credits from "./Credits.svelte";
   import ShortCuts from "./ShortCuts.svelte";
   import SocialLinks from "./SocialLinks.svelte";
   import { onMount } from "svelte";
@@ -7,9 +8,21 @@
   import { isEditableTarget } from "../../keyboard";
 
   let visible = false;
+  let activeTab: "shortcuts" | "credits" = "shortcuts";
 
   function toggleInfoBox() {
     visible = !visible;
+  }
+
+  function handleTabKeydown(event: KeyboardEvent) {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    if (window.matchMedia("(max-width: 600px)").matches) return;
+
+    event.preventDefault();
+    const nextTab =
+      event.key === "ArrowLeft" || event.key === "End" ? "credits" : "shortcuts";
+    activeTab = nextTab;
+    document.getElementById(`${nextTab}-tab`)?.focus();
   }
 
   // First time, show info box
@@ -36,6 +49,10 @@
   }
 
   onMount(() => {
+    if (window.matchMedia("(max-width: 600px)").matches) {
+      activeTab = "credits";
+    }
+
     window.addEventListener("lofi-toggle-info", toggleInfoBox);
     return () => {
       window.removeEventListener("lofi-toggle-info", toggleInfoBox);
@@ -70,7 +87,40 @@
         </div>
       </div>
       <div id="bottom-section">
-        <ShortCuts />
+        <div class="tabs" role="tablist" aria-label="About information">
+          <button
+            class:active={activeTab === "shortcuts"}
+            id="shortcuts-tab"
+            role="tab"
+            aria-selected={activeTab === "shortcuts"}
+            aria-controls="shortcuts-panel"
+            on:click={() => (activeTab = "shortcuts")}
+            on:keydown={handleTabKeydown}
+          >
+            Shortcuts
+          </button>
+          <button
+            class:active={activeTab === "credits"}
+            id="credits-tab"
+            role="tab"
+            aria-selected={activeTab === "credits"}
+            aria-controls="credits-panel"
+            on:click={() => (activeTab = "credits")}
+            on:keydown={handleTabKeydown}
+          >
+            Credits
+          </button>
+        </div>
+
+        {#if activeTab === "shortcuts"}
+          <div id="shortcuts-panel" role="tabpanel" aria-labelledby="shortcuts-tab">
+            <ShortCuts />
+          </div>
+        {:else}
+          <div id="credits-panel" role="tabpanel" aria-labelledby="credits-tab">
+            <Credits />
+          </div>
+        {/if}
       </div>
     </div>
   </div>
@@ -89,6 +139,8 @@
     align-items: center;
   }
   #info-box {
+    display: flex;
+    flex-direction: column;
     padding: 0px 15px;
     color: white;
     border-radius: 20px;
@@ -98,6 +150,7 @@
   }
   #top-section {
     display: flex;
+    flex-shrink: 0;
     justify-content: space-between;
     margin-top: 5px;
     position: relative;
@@ -135,9 +188,42 @@
     margin: 5px 10px;
   }
   #bottom-section {
+    flex: 1;
+    min-height: 0;
     overflow: hidden;
     overflow-y: scroll;
-    height: 45vh;
+  }
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    width: fit-content;
+    gap: 0.25rem;
+    margin: 0 auto 1rem;
+    padding: 0.25rem;
+    border: 0;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .tabs button {
+    border: 0;
+    border-radius: 9999px;
+    padding: 0.45rem 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    background: transparent;
+    cursor: pointer;
+  }
+  .tabs button.active {
+    color: white;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .tabs button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
   }
   img {
     aspect-ratio: 1/1;
@@ -166,7 +252,11 @@
     #app-info h1 {
       font-size: large;
     }
-    #bottom-section {
+    #shortcuts-tab {
+      display: none;
+    }
+    /* Credits is the only mobile tab, so its selector is unnecessary. */
+    .tabs {
       display: none;
     }
   }
