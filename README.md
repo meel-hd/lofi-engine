@@ -155,6 +155,16 @@ This will create a production-ready build of your application in the `src-tauri/
 
 Contributions are welcome. See the [Contributing Guide](./CONTRIBUTING.md) for details, and check the [issue tracker](https://github.com/meel-hd/lofi-engine/issues) if you want to help, report a bug, or discuss new ideas.
 
+## Star History
+
+<a href="https://www.star-history.com/?repos=meel-hd%2Flofi-engine&type=date&legend=top-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=meel-hd/lofi-engine&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=meel-hd/lofi-engine&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=meel-hd/lofi-engine&type=date&legend=top-left" />
+ </picture>
+</a>
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
 Feel free to use, modify, and distribute this code as per the terms of the license.
